@@ -23,3 +23,4 @@ docker compose down -v
 ```bash
 docker volume rm seminariophp
 ```
+.
