@@ -23,11 +23,3 @@ docker compose down -v
 ```bash
 docker volume rm seminariophp
 ```
-## Creacion de base de datos
-```bash
-docker cp C:\Users\Elian\Desktop\Facultad\Seminario\db\creacion-db.sql seminariophp-db-1:/tmp/creacion-db.sql
-docker exec -it seminariophp-db-1 bash
-mysql -u root -p < /tmp/creacion-db.sql
-exit
-docker exec seminariophp-db-1 rm /tmp/creacion-db.sql
-```
