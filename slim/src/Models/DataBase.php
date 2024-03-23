@@ -12,41 +12,44 @@ class DataBase
 {
     protected static $tabla = '';
 
-    protected static function execute(String $consulta){
+    protected static function execute(String $consulta)
+    {
         // Abro conexion a DB.
         $conexion = new PDO('mysql:host=db;dbname=inmobiliaria;charset=utf8mb4', 'root', 'root');
         // Manejo de errores.
         $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // Ejecutar consulta.
         $consultaStm = $conexion->prepare($consulta);
-        $resultados = $consultaStm->execute();
-        // Si no trajo anda null
+        $consultaStm->execute();
+        return $consultaStm;
+    }
+
+    public static function select($where = '') 
+    {
+        $consulta = "SELECT * FROM " . static::$tabla;
+        $consultaStm = self::execute($consulta);
+        if (!$consultaStm) {
+            return false; // Retorna false si hubo un error al ejecutar la consulta
+        }
         if ($consultaStm->rowCount() == 0) {
             return null;
         }
-        // Retorno un array con los resultados.
         $array = [];
-        while($r = $consultaStm->fetch(PDO::FETCH_ASSOC)){
+        while ($r = $consultaStm->fetch(PDO::FETCH_ASSOC)) {
             $array[] = $r;
         }
-
+    
         return $array;
     }
 
-    public static function select( $where =  '' ){
-        $consulta = "SELECT * FROM " . static::$tabla;
-
-        return self::execute($consulta);
+    public static function save($objeto)
+    {   
+        $atributos = get_object_vars($objeto);
+        $nombresAtributos = implode(", ", array_keys($atributos));
+        $valoresAtributos = "'" . implode("', '", array_values($atributos)) . "'";
+        $consulta = "INSERT INTO " . static::$tabla . " ($nombresAtributos) VALUES ($valoresAtributos)";
+        self::execute($consulta);
+        return $consulta;
     }
-
-    public static function find($id = 0){
-        $consulta = "SELECT * FROM " . static::$tabla . " WHERE id=". $id;
-        $resultado = self::execute($consulta);
-
-        return $resultado[0] ?? null;
-    }
-
-    public static function save($objeto){
-        $insercion = "INSERT INTO ";
-    }
+    
 }
