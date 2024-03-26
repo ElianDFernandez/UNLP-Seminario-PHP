@@ -9,9 +9,9 @@ class Inquilino extends DataBase
     static $tabla = "inquilinos";
     public String $nombre;
     public String $apellido;
-    public integer $dni;
+    public int $dni;
     public string $email;
-    public boolean $activo;
+   // public   ¿Boolean? $activo;
 
 
     public function fill($data)

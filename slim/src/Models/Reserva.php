@@ -7,15 +7,14 @@ use App\Models\DataBase;
 class Reserva extends DataBase
 {
     static $tabla = "Reserva";
-    public integer $PropiedadID;
-    public integer $InquilinoID;
+    public int $PropiedadID;
+    public int $InquilinoID;
     public string $fechaInicio;
-    public integer $cantNoches;
-    public real $montoTotal;
+    public int $cantNoches;
+    public int $montoTotal;
     
     public function fill($data)
     {
-        $this->nombre = $data['nombre'];
         $this->PropiedadID = $data['propiedadID'];
         $this->InquilinoID = $data['InquilinoID'];
         $this->fechaInicio = $data['fechaInicio'];
@@ -23,3 +22,4 @@ class Reserva extends DataBase
         //  $this->montoTotal = cant noches * precioNoche
 }
 
+}
