@@ -66,4 +66,21 @@ class DataBase
         $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
         return $r;
     }
+
+    public static function update($id, $objeto)
+    {
+        foreach ($objeto as $key => $value) {
+            $nombresAtributos[] = $key;
+            $valoresAtributos[] = "'" . $value . "'";
+        }
+        $consulta = "UPDATE " . static::$tabla . " SET " . implode(", ", $nombresAtributos) . " = " . implode(", ", $valoresAtributos) . " WHERE " . static::$tabla . ".id = " . $id;
+        var_dump($consulta);
+        $consultaStm = self::execute($consulta);
+        $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
+        return $r;
+    }
+
+    public static function delete($id) {
+        
+    }
 }
