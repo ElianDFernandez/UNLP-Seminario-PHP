@@ -33,7 +33,13 @@ class LocalidadController
 
     public function editar(Request $request, Response $response, $args) 
     {
-
+        $id = $args['id'];
+        $Localidad = Localidad::find($id);
+        if ($Localidad) {
+            $Localidad = new Localidad();
+            $Localidad->fill($Localidad);
+        }
+        var_dump($Localidad);
     }
 
     public function eliminar(Request $request, Response $response, $args) 

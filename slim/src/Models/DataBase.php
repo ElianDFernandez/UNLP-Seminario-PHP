@@ -52,4 +52,17 @@ class DataBase
         return $consulta;
     }
     
+    public static function find($id)
+    {
+        $consulta = "SELECT * FROM " . static::$tabla . " WHERE id = $id";
+        $consultaStm = self::execute($consulta);
+        if (!$consultaStm) {
+            return false;
+        }
+        if ($consultaStm->rowCount() == 0) {
+            return null;
+        }
+        $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
+        return $r;
+    }
 }
