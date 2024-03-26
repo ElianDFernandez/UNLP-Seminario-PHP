@@ -44,10 +44,11 @@ class DataBase
 
     public static function save($objeto)
     {   
-        $atributos = get_object_vars($objeto);
-        $nombresAtributos = implode(", ", array_keys($atributos));
-        $valoresAtributos = "'" . implode("', '", array_values($atributos)) . "'";
-        $consulta = "INSERT INTO " . static::$tabla . " ($nombresAtributos) VALUES ($valoresAtributos)";
+        foreach ($objeto as $key => $value) {
+            $nombresAtributos[] = $key;
+            $valoresAtributos[] = "'" . $value . "'";
+        }
+        $consulta = "INSERT INTO " . static::$tabla . " (" . implode(", ", $nombresAtributos) . ") VALUES (" . implode(", ", $valoresAtributos) . ")";
         self::execute($consulta);
         return $consulta;
     }
