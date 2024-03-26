@@ -81,6 +81,11 @@ class DataBase
     }
 
     public static function delete($id) {
-        
+        $consulta = "DELETE FROM " . static::$tabla . " WHERE id = $id";
+        $consultaStm = self::execute($consulta);
+        if (!$consultaStm) {
+            return false;
+        };
+            return true;
     }
 }

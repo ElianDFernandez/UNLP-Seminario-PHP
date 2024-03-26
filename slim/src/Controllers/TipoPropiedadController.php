@@ -2,28 +2,28 @@
 
 namespace App\Controllers;
 
-use App\Models\Localidad;
+use App\Models\Tipo_propiedad;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class LocalidadController
+class  TipoPropiedadController
 {
     public function crear(Request $request, Response $response, $args) 
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
-        $Localidad = new Localidad();
-        $Localidad->fill($data);
-        if ($Localidad->save($Localidad)) {
+        $tipo = new tipo();
+        $tipo->fill($data);
+        if ($tipo->save($tipo)) {
             $data = [
                 'status' => 'Success',
                 'code' => 200,
-                'message' => 'Localidad creada correctamente',
+                'message' => 'tipo creado correctamente',
             ];
         } else {
             $data = [
                 'code' => 400,
-                'message' => 'Error al crear la Localidad'
+                'message' => 'Error al crear el tipo'
             ];
             $statusCode = 400;
         }
@@ -35,13 +35,13 @@ class LocalidadController
     public function editar(Request $request, Response $response, $args) 
     {
         $id = $args['id'];
-        $LocalidadDb = Localidad::find($id);
-        if ($LocalidadDb) {
-            $Localidad = new Localidad();
+        $tipoDB = tipo::find($id);
+        if ($tipoDB) {
+            $tipo = new tipo();
             $contenido = $request->getBody()->getContents();
             $data = json_decode($contenido, true);
-            $Localidad->fill($data);
-            $Localidad->update($id, $Localidad);
+            $tipo->fill($data);
+            $tipo->update($id, $tipo);
             $data = [
                 'status' => 'Success',
                 'code' => 200,
@@ -60,9 +60,9 @@ class LocalidadController
     public function eliminar(Request $request, Response $response, $args) 
     {
         $id = $args['id'];
-        $LocalidadDb = Localidad::find($id);
-        if ($LocalidadDb) {
-            Localidad::delete($id);
+        $tipoDB = tipo::find($id);
+        if ($tipoDB) {
+            tipo::delete($id);
             $data = [
                 'status' => 'Success',
                 'code' => 200,
@@ -75,9 +75,9 @@ class LocalidadController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $Localidad = Localidad::select();
+        $tipo = tipo::select();
         $data = [
-            'Localidad' => $Localidad,
+            'tipo' => $tipo,
         ];
         $response->getBody()->write(json_encode($data));
 
