@@ -23,7 +23,7 @@ $app->delete('/localidades/{id}', LocalidadController::class . ':eliminar');
 $app->get('/localidades', LocalidadController::class . ':listar');
 
 //Inquilino
-$app->get('/inquilinos', InquilinoController::class . 'crear');
+$app->post('/inquilinos', InquilinoController::class . 'crear');
 $app->put('/inquilinos/{id}', InquilinoController::class . 'editar');
 $app->delete('/inquilinos/{id}', InquilinoController::class . 'eliminar');
 $app->get('/inquilinos', InquilinoController::class . 'listar');
