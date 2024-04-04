@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class  TipoPropiedadController
 {
-    public function crear(Request $request, Response $response, $args) 
+    public function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
@@ -28,11 +28,11 @@ class  TipoPropiedadController
             $statusCode = 400;
         }
         $response->getBody()->write(json_encode($data));
-    
+
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
-    public function editar(Request $request, Response $response, $args) 
+    public function editar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $tipoDB = tipo::find($id);
@@ -53,11 +53,11 @@ class  TipoPropiedadController
             ];
         }
         $response->getBody()->write(json_encode($data));
-    
+
         return $response;
     }
 
-    public function eliminar(Request $request, Response $response, $args) 
+    public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $tipoDB = tipo::find($id);
@@ -69,7 +69,7 @@ class  TipoPropiedadController
             ];
         }
         $response->getBody()->write(json_encode($data));
-    
+
         return $response;
     }
 
@@ -82,25 +82,5 @@ class  TipoPropiedadController
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json');
-    }
-
-        public function buscar(Request $request, Response $response, $args)
-    {
-        $id = $args['id'];
-        $Propiedad = Propiedad::find($id);
-        if ($Propiedad <> null) {
-            $data = [
-                'id' => $id,
-                'Propiedad' => $Propiedad,
-            ];
-        } else {
-            $data = [
-                'code'= '404'
-                'message'= 'Propiedad no encontrada'
-            ]
-        };
-        $response->getBody()->write(json_encode($data));
-
-        return $response;
     }
 }
