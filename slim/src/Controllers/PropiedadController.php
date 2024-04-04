@@ -19,7 +19,7 @@ class PropiedadController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function show(Request $request, Response $response, $args) 
+    function Listar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $propiedad = Propiedad::find($id);
@@ -28,11 +28,11 @@ class PropiedadController
             'propiedad' => $propiedad,
         ];
         $response->getBody()->write(json_encode($data));
-    
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function save(Request $request, Response $response, $args) 
+    function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
@@ -45,5 +45,45 @@ class PropiedadController
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    }
+    public function editar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $PropiedadDb = Propiedad::find($id);
+        if ($PropiedadDb) {
+            $Propiedad = new Propiedad();
+            $contenido = $request->getBody()->getContents();
+            $data = json_decode($contenido, true);
+            $Propiedad->fill($data);
+            $Propiedad->update($id, $Propiedad);
+            $data = [
+                'status' => 'Success',
+                'code' => 200,
+            ];
+        } else {
+            $data = [
+                'code' => 404,
+                'message' => 'Propiedad no encontrada',
+            ];
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
+    }
+
+    public function eliminar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $PropiedadDb = Propiedad::find($id);
+        if ($PropiedadDb) {
+            Propiedad::delete($id);
+            $data = [
+                'status' => 'Success',
+                'code' => 200,
+            ];
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
     }
 }
