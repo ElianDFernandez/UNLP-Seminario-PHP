@@ -83,4 +83,24 @@ class  TipoPropiedadController
 
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+        public function buscar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $Propiedad = Propiedad::find($id);
+        if ($Propiedad <> null) {
+            $data = [
+                'id' => $id,
+                'Propiedad' => $Propiedad,
+            ];
+        } else {
+            $data = [
+                'code'= '404'
+                'message'= 'Propiedad no encontrada'
+            ]
+        };
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
+    }
 }

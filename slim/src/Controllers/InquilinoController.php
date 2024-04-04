@@ -50,10 +50,17 @@ class InquilinoController
     {
         $id = $args['id'];
         $inquilino = Inquilino::find($id);
-        $data = [
-            'id' => $id,
-            'inquilino' => $inquilino,
-        ];
+        if ($inquilino <> null) {
+            $data = [
+                'id' => $id,
+                'inquilino' => $inquilino,
+            ];
+        } else {
+            $data = [
+                'code'= '404'
+                'message'= 'Inquilino no encontrado'
+            ]
+        };
         $response->getBody()->write(json_encode($data));
 
         return $response;

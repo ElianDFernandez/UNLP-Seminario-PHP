@@ -19,7 +19,7 @@ class ReservaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function listar(Request $request, Response $response, $args) 
+    function listar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $Reserva = Reserva::find($id);
@@ -28,11 +28,11 @@ class ReservaController
             'Reserva' => $Reserva,
         ];
         $response->getBody()->write(json_encode($data));
-    
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function crear(Request $request, Response $response, $args) 
+    function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
@@ -86,5 +86,4 @@ class ReservaController
 
         return $response;
     }
-}
 }
