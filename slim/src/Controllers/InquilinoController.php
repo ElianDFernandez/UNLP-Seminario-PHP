@@ -46,6 +46,18 @@ class InquilinoController
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
+    public function buscar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $inquilino = Inquilino::find($id);
+        $data = [
+            'id' => $id,
+            'inquilino' => $inquilino,
+        ];
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
+    }
     public function editar(Request $request, Response $response, $args)
     {
         $id = $args['id'];

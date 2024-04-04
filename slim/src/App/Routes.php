@@ -27,6 +27,7 @@ $app->post('/inquilinos', InquilinoController::class . 'crear');
 $app->put('/inquilinos/{id}', InquilinoController::class . 'editar');
 $app->delete('/inquilinos/{id}', InquilinoController::class . 'eliminar');
 $app->get('/inquilinos', InquilinoController::class . 'listar');
+$app->get('/inquilinos/{id}', InquilinoController::class . 'buscar');
 
 //Propiedad
 $app->post('/propiedades', PropiedadController::class . 'crear');
