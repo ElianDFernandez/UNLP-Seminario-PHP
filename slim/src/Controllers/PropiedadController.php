@@ -37,8 +37,8 @@ class PropiedadController
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $propiedad = new Propiedad();
-        // $propiedad->fill($data);
-        // $propiedad->save();
+        $propiedad->fill($data);
+        $propiedad->save();
         $responseData = [
             'message' => 'La propiedad ha sido creada exitosamente.'
         ];

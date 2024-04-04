@@ -19,7 +19,7 @@ class ReservaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function show(Request $request, Response $response, $args) 
+    function listar(Request $request, Response $response, $args) 
     {
         $id = $args['id'];
         $Reserva = Reserva::find($id);
@@ -32,13 +32,13 @@ class ReservaController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function save(Request $request, Response $response, $args) 
+    function crear(Request $request, Response $response, $args) 
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $propiedad = new Propiedad();
-        // $propiedad->fill($data);
-        // $propiedad->save();
+        $propiedad->fill($data);
+        $propiedad->save();
         $responseData = [
             'message' => 'La propiedad ha sido creada exitosamente.'
         ];
@@ -46,4 +46,45 @@ class ReservaController
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
     }
+    public function editar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $ReservaDb = Reserva::find($id);
+        if ($ReservaDb) {
+            $Reserva = new Reserva();
+            $contenido = $request->getBody()->getContents();
+            $data = json_decode($contenido, true);
+            $Reserva->fill($data);
+            $Reserva->update($id, $Reserva);
+            $data = [
+                'status' => 'Success',
+                'code' => 200,
+            ];
+        } else {
+            $data = [
+                'code' => 404,
+                'message' => 'Reserva no encontrada',
+            ];
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
+    }
+
+    public function eliminar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $ReservaDb = Reserva::find($id);
+        if ($ReservaDb) {
+            Reserva::delete($id);
+            $data = [
+                'status' => 'Success',
+                'code' => 200,
+            ];
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
+    }
+}
 }
