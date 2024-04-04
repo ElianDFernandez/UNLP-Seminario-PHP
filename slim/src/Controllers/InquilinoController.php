@@ -40,7 +40,7 @@ class InquilinoController
         $propiedad->fill($data);
         $propiedad->save();
         $responseData = [
-            'message' => 'La propiedad ha sido creada exitosamente.'
+            'message' => 'La Inquilino ha sido creada exitosamente.'
         ];
         $response->getBody()->write(json_encode($data));
 

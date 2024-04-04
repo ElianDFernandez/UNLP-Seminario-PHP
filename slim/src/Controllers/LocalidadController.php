@@ -13,6 +13,9 @@ class LocalidadController
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $Localidad = new Localidad();
+        //antes de escribir la localidad debo revisar que el campo exista,
+        // y que no este vacio
+
         $Localidad->fill($data);
         if ($Localidad->save($Localidad)) {
             $data = [
