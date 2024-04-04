@@ -19,7 +19,7 @@ class PropiedadController
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    function Listar(Request $request, Response $response, $args)
+    function listar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $propiedad = Propiedad::find($id);
