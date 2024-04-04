@@ -13,22 +13,27 @@ class LocalidadController
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $Localidad = new Localidad();
-        //antes de escribir la localidad debo revisar que el campo exista,
-        // y que no este vacio
-
-        $Localidad->fill($data);
-        if ($Localidad->save($Localidad)) {
-            $data = [
-                'status' => 'Success',
-                'code' => 200,
-                'message' => 'Localidad creada correctamente',
-            ];
-        } else {
+        if (!isset($data['nombre']) || empty($data['nombre'])) {
             $data = [
                 'code' => 400,
-                'message' => 'Error al crear la Localidad'
+                'message' => 'El campo nombre es obligatorio',
             ];
             $statusCode = 400;
+        } else {
+            $Localidad->fill($data);
+            if ($Localidad->save($Localidad)) {
+                $data = [
+                    'status' => 'Success',
+                    'code' => 200,
+                    'message' => 'Localidad creada correctamente',
+                ];
+            } else {
+                $data = [
+                    'code' => 400,
+                    'message' => 'Error al crear la Localidad'
+                ];
+                $statusCode = 400;
+            }
         }
         $response->getBody()->write(json_encode($data));
 
