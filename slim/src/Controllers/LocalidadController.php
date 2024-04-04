@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class LocalidadController
 {
-    public function crear(Request $request, Response $response, $args) 
+    public function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
@@ -28,11 +28,11 @@ class LocalidadController
             $statusCode = 400;
         }
         $response->getBody()->write(json_encode($data));
-    
+
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
-    public function editar(Request $request, Response $response, $args) 
+    public function editar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $LocalidadDb = Localidad::find($id);
@@ -53,11 +53,11 @@ class LocalidadController
             ];
         }
         $response->getBody()->write(json_encode($data));
-    
+
         return $response;
     }
 
-    public function eliminar(Request $request, Response $response, $args) 
+    public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
         $LocalidadDb = Localidad::find($id);
@@ -69,7 +69,7 @@ class LocalidadController
             ];
         }
         $response->getBody()->write(json_encode($data));
-    
+
         return $response;
     }
 

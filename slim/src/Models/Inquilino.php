@@ -11,7 +11,7 @@ class Inquilino extends DataBase
     public String $apellido;
     public int $dni;
     public string $email;
-   // public   ¿Boolean? $activo;
+    // public   ¿Boolean? $activo;
 
 
     public function fill($data)
@@ -20,7 +20,6 @@ class Inquilino extends DataBase
         $this->apellido = $data['apellido'];
         $this->dni = $data['dni'];
         $this->email = $data['email'];
-        $this->activo = $data['activo'];
+        // $this->activo = $data['activo'];
     }
-    
 }
