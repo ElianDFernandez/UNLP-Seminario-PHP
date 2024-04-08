@@ -26,7 +26,7 @@ class DataBase
 
     public static function select($where = '') 
     {
-        $consulta = "SELECT * FROM " . static::$tabla;
+        $consulta = "SELECT * FROM `" . static::$tabla . '` ' . $where;
         $consultaStm = self::execute($consulta);
         if (!$consultaStm) {
             return false; // Retorna false si hubo un error al ejecutar la consulta
@@ -38,6 +38,7 @@ class DataBase
         while ($r = $consultaStm->fetch(PDO::FETCH_ASSOC)) {
             $array[] = $r;
         }
+        // VER SI ES UN SOLO OBJETO DEVOLVER SOLO ESE
     
         return $array;
     }

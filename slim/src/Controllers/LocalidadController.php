@@ -12,27 +12,34 @@ class LocalidadController
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
-        $Localidad = new Localidad();
         if (!isset($data['nombre']) || empty($data['nombre'])) {
             $data = [
                 'code' => 400,
-                'message' => 'El campo nombre es obligatorio',
+                'message' => 'Error. El campo nombre es obligatorio.',
             ];
             $statusCode = 400;
         } else {
-            $Localidad->fill($data);
-            if ($Localidad->save($Localidad)) {
-                $data = [
-                    'status' => 'Success',
-                    'code' => 200,
-                    'message' => 'Localidad creada correctamente',
-                ];
+            $localidad = Localidad::findOrNew($data['nombre']);
+            if ($localidad->esNuevo()) {
+                if ($localidad->guardar()) {
+                    $data = [
+                        'status' => 'Success. Localidad creada.',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                } else {
+                    $data = [
+                        'status' => 'Error. Fallo al guardar.',
+                        'code' => 500,
+                    ];
+                    $statusCode = 500;
+                }
             } else {
                 $data = [
-                    'code' => 400,
-                    'message' => 'Error al crear la Localidad'
+                    'status' => 'Error. Localidad existente.',
+                    'code' => 500,
                 ];
-                $statusCode = 400;
+                $statusCode = 500;
             }
         }
         $response->getBody()->write(json_encode($data));
@@ -83,9 +90,9 @@ class LocalidadController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $Localidad = Localidad::select();
+        $localidad = Localidad::select();
         $data = [
-            'Localidad' => $Localidad,
+            'Localidad' => $localidad,
         ];
         $response->getBody()->write(json_encode($data));
 
