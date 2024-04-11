@@ -48,4 +48,6 @@ $app->put('/tiposPropiedades/{id}', TipoPropiedadController::class . ':editar');
 $app->delete('/tiposPropiedades/{id}', TipoPropiedadController::class . ':eliminar');
 $app->get('/tiposPropiedades', TipoPropiedadController::class . ':listar');
 
+//test
+
 // Fin APP
