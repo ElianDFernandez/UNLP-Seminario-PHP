@@ -7,18 +7,25 @@ use App\Models\DataBase;
 class Reserva extends DataBase
 {
     static $tabla = "Reserva";
-    public int $PropiedadID;
-    public int $InquilinoID;
+    public int $propiedadID;
+    public int $inquilinoID;
     public string $fechaInicio;
     public int $cantNoches;
     public int $montoTotal;
 
+    public function getMontoTotal()
+    {
+        $id = $this->propiedadID;
+        $prop = self::select("WHERE id = $id");
+        return $prop['precioNoche'] * $this->cantNoches;
+    }
+
     public function fill($data)
     {
-        $this->PropiedadID = $data['propiedadID'];
-        $this->InquilinoID = $data['InquilinoID'];
+        $this->propiedadID = $data['propiedadID'];
+        $this->inquilinoID = $data['InquilinoID'];
         $this->fechaInicio = $data['fechaInicio'];
         $this->cantNoches = $data['cantNoches'];
-        $this->montoTotal = $data['cantNoches'] * $data['precioNoche'];
+        $this->montoTotal = $this->getMontoTotal();
     }
 }
