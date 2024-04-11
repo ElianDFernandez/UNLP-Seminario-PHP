@@ -19,7 +19,7 @@ class Propiedad extends DataBase
     public int $precioPorNoche;
     public int $cantDias;
     public bool $disponible;
-    public int $tipoPropiedad_id;
+    public int $Propiedad_id;
     public String $imagen;
     public String $tipoImagen;
 
@@ -34,7 +34,7 @@ class Propiedad extends DataBase
         $this->precioPorNoche = $data['precioPorNoche'];
         $this->cantDias = $data['cantDias'];
         $this->disponible = $data['disponible'];
-        $this->tipoPropiedad_id = $data['tipoPropiedad_id'];
+        $this->Propiedad_id = $data['Propiedad_id'];
         $this->imagen = $data['imagen'];
         $this->tipoImagen = $data['tipoImagen'];
     }

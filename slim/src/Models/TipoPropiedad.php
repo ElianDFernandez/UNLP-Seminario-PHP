@@ -4,34 +4,31 @@ namespace App\Models;
 
 use App\Models\DataBase;
 
-class Localidad extends DataBase
+class TipoPropiedad extends DataBase
 {
-    static $tabla = "localidades";
+    static $tabla = "tipo_propiedades";
 
-    protected $id;
     protected  $nombre;
+    protected $id;
 
-    //constructor 
     public function __construct($nombre = null, $id = null)
     {
-        $this->id = $id;
         $this->nombre = $nombre;
+        $this->id = $id;
     }
-
     public function fill($data)
     {
         $this->nombre = $data['nombre'];
     }
-
-    public static function findOrNew($name)
+    public static function findOrNew($nombre)
     {
-        $localidad = Localidad::select('WHERE nombre = "' . $name . '"');
-        if (!$localidad) {
-            $localidad = new Localidad($name);
+        $tipoPropiedad = TipoPropiedad::select('WHERE nombre = "' . $nombre . '"');
+        if (!$tipoPropiedad) {
+            $tipoPropiedad = new TipoPropiedad($nombre);
         } else {
-            $localidad = new Localidad($localidad[0]['nombre'], $localidad[0]["id"]);
+            $tipoPropiedad = new Tipopropiedad($tipoPropiedad[0]['nombre'], $tipoPropiedad[0]["id"]);
         }
-        return $localidad;
+        return $tipoPropiedad;
     }
 
     public function esNuevo()

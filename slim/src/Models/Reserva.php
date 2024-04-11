@@ -19,7 +19,6 @@ class Reserva extends DataBase
         $this->InquilinoID = $data['InquilinoID'];
         $this->fechaInicio = $data['fechaInicio'];
         $this->cantNoches = $data['cantNoches'];
-        //$this->montoTotal = $cantNoches * propiedad.$propiedad id.$precioNoche
-        //accedo al preci x noche de la propiedad (no se bien como hacerlo jijiji)
+        $this->montoTotal = $data['cantNoches'] * $data['precioNoche'];
     }
 }

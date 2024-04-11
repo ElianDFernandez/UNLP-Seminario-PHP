@@ -24,7 +24,7 @@ class DataBase
         return $consultaStm;
     }
 
-    public static function select($where = '') 
+    public static function select($where = '')
     {
         $consulta = "SELECT * FROM `" . static::$tabla . '` ' . $where;
         $consultaStm = self::execute($consulta);
@@ -39,12 +39,12 @@ class DataBase
             $array[] = $r;
         }
         // VER SI ES UN SOLO OBJETO DEVOLVER SOLO ESE
-    
+
         return $array;
     }
 
     public static function save($objeto)
-    {   
+    {
         foreach ($objeto as $key => $value) {
             $nombresAtributos[] = $key;
             $valoresAtributos[] = "'" . $value . "'";
@@ -53,7 +53,7 @@ class DataBase
         self::execute($consulta);
         return $consulta;
     }
-    
+
     public static function find($id)
     {
         $consulta = "SELECT * FROM " . static::$tabla . " WHERE id = $id";
@@ -71,22 +71,24 @@ class DataBase
     public static function update($id, $objeto)
     {
         foreach ($objeto as $key => $value) {
-            $nombresAtributos[] = $key;
-            $valoresAtributos[] = "'" . $value . "'";
+            if ($value != null) {
+                $nombresAtributos[] = $key;
+                $valoresAtributos[] = "'" . $value . "'";
+            }
         }
         $consulta = "UPDATE " . static::$tabla . " SET " . implode(", ", $nombresAtributos) . " = " . implode(", ", $valoresAtributos) . " WHERE " . static::$tabla . ".id = " . $id;
-        var_dump($consulta);
         $consultaStm = self::execute($consulta);
         $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
         return $r;
     }
 
-    public static function delete($id) {
+    public static function delete($id)
+    {
         $consulta = "DELETE FROM " . static::$tabla . " WHERE id = $id";
         $consultaStm = self::execute($consulta);
         if (!$consultaStm) {
             return false;
         };
-            return true;
+        return true;
     }
 }
