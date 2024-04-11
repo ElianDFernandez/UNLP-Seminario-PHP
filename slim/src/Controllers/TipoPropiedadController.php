@@ -57,8 +57,7 @@ class  TipoPropiedadController
             $id = $args['id'];
             $tipoPropDb = TipoPropiedad::find($id);
             if ($tipoPropDb) {
-                $tipoProp = new TipoPropiedad();
-                $tipoProp->fill($data);
+                $tipoProp = new TipoPropiedad($data['nombre']);
                 $tipoProp->update($id, $tipoProp);
                 $data = [
                     'status' => 'Success',

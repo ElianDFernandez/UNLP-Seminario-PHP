@@ -8,7 +8,7 @@ class TipoPropiedad extends DataBase
 {
     static $tabla = "tipo_propiedades";
 
-    protected  $nombre;
+    protected $nombre;
     protected $id;
 
     public function __construct($nombre = null, $id = null)
@@ -16,10 +16,7 @@ class TipoPropiedad extends DataBase
         $this->nombre = $nombre;
         $this->id = $id;
     }
-    public function fill($data)
-    {
-        $this->nombre = $data['nombre'];
-    }
+
     public static function findOrNew($nombre)
     {
         $tipoPropiedad = TipoPropiedad::select('WHERE nombre = "' . $nombre . '"');

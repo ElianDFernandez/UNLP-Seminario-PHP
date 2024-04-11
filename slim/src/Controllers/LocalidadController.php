@@ -57,8 +57,7 @@ class LocalidadController
             $id = $args['id'];
             $LocalidadDb = Localidad::find($id);
             if ($LocalidadDb) {
-                $Localidad = new Localidad();
-                $Localidad->fill($data);
+                $Localidad = new Localidad($data['nombre']);
                 $Localidad->update($id, $Localidad);
                 $data = [
                     'status' => 'Success',

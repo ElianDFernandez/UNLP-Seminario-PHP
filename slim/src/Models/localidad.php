@@ -18,11 +18,6 @@ class Localidad extends DataBase
         $this->nombre = $nombre;
     }
 
-    public function fill($data)
-    {
-        $this->nombre = $data['nombre'];
-    }
-
     public static function findOrNew($name)
     {
         $localidad = Localidad::select('WHERE nombre = "' . $name . '"');
