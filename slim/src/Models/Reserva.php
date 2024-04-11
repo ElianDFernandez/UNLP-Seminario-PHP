@@ -7,11 +7,11 @@ use App\Models\DataBase;
 class Reserva extends DataBase
 {
     static $tabla = "Reserva";
-    public int $propiedadID;
-    public int $inquilinoID;
-    public string $fechaInicio;
-    public int $cantNoches;
-    public int $montoTotal;
+    protected int $propiedadID;
+    protected int $inquilinoID;
+    protected string $fechaInicio;
+    protected int $cantNoches;
+    protected int $montoTotal;
 
     public function getMontoTotal()
     {

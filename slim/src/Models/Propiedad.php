@@ -9,19 +9,19 @@ class Propiedad extends DataBase
 {
     static $tabla = "propiedades";
 
-    public int $localidad_id;
-    public int $cantHabitaciones;
-    public int $cantBanios;
-    public bool $cochera;
+    protected int $localidad_id;
+    protected int $cantHabitaciones;
+    protected int $cantBanios;
+    protected bool $cochera;
 
-    public int $cantHuespedes;
-    public DateTime $fechaInicio;
-    public int $precioPorNoche;
-    public int $cantDias;
-    public bool $disponible;
-    public int $Propiedad_id;
-    public String $imagen;
-    public String $tipoImagen;
+    protected int $cantHuespedes;
+    protected DateTime $fechaInicio;
+    protected int $precioPorNoche;
+    protected int $cantDias;
+    protected bool $disponible;
+    protected int $Propiedad_id;
+    protected String $imagen;
+    protected String $tipoImagen;
 
     public function fill($data)
     {

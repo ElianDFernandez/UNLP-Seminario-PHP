@@ -6,103 +6,47 @@ use App\Models\Inquilino;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
-class InquilinoController
-{
-    public function index(Request $request, Response $response, $args)
-    {
-        $inquilinos = Inquilino::select();
-        $data = [
-            'inquilino' => $inquilinos,
-        ];
-        $response->getBody()->write(json_encode($data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    function listar(Request $request, Response $response, $args)
-    {
-        $id = $args['id'];
-        $inquilino = Inquilino::find($id);
-        $data = [
-            'id' => $id,
-            'inquilino' => $inquilino,
-        ];
-        $response->getBody()->write(json_encode($data));
-
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    function crear(Request $request, Response $response, $args)
-    {
-        $contenido = $request->getBody()->getContents();
-        $data = json_decode($contenido, true);
-        $propiedad = new Propiedad();
-        $propiedad->fill($data);
-        $propiedad->save();
-        $responseData = [
-            'message' => 'La Inquilino ha sido creada exitosamente.'
-        ];
-        $response->getBody()->write(json_encode($data));
-
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-    }
-    public function buscar(Request $request, Response $response, $args)
-    {
-        $id = $args['id'];
-        $inquilino = Inquilino::find($id);
-        if ($inquilino <> null) {
-            $data = [
-                'id' => $id,
-                'inquilino' => $inquilino,
+class InquilinoController{
+    function comprobarCampos ($data){
+        // uso de coleccion
+        $respuesta = [];
+        if (!isset($data['nombre']) || empty($data['nombre'])) {
+            $error[
+                'message' => 'Error. El campo nombre es obligatorio.',
             ];
-        } else {
-            $data = [
-                'code'= '404'
-                'message'= 'Inquilino no encontrado'
-            ]
-        };
-        $response->getBody()->write(json_encode($data));
-
-        return $response;
-    }
-    public function editar(Request $request, Response $response, $args)
-    {
-        $id = $args['id'];
-        $InquilinoDb = Inquilino::find($id);
-        if ($InquilinoDb) {
-            $Inquilino = new Inquilino();
-            $contenido = $request->getBody()->getContents();
-            $data = json_decode($contenido, true);
-            $Inquilino->fill($data);
-            $Inquilino->update($id, $Inquilino);
-            $data = [
-                'status' => 'Success',
-                'code' => 200,
+            $respuesta = $respuesta -> merge ($error);
+        }if (!isset($data['apellido']) || empty($data['apellido'])) {
+            $error = [
+                'message' => 'Error. El campo apellido es obligatorio.',
             ];
-        } else {
-            $data = [
-                'code' => 404,
-                'message' => 'Inquilino no encontrado',
+            $respuesta = $respuesta->merge($error);
+        } if (!isset($data['dni']) || empty($data['dni'])) {
+            $error = [
+                'message' => 'Error. El campo dni es obligatorio.',
             ];
+            $respuesta = $respuesta->merge($error);
+        } if (!isset($data['telefono']) || empty($data['telefono'])) {
+            $error = [
+                'message' => 'Error. El campo telefono es obligatorio.',
+            ];
+            $respuesta = $respuesta->merge($error);
+        } if (!isset($data['email']) || empty($data['email'])) {
+            $error = [
+                'message' => 'Error. El campo email es obligatorio.',
+            ];
+            $respuesta = $respuesta->merge($error);
+        } if (!isset($data['fechaNacimiento']) || empty($data['fechaNacimiento'])) {
+            $error = [
+                'message' => 'Error. El campo fechaNacimiento es obligatorio.',
+            ];
+            $respuesta = $respuesta->merge($error);
         }
-        $response->getBody()->write(json_encode($data));
-
-        return $response;
-    }
-
-    public function eliminar(Request $request, Response $response, $args)
-    {
-        $id = $args['id'];
-        $InquilinoDb = Inquilino::find($id);
-        if ($InquilinoDb) {
-            Inquilino::delete($id);
-            $data = [
-                'status' => 'Success',
-                'code' => 200,
-            ];
+        if (count($respuesta) > 0) {
+            return $respuesta;
+        } else {
+            return false;
         }
-        $response->getBody()->write(json_encode($data));
-
-        return $response;
     }
 }
+
+

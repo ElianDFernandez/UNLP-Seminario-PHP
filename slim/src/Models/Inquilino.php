@@ -7,11 +7,11 @@ use App\Models\DataBase;
 class Inquilino extends DataBase
 {
     static $tabla = "inquilinos";
-    public String $nombre;
-    public String $apellido;
-    public int $dni;
-    public string $email;
-    public bool $activo;
+    protected String $nombre;
+    protected String $apellido;
+    protected int $dni;
+    protected string $email;
+    protected bool $activo;
 
 
     public function fill($data)
