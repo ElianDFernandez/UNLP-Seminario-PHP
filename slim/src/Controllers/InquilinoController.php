@@ -151,10 +151,19 @@ class InquilinoController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $localidad = Inquilino::select();
-        $data = [
-            'Inquilinos' => $localidad,
-        ];
+        $inquilinosDb = Inquilino::select();
+        if ($inquilinosDb === false) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en base de datos',
+            ];
+            $statusCode = 500;
+        } else {
+            $data = [
+                'Inquilinos' => $inquilinosDb,
+            ];
+            $statusCode = 200;
+        }
         $statusCode = 200;
         $response->getBody()->write(json_encode($data));
 

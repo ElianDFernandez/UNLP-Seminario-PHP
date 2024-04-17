@@ -123,11 +123,19 @@ class LocalidadController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $localidad = Localidad::select();
-        $data = [
-            'Localidad' => $localidad,
-        ];
-        $statusCode = 200;
+        $localidadesDb = Localidad::select();
+        if ($localidadesDb === false) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en base de datos',
+            ];
+            $statusCode = 500;
+        } else {
+            $data = [
+                'Inquilinos' => $localidadesDb,
+            ];
+            $statusCode = 200;
+        }
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);

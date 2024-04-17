@@ -124,10 +124,18 @@ class  TipoPropiedadController
     public function listar(Request $request, Response $response, $args)
     {
         $tipoPropDb = TipoPropiedad::select();
-        $data = [
-            'TipoPropiedad' => $tipoPropDb,
-        ];
-        $statusCode = 200;
+        if ($tipoPropDb === false) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en base de datos',
+            ];
+            $statusCode = 500;
+        } else {
+            $data = [
+                'Inquilinos' => $tipoPropDb,
+            ];
+            $statusCode = 200;
+        }
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
