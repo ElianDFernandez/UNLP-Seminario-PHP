@@ -18,13 +18,13 @@ class Localidad extends DataBase
         $this->nombre = $nombre;
     }
 
-    public static function findOrNew($name)
+    public static function findOrNew($data)
     {
-        $localidad = Localidad::select('WHERE nombre = "' . $name . '"');
+        $localidad = Localidad::select('WHERE nombre = "' . $data['nombre'] . '"');
         if (!$localidad) {
-            $localidad = new Localidad($name);
+            $localidad = new Localidad($data['nombre']);
         } else {
-            $localidad = new Localidad($localidad[0]['nombre'], $localidad[0]["id"]);
+            $localidad = new Localidad($localidad['nombre'], $localidad["id"]);
         }
         return $localidad;
     }

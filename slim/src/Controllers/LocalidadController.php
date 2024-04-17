@@ -21,7 +21,7 @@ class LocalidadController
             ];
             $statusCode = 400;
         } else {
-            $localidad = Localidad::findOrNew($data['nombre']);
+            $localidad = Localidad::findOrNew($data);
             if ($localidad->esNuevo()) {
                 if ($localidad->guardar()) {
                     $data = [

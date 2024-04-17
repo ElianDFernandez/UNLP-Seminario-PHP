@@ -17,13 +17,13 @@ class TipoPropiedad extends DataBase
         $this->id = $id;
     }
 
-    public static function findOrNew($nombre)
+    public static function findOrNew($data)
     {
-        $tipoPropiedad = TipoPropiedad::select('WHERE nombre = "' . $nombre . '"');
+        $tipoPropiedad = TipoPropiedad::select('WHERE nombre = "' . $data['nombre'] . '"');
         if (!$tipoPropiedad) {
-            $tipoPropiedad = new TipoPropiedad($nombre);
+            $tipoPropiedad = new TipoPropiedad($data['nombre']);
         } else {
-            $tipoPropiedad = new Tipopropiedad($tipoPropiedad[0]['nombre'], $tipoPropiedad[0]["id"]);
+            $tipoPropiedad = new Tipopropiedad($tipoPropiedad['nombre'], $tipoPropiedad["id"]);
         }
         return $tipoPropiedad;
     }

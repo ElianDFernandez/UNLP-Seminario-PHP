@@ -21,7 +21,7 @@ class  TipoPropiedadController
             ];
             $statusCode = 400;
         } else {
-            $tipoPropiedad = TipoPropiedad::findOrNew($data['nombre']);
+            $tipoPropiedad = TipoPropiedad::findOrNew($data);
             if ($tipoPropiedad->esNuevo()) {
                 if ($tipoPropiedad->guardar()) {
                     $data = [
