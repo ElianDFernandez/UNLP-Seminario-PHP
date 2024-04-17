@@ -58,12 +58,19 @@ class LocalidadController
             $LocalidadDb = Localidad::find($id);
             if ($LocalidadDb) {
                 $Localidad = new Localidad($data['nombre']);
-                $Localidad->update($id, $Localidad);
-                $data = [
-                    'status' => 'Success',
-                    'code' => 200,
-                ];
-                $statusCode = 200;
+                if ($Localidad->update($id, $Localidad)) {
+                    $data = [
+                        'status' => 'Success',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                } else {
+                    $data = [
+                        'status' => 'Error al actualizar en la base de datos',
+                        'code' => 500,
+                    ];
+                    $statusCode = 500;
+                }
             } else {
                 $data = [
                     'code' => 404,

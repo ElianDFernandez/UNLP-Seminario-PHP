@@ -67,21 +67,22 @@ class DataBase
         $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
         return $r;
     }
-
     public static function update($id, $objeto)
     {
-        foreach ($objeto as $key => $value) {
-            $update = '';
-            if ($value != null) {
-                $update .= $key ." = '" . $value . "'," .$update ;
+        try {
+            $updates = [];
+            foreach ($objeto as $key => $value) {
+                if ($value !== null) {
+                    $updates[] = $key . " = '" . $value . "'";
+                }
             }
+            $setClause = implode(', ', $updates);
+            $consulta = "UPDATE " . static::$tabla . " SET " . $setClause . " WHERE " . static::$tabla . ".id = " . $id;
+            self::execute($consulta);
+            return $consulta;
+        } catch (\Throwable $th) {
+            return false;
         }
-        $update = rtrim($update, ', ');
-        $consulta = "UPDATE " . static::$tabla . " SET " . $update . " WHERE " . static::$tabla . ".id = " . $id;
-        var_dump($consulta);
-        $consultaStm = self::execute($consulta);
-        $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
-        return $r;
     }
 
     public static function delete($id)

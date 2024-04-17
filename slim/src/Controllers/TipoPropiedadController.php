@@ -58,12 +58,19 @@ class  TipoPropiedadController
             $tipoPropDb = TipoPropiedad::find($id);
             if ($tipoPropDb) {
                 $tipoProp = new TipoPropiedad($data['nombre']);
-                $tipoProp->update($id, $tipoProp);
-                $data = [
-                    'status' => 'Success',
-                    'code' => 200,
-                ];
-                $statusCode = 200;
+                if ($tipoProp->update($id, $tipoProp)) {
+                    $data = [
+                        'status' => 'Success',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                } else {
+                    $data = [
+                        'code' => 500,
+                        'message' => 'Error al actualizar en la base de datos',
+                    ];
+                    $statusCode = 500;
+                }
             } else {
                 $data = [
                     'code' => 404,

@@ -51,7 +51,7 @@ class InquilinoController
             if ($inquilino->esNuevo()) {
                 if ($inquilino->guardar()) {
                     $data = [
-                        'status' => 'Success. Inquilino creada.',
+                        'status' => 'Success. Inquilino creado.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
@@ -92,12 +92,19 @@ class InquilinoController
             $inquilinoDb = Inquilino::find($id);
             if ($inquilinoDb) {
                 $inquilino = new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], $data['activo']);
-                $inquilino->update($id, $inquilino);
-                $data = [
-                    'status' => 'Success',
-                    'code' => 200,
-                ];
-                $statusCode = 200;
+                if ($inquilino->update($id, $inquilino)) {
+                    $data = [
+                        'status' => 'Success. Inquilino actualizado',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                } else {
+                    $data = [
+                        'status' => 'Error al actualizar en la base de datos',
+                        'code' => 500,
+                    ];
+                    $statusCode = 500;
+                }
             } else {
                 $data = [
                     'code' => 404,
@@ -146,7 +153,7 @@ class InquilinoController
     {
         $localidad = Inquilino::select();
         $data = [
-            'Inquilino' => $localidad,
+            'Inquilinos' => $localidad,
         ];
         $statusCode = 200;
         $response->getBody()->write(json_encode($data));

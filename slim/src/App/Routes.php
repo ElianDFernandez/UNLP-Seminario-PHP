@@ -13,7 +13,7 @@ use App\Models\Localidad;
 use App\Models\TipoPropiedad;
 
 // Inicio APP
-$app->get('/auth', HomeController::class . ':index');
+$app->get('/', HomeController::class . ':index');
 
 /**Endpoints API */
 
