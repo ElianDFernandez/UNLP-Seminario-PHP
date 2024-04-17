@@ -122,14 +122,13 @@ class InquilinoController
         $id = $args['id'];
         $inquilinoDb = Inquilino::find($id);
         if ($inquilinoDb) {
-            try {
-                Inquilino::delete($id);
+            if (Inquilino::delete($id)){
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
                 ];
                 $statusCode = 200;
-            } catch (\Exception $e) {
+            } else {
                 $data = [
                     'status' => 'Error al eliminar en la base de datos',
                     'code' => 500,

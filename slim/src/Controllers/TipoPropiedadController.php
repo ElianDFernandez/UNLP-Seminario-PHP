@@ -95,14 +95,13 @@ class  TipoPropiedadController
         $id = $args['id'];
         $tipoPropDb = TipoPropiedad::find($id);
         if ($tipoPropDb) {
-            try {
-                TipoPropiedad::delete($id);
+            if (TipoPropiedad::delete($id)){
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
                 ];
                 $statusCode = 200;
-            } catch (\Exception $e) {
+            } else {
                 $data = [
                     'status' => 'Error al eliminar en la base de datos',
                     'code' => 500,

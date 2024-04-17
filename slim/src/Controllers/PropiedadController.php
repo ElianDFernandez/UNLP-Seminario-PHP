@@ -153,14 +153,13 @@ class PropiedadController
         $id = $args['id'];
         $propiedadDb = Propiedad::find($id);
         if ($propiedadDb) {
-            try {
-                Propiedad::delete($id);
+            if (Propiedad::delete($id)){
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
                 ];
                 $statusCode = 200;
-            } catch (\Exception $e) {
+            } else {
                 $data = [
                     'status' => 'Error al eliminar en la base de datos',
                     'code' => 500,

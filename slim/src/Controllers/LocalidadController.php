@@ -95,14 +95,13 @@ class LocalidadController
         $id = $args['id'];
         $localidadDB = Localidad::find($id);
         if ($localidadDB) {
-            try {
-                Localidad::delete($id);
+            if (Localidad::delete($id)){
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
                 ];
                 $statusCode = 200;
-            } catch (\Exception $e) {
+            } else {
                 $data = [
                     'status' => 'Error al eliminar en la base de datos',
                     'code' => 500,
