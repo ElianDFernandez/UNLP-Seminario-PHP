@@ -80,7 +80,6 @@ class InquilinoController
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
-        var_dump($comprobacion);
         if ($comprobacion) {
             $data = [
                 'code' => 409,
@@ -167,6 +166,26 @@ class InquilinoController
         $statusCode = 200;
         $response->getBody()->write(json_encode($data));
 
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
+    }
+
+    public function buscar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $inquilinoDb = Inquilino::find($id);
+        if ($inquilinoDb) {
+            $data = [
+                'Inquilino' => $inquilinoDb,
+            ];
+            $statusCode = 200;
+        } else {
+            $data = [
+                'code' => 404,
+                'message' => 'Inquilino no encontrado',
+            ];
+            $statusCode = 404;
+        }
+        $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 }

@@ -35,6 +35,7 @@ $app->post('/propiedades', PropiedadController::class . ':crear');
 $app->put('/propiedades/{id}', PropiedadController::class . ':editar');
 $app->delete('/propiedades/{id}', PropiedadController::class . ':eliminar');
 $app->get('/propiedades', PropiedadController::class . ':listar');
+$app->get('/propiedades/{id}', PropiedadController::class . ':buscar');
 
 //Reserva
 $app->post('/reservas', ReservaController::class . ':crear');
