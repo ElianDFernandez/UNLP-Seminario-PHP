@@ -8,10 +8,10 @@ class TipoPropiedad extends DataBase
 {
     static $tabla = "tipo_propiedades";
 
-    protected $nombre;
-    protected $id;
+    protected ? int $id;
+    protected string $nombre;
 
-    public function __construct($nombre = null, $id = null)
+    public function __construct($nombre, $id = null)
     {
         $this->nombre = $nombre;
         $this->id = $id;

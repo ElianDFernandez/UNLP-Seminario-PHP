@@ -73,10 +73,10 @@ class LocalidadController
             }
         } else {
             $data = [
-                'code' => 404,
-                'message' => 'Localidad no encontrada',
+                'code' => 400,
+                'message' => 'Error. El campo nombre es obligatorio',
             ];
-            $statusCode = 404;
+            $statusCode = 400;
         }
         $response->getBody()->write(json_encode($data));
 

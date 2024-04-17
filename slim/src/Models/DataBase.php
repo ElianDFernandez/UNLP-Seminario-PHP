@@ -71,12 +71,14 @@ class DataBase
     public static function update($id, $objeto)
     {
         foreach ($objeto as $key => $value) {
+            $update = '';
             if ($value != null) {
-                $nombresAtributos[] = $key;
-                $valoresAtributos[] = "'" . $value . "'";
+                $update .= $key ." = '" . $value . "'," .$update ;
             }
         }
-        $consulta = "UPDATE " . static::$tabla . " SET " . implode(", ", $nombresAtributos) . " = " . implode(", ", $valoresAtributos) . " WHERE " . static::$tabla . ".id = " . $id;
+        $update = rtrim($update, ', ');
+        $consulta = "UPDATE " . static::$tabla . " SET " . $update . " WHERE " . static::$tabla . ".id = " . $id;
+        var_dump($consulta);
         $consultaStm = self::execute($consulta);
         $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
         return $r;

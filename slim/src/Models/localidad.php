@@ -8,11 +8,11 @@ class Localidad extends DataBase
 {
     static $tabla = "localidades";
 
-    protected $id;
-    protected  $nombre;
+    protected ? int $id;
+    protected String  $nombre;
 
     //constructor 
-    public function __construct($nombre = null, $id = null)
+    public function __construct($nombre, $id = null)
     {
         $this->id = $id;
         $this->nombre = $nombre;
