@@ -181,7 +181,27 @@ class PropiedadController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $propiedadesDb = Propiedad::select();
+        $contenido = $request->getBody()->getContents();
+        $data = json_decode($contenido, true);
+        $where = '';
+        $filtros = [];
+        if ($data['localidad_id'] !== null) {
+            $filtros[] = 'localidad_id = ' . $data['localidad_id'];
+        }
+        if ($data['disponible'] !== null) {
+            $filtros[] = 'disponible = ' . $data['disponible'];
+        }
+        if ($data['fecha_inicio_disponibilidad'] !== null) {
+            $filtros[] = "fecha_inicio_disponibilidad = '" . $data['fecha_inicio_disponibilidad'] . "'";
+        }
+        if ($data['cantidad_huespedes'] !== null) {
+            $filtros[] = 'cantidad_huespedes = ' . $data['cantidad_huespedes'];
+        }
+        
+        if (!empty($filtros)) {
+            $where = ' WHERE ' . implode(' AND ', $filtros);
+        }
+        $propiedadesDb = Propiedad::select($where);
         if ($propiedadesDb === false) {
             $data = [
                 'code' => 500,
