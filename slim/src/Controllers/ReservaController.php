@@ -11,8 +11,8 @@ class ReservaController
     public function comprobarCampos($data)
     {
         $respuesta = array();
-        if (!isset($data['reservaId']) || empty($data['reservaId'])) {
-            $error = 'Error. El campo Id es obligatorio.';
+        if (!isset($data['propiedadId']) || empty($data['PropiedadId'])) {
+            $error = 'Error. El campo propiedadId es obligatorio.';
             $respuesta[] = $error;
         }
         if (!isset($data['inquilinoId']) || empty($data['inquilinoId'])) {

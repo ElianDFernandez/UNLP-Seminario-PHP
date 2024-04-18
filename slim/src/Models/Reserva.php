@@ -9,6 +9,7 @@ class Reserva extends DataBase
     static $tabla = "Reserva";
 
     protected $id;
+    protected int $propiedadId;
     protected int $reservaId;
     protected int $inquilinoId;
     protected ?string $fechaInicio;
@@ -21,13 +22,14 @@ class Reserva extends DataBase
         $prop = self::select("WHERE id = $id");
         return $prop['precioNoche'] * $this->cantNoches;
     }
-    public function __construct($reservaId, $inquilinoId, $fechaInicio, $cantNoches = null)
+    public function __construct($propiedadId, $inquilinoId, $fechaInicio, $cantNoches, $id = null)
     {
-        $this->reservaId = $reservaId;
+        $this->propiedadId = $propiedadId;
         $this->inquilinoId = $inquilinoId;
         $this->fechaInicio = $fechaInicio;
         $this->cantNoches = $cantNoches;
-        $this->montoTotal = self::getMontoTotal();   //asi esta bien?//
+        $this->montoTotal = self::getMontoTotal();
+        $this->id = $id;
     }
 
     public static function findOrNew($data)
