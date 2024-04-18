@@ -52,7 +52,7 @@ class ReservaController
             return false;
         } else {
             $propiedad = Propiedad::estaDisponible($data['propiedad_id'], $data['fecha_desde'], $data['cantidad_noches']);
-            if ($propiedad) {
+            if ($propiedad && Inquilino::find($data['inquilino_id'])['activo'] == 1) {
                 return Reserva::estaDisponible($data['fecha_desde'], $data['cantidad_noches'], $data['propiedad_id']);
             } else {
                 return false;
@@ -71,7 +71,7 @@ class ReservaController
                 'message' => $comprobacion,
             ];
             $statusCode = 400;
-        } else {
+        } elseif (strtotime($data['fecha_desde']) < strtotime(date('Y-m-d'))) {
             $reserva = self::reservaValida($data);
             if ($reserva) {
                 $res = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
@@ -95,6 +95,12 @@ class ReservaController
                 ];
                 $statusCode = 409;
             }
+        } else {
+            $data = [
+                'status' => 'Error. no se puede editar una reserva que ya comenzo.',
+                'code' => 400,
+            ];
+            $statusCode = 400;
         }
         $response->getBody()->write(json_encode($data));
 
