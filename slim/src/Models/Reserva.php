@@ -9,26 +9,25 @@ class Reserva extends DataBase
     static $tabla = "Reserva";
 
     protected $id;
-    protected int $propiedadId;
-    protected int $reservaId;
-    protected int $inquilinoId;
-    protected ?string $fechaInicio;
-    protected ?int $cantNoches;
-    protected ?int $montoTotal;
+    protected int $propiedad_id;
+    protected int $inquilino_id;
+    protected ?string $fecha_desde;
+    protected ?int $cantidad_noches;
+    protected ?int $monto_total;
 
     public function getMontoTotal()
     {
-        $id = $this->reservaId;
-        $prop = self::select("WHERE id = $id");
-        return $prop['precioNoche'] * $this->cantNoches;
+        $id = $this->propiedad_id;
+        $prop = Propiedad::select("WHERE id = $id");
+        return $prop['precioNoche'] * $this->cantidad_noches;
     }
-    public function __construct($propiedadId, $inquilinoId, $fechaInicio, $cantNoches, $id = null)
+    public function __construct($propiedad_id, $inquilino_id, $fecha_desde, $cantidad_noches, $id = null)
     {
-        $this->propiedadId = $propiedadId;
-        $this->inquilinoId = $inquilinoId;
-        $this->fechaInicio = $fechaInicio;
-        $this->cantNoches = $cantNoches;
-        $this->montoTotal = self::getMontoTotal();
+        $this->propiedad_id = $propiedad_id;
+        $this->inquilino_id = $inquilino_id;
+        $this->fecha_desde = $fecha_desde;
+        $this->cantidad_noches = $cantidad_noches;
+        $this->monto_total = self::getMontoTotal();
         $this->id = $id;
     }
 
@@ -36,9 +35,9 @@ class Reserva extends DataBase
     {
         $reserva = Reserva::select("WHERE reservaId = '" . $data['reservaId']);
         if (!$reserva) {
-            $reserva = new Reserva($data['inquilinoId'], $data['fechaInicio'], $data['cantNoches'], $data['montoTotal']);
+            $reserva = new Reserva($data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches'], $data['monto_total']);
         } else {
-            $reserva = new Reserva($reserva['inquilinoId'], $reserva['fechaInicio'], $reserva['cantNoches'], $reserva['montoTotal']);
+            $reserva = new Reserva($reserva['inquilino_id'], $reserva['fecha_desde'], $reserva['cantidad_noches'], $reserva['monto_total']);
         }
         return $reserva;
     }
@@ -56,16 +55,16 @@ class Reserva extends DataBase
         return $this->save($this);
     }
 
-    public static function estaDisponible($fechaInicio, $cantNoches, $propiedadId)
+    public static function estaDisponible($fecha_desde, $cantidad_noches, $propiedad_id)
     {
-        $reservas = Reserva::select("WHERE propiedadId = " . $propiedadId);
+        $reservas = Reserva::select("WHERE propiedad_id = " . $propiedad_id);
         foreach ($reservas as $reserva) {
-            $fechaFin = date('Y-m-d', strtotime($fechaInicio . ' + ' . $cantNoches . ' days'));
-            $fechaFinReserva = date('Y-m-d', strtotime($reserva['fechaInicio'] . ' + ' . $reserva['cantNoches'] . ' days'));
-            if ($fechaInicio >= $reserva['fechaInicio'] && $fechaInicio <= $fechaFinReserva) {
+            $fechaFin = date('Y-m-d', strtotime($fecha_desde . ' + ' . $cantidad_noches . ' days'));
+            $fechaFinReserva = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
+            if ($fecha_desde >= $reserva['fecha_desde'] && $fecha_desde <= $fechaFinReserva) {
                 return false;
             }
-            if ($fechaFin >= $reserva['fechaInicio'] && $fechaFin <= $fechaFinReserva) {
+            if ($fechaFin >= $reserva['fecha_desde'] && $fechaFin <= $fechaFinReserva) {
                 return false;
             }
         }
