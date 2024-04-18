@@ -6,20 +6,20 @@ use App\Models\DataBase;
 
 class Reserva extends DataBase
 {
-    static $tabla = "Reserva";
+    static $tabla = "reservas";
 
     protected $id;
     protected int $propiedad_id;
     protected int $inquilino_id;
     protected ?string $fecha_desde;
     protected ?int $cantidad_noches;
-    protected ?int $monto_total;
+    protected ?int $valor_total;
 
     public function getMontoTotal()
     {
         $id = $this->propiedad_id;
         $prop = Propiedad::select("WHERE id = $id");
-        return $prop['precioNoche'] * $this->cantidad_noches;
+        return $prop['valor_noche'] * $this->cantidad_noches;
     }
     public function __construct($propiedad_id, $inquilino_id, $fecha_desde, $cantidad_noches, $id = null)
     {
@@ -27,7 +27,7 @@ class Reserva extends DataBase
         $this->inquilino_id = $inquilino_id;
         $this->fecha_desde = $fecha_desde;
         $this->cantidad_noches = $cantidad_noches;
-        $this->monto_total = self::getMontoTotal();
+        $this->valor_total = self::getMontoTotal();
         $this->id = $id;
     }
 
@@ -55,16 +55,17 @@ class Reserva extends DataBase
         return $this->save($this);
     }
 
-    public static function estaDisponible($fecha_desde, $cantidad_noches, $propiedad_id)
+    public static function estaDisponible($fecheInicioReservaNueva, $cantidadNoches, $propiedadId)
     {
-        $reservas = Reserva::select("WHERE propiedad_id = " . $propiedad_id);
+        $reservas = Reserva::select("WHERE propiedad_id = " . $propiedadId);
         foreach ($reservas as $reserva) {
-            $fechaFin = date('Y-m-d', strtotime($fecha_desde . ' + ' . $cantidad_noches . ' days'));
-            $fechaFinReserva = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
-            if ($fecha_desde >= $reserva['fecha_desde'] && $fecha_desde <= $fechaFinReserva) {
+            $fechaFinReservaNueva = date('Y-m-d', strtotime($fecheInicioReservaNueva . ' + ' . $cantidadNoches . ' days'));
+            $fechaFinReservaDb = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
+            $fecheInicioReservaDb = $reserva['fecha_desde'];
+            if ($fecheInicioReservaNueva >= $fecheInicioReservaDb && $fecheInicioReservaNueva <= $fechaFinReservaDb) {
                 return false;
             }
-            if ($fechaFin >= $reserva['fecha_desde'] && $fechaFin <= $fechaFinReserva) {
+            if ($fechaFinReservaNueva >= $fecheInicioReservaDb && $fechaFinReservaNueva <= $fechaFinReservaDb) {
                 return false;
             }
         }

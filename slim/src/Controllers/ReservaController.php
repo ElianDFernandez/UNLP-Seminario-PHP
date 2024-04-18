@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Reserva;
 use App\Models\Propiedad;
-use app\Models\Inquilino;
+use App\Models\Inquilino;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -13,12 +13,12 @@ class ReservaController
     public function comprobarCampos($data)
     {
         $respuesta = array();
-        if (!isset($data['propiedad_id']) || empty($data['Propiedad_id'])) {
+        if (!isset($data['propiedad_id']) || empty($data['propiedad_id'])) {
             $respuesta[] = $error = 'Error. El campo propiedad es obligatorio.';
         } else {
             $propiedad_id = Propiedad::find($data['propiedad_id']);
-            if ($propiedad_id == null) {
-                $error = 'Error. la propiedad no existe.';
+            if ($propiedad_id == null || $propiedad_id['disponible'] == 0) {
+                $error = 'Error. la propiedad no existe o no disponible.';
                 $respuesta[] = $error;
             }
         }
@@ -26,8 +26,8 @@ class ReservaController
             $respuesta[] = $error = 'Error. El campo inquilino es obligatorio.';
         } else {
             $inquilino = Inquilino::find($data['inquilino_id']);
-            if ($inquilino == null) {
-                $error = 'Error. el inquilino no existe.';
+            if ($inquilino == null || $inquilino['activo'] == 0) {
+                $error = 'Error. el inquilino no existe o esta inactivo.';
                 $respuesta[] = $error;
             }
         }
@@ -48,11 +48,12 @@ class ReservaController
     public function reservaValida($data)
     {
         $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "'");
-        if ($reserva) {
+        if ($reserva === false || $reserva !== null) {
             return false;
-        } else {
+        } 
+        else {
             $propiedad = Propiedad::estaDisponible($data['propiedad_id'], $data['fecha_desde'], $data['cantidad_noches']);
-            if ($propiedad && Inquilino::find($data['inquilino_id'])['activo'] == 1) {
+            if ($propiedad) {
                 return Reserva::estaDisponible($data['fecha_desde'], $data['cantidad_noches'], $data['propiedad_id']);
             } else {
                 return false;
@@ -71,7 +72,7 @@ class ReservaController
                 'message' => $comprobacion,
             ];
             $statusCode = 400;
-        } elseif (strtotime($data['fecha_desde']) < strtotime(date('Y-m-d'))) {
+        } else {
             $reserva = self::reservaValida($data);
             if ($reserva) {
                 $res = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
@@ -91,21 +92,16 @@ class ReservaController
             } else {
                 $data = [
                     'status' => 'Error. ya hay una reserva para esta fecha.',
-                    'code' => 409,
+                    'code' => 400,
                 ];
-                $statusCode = 409;
+                $statusCode = 400;
             }
-        } else {
-            $data = [
-                'status' => 'Error. no se puede editar una reserva que ya comenzo.',
-                'code' => 400,
-            ];
-            $statusCode = 400;
-        }
+        } 
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+    
     public function editar(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
@@ -155,6 +151,7 @@ class ReservaController
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+    
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
@@ -187,27 +184,7 @@ class ReservaController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $contenido = $request->getBody()->getContents();
-        $data = json_decode($contenido, true);
-        $where = '';
-        $filtros = [];
-        if ($data['propiedad_id'] !== null) {
-            $filtros[] = 'propiedad_id = ' . $data['propiedad_id'];
-        }
-        if ($data['inquilino_id'] !== null) {
-            $filtros[] = 'inquilino_id = ' . $data['inquilino_id'];
-        }
-        if ($data['fecha_desde'] !== null) {
-            $filtros[] = "fecha_desde = '" . $data['fecha_desde'] . "'";
-        }
-        if ($data['cantidad_noches'] !== null) {
-            $filtros[] = 'cantidad_noches = ' . $data['cantidad_noches'];
-        }
-
-        if (!empty($filtros)) {
-            $where = ' WHERE ' . implode(' AND ', $filtros);
-        }
-        $reservasDB = Reserva::select($where);
+        $reservasDB = Reserva::select();
         if ($reservasDB === false) {
             $data = [
                 'code' => 500,

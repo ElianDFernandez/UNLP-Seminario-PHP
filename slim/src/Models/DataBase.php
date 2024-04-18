@@ -30,11 +30,14 @@ class DataBase
     {
         try {
             $consulta = "SELECT * FROM `" . static::$tabla . '` ' . $where;
-            $consultaStm = self::execute($consulta);
-            if ($consultaStm->rowCount() == 0) {
+            $resultado = self::execute($consulta);
+            if ($resultado == false) {
+                return false;
+            }
+            if ($resultado->rowCount() == 0) {
                 return null;
             }
-            $result = $consultaStm->fetchAll(PDO::FETCH_ASSOC);
+            $result = $resultado->fetchAll(PDO::FETCH_ASSOC);
             if (count($result) === 1) {
                 return $result[0];
             }
@@ -53,8 +56,8 @@ class DataBase
                 $valoresAtributos[] = "'" . $value . "'";
             }
             $consulta = "INSERT INTO " . static::$tabla . " (" . implode(", ", $nombresAtributos) . ") VALUES (" . implode(", ", $valoresAtributos) . ")";
-            self::execute($consulta);
-            return $consulta;
+            $resultado = self::execute($consulta);
+            return $resultado;
         } catch (\Throwable $th) {
             Helper::logError($th);
             return false;
@@ -65,14 +68,14 @@ class DataBase
     {
         try {
             $consulta = "SELECT * FROM " . static::$tabla . " WHERE id = $id";
-            $consultaStm = self::execute($consulta);
-            if (!$consultaStm) {
+            $resultado = self::execute($consulta);
+            if ($resultado == false) {
                 return false;
             }
-            if ($consultaStm->rowCount() == 0) {
+            if ($resultado->rowCount() == 0) {
                 return null;
             }
-            $r = $consultaStm->fetch(PDO::FETCH_ASSOC);
+            $r = $resultado->fetch(PDO::FETCH_ASSOC);
             return $r;
         } catch (\Throwable $th) {
             Helper::logError($th);
@@ -89,9 +92,11 @@ class DataBase
                 }
             }
             $setClause = implode(', ', $updates);
-            $consulta = "UPDATE " . static::$tabla . " SET " . $setClause . " WHERE " . static::$tabla . ".id = " . $id;
-            self::execute($consulta);
-            return $consulta;
+            $resultado = "UPDATE " . static::$tabla . " SET " . $setClause . " WHERE " . static::$tabla . ".id = " . $id;
+            if ($resultado == false) {
+                return false;
+            }
+            return $resultado;
         } catch (\Throwable $th) {
             Helper::logError($th);
             return false;
@@ -102,8 +107,8 @@ class DataBase
     {
         try {
             $consulta = "DELETE FROM " . static::$tabla . " WHERE id = $id";
-            $consultaStm = self::execute($consulta);
-            if (!$consultaStm) {
+            $resultado = self::execute($consulta);
+            if ($resultado == false) {
                 return false;
             };
             return true;
