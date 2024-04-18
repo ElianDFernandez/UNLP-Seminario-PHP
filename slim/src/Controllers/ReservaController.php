@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Reserva;
 use App\Models\Propiedad;
 use App\Models\Inquilino;
+use DateTime;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -45,16 +46,35 @@ class ReservaController
             return false;
         }
     }
-    public function reservaValida($data)
-    {
+    public function reservaValida($data, $reservaId = null)
+    {   
+        // Caso en el que la reserva ya exista misma propiedad misma fecha de inicio
         $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "'");
         if ($reserva === false || $reserva !== null) {
             return false;
         } 
         else {
+            // Caso en el que la reserva no exista. Se comprueba que la propiedad este disponible para las fechas requeridas.
             $propiedad = Propiedad::estaDisponible($data['propiedad_id'], $data['fecha_desde'], $data['cantidad_noches']);
             if ($propiedad) {
-                return Reserva::estaDisponible($data['fecha_desde'], $data['cantidad_noches'], $data['propiedad_id']);
+                // Se verifica si la reserva no se superpone con otra reserva.
+                return Reserva::estaDisponible($data['fecha_desde'], $data['cantidad_noches'], $data['propiedad_id'], $reservaId);
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function edicionReservaValida($data)
+    {
+        $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "' AND id <> '" . $data['id'] . "'");
+        if ($reserva === false || $reserva !== null) {
+            return false;
+        }
+        else {
+            $propiedad = Propiedad::estaDisponible($data['propiedad_id'], $data['fecha_desde'], $data['cantidad_noches']);
+            if ($propiedad) {
+                return Reserva::estaDisponible($data['fecha_desde'], $data['cantidad_noches'], $data['propiedad_id'], $data['id']);
             } else {
                 return false;
             }
@@ -116,9 +136,9 @@ class ReservaController
         } else {
             $id = $args['id'];
             $reservaDb = Reserva::find($id);
-            if ($reservaDb) {
-                if (self::reservaValida($data)) {
-                    $reserva = new Propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'], $data['cantidad_banios'], $data['cochera'], $data['cantidad_huespedes'], $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'], $data['tipo_imagen']);
+            if ($reservaDb && $reservaDb['fecha_desde'] < Date('Y-m-d')) {
+                if (self::reservaValida($data, $args['id'])) {
+                    $reserva = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
                     if ($reserva->update($id, $reserva)) {
                         $data = [
                             'status' => 'Success',
@@ -134,7 +154,7 @@ class ReservaController
                     }
                 } else {
                     $data = [
-                        'status' => 'Error. ya hay una reserva para esta fecha.',
+                        'status' => 'Error. Ya hay una reserva para esta fecha.',
                         'code' => 409,
                     ];
                     $statusCode = 409;
@@ -142,7 +162,7 @@ class ReservaController
             } else {
                 $data = [
                     'code' => 404,
-                    'message' => 'Propiedad no encontrada',
+                    'message' => 'Reserva no encontrada o completada',
                 ];
                 $statusCode = 404;
             }

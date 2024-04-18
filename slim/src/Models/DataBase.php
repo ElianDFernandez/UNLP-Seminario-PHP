@@ -92,7 +92,8 @@ class DataBase
                 }
             }
             $setClause = implode(', ', $updates);
-            $resultado = "UPDATE " . static::$tabla . " SET " . $setClause . " WHERE " . static::$tabla . ".id = " . $id;
+            $consulta = "UPDATE " . static::$tabla . " SET " . $setClause . " WHERE " . static::$tabla . ".id = " . $id;
+            $resultado = self::execute($consulta);
             if ($resultado == false) {
                 return false;
             }

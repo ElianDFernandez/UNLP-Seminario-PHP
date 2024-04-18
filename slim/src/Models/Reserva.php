@@ -55,9 +55,13 @@ class Reserva extends DataBase
         return $this->save($this);
     }
 
-    public static function estaDisponible($fecheInicioReservaNueva, $cantidadNoches, $propiedadId)
+    public static function estaDisponible($fecheInicioReservaNueva, $cantidadNoches, $propiedadId, $reservaId = null)
     {
-        $reservas = Reserva::select("WHERE propiedad_id = " . $propiedadId);
+        if ($reservaId == null) {
+            $reservas = Reserva::select("WHERE propiedad_id = " . $propiedadId . "");
+        } else {
+            $reservas = Reserva::select("WHERE propiedad_id = " . $propiedadId . " AND id <> '" . $reservaId . "'");
+        }
         foreach ($reservas as $reserva) {
             $fechaFinReservaNueva = date('Y-m-d', strtotime($fecheInicioReservaNueva . ' + ' . $cantidadNoches . ' days'));
             $fechaFinReservaDb = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
