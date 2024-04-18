@@ -14,7 +14,7 @@ class ReservaController
     {
         $respuesta = array();
         if (!isset($data['propiedad_id']) || empty($data['Propiedad_id'])) {
-            $error = 'Error. El campo propiedad es obligatorio.';
+            $respuesta[] = $error = 'Error. El campo propiedad es obligatorio.';
         } else {
             $propiedad_id = Propiedad::find($data['propiedad_id']);
             if ($propiedad_id == null) {
@@ -23,7 +23,7 @@ class ReservaController
             }
         }
         if (!isset($data['inquilino_id']) || empty($data['inquilino_id'])) {
-            $error = 'Error. El campo inquilino es obligatorio.';
+            $respuesta[] = $error = 'Error. El campo inquilino es obligatorio.';
         } else {
             $inquilino = Inquilino::find($data['inquilino_id']);
             if ($inquilino == null) {
