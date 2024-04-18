@@ -149,4 +149,74 @@ class ReservaController
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+    public function eliminar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        $reservaDb = Reserva::find($id);
+        if ($reservaDb) {
+            if (Reserva::delete($id)) {
+                $data = [
+                    'status' => 'Success',
+                    'code' => 200,
+                ];
+                $statusCode = 200;
+            } else {
+                $data = [
+                    'status' => 'Error al eliminar en la base de datos',
+                    'code' => 500,
+                ];
+                $statusCode = 500;
+            }
+        } else {
+            $data = [
+                'code' => 404,
+                'message' => 'Reserva no encontrada',
+            ];
+            $statusCode = 404;
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
+    }
+
+    public function listar(Request $request, Response $response, $args)
+    {
+        $contenido = $request->getBody()->getContents();
+        $data = json_decode($contenido, true);
+        $where = '';
+        $filtros = [];
+        if ($data['propiedad_id'] !== null) {
+            $filtros[] = 'propiedad_id = ' . $data['propiedad_id'];
+        }
+        if ($data['inquilino_id'] !== null) {
+            $filtros[] = 'inquilino_id = ' . $data['inquilino_id'];
+        }
+        if ($data['fecha_desde'] !== null) {
+            $filtros[] = "fecha_desde = '" . $data['fecha_desde'] . "'";
+        }
+        if ($data['cantidad_noches'] !== null) {
+            $filtros[] = 'cantidad_noches = ' . $data['cantidad_noches'];
+        }
+
+        if (!empty($filtros)) {
+            $where = ' WHERE ' . implode(' AND ', $filtros);
+        }
+        $reservasDB = Reserva::select($where);
+        if ($reservasDB === false) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en base de datos',
+            ];
+            $statusCode = 500;
+        } else {
+            $data = [
+                'reservas' => $reservasDB,
+            ];
+            $statusCode = 200;
+        }
+        $statusCode = 200;
+        $response->getBody()->write(json_encode($data));
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
+    }
 }
