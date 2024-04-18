@@ -100,4 +100,53 @@ class ReservaController
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+    public function editar(Request $request, Response $response, $args)
+    {
+        $contenido = $request->getBody()->getContents();
+        $data = json_decode($contenido, true);
+        $comprobacion = self::comprobarCampos($data);
+        if ($comprobacion) {
+            $data = [
+                'code' => 409,
+                'message' => $comprobacion,
+            ];
+            $statusCode = 409;
+        } else {
+            $id = $args['id'];
+            $reservaDb = Reserva::find($id);
+            if ($reservaDb) {
+                if (self::reservaValida($data)) {
+                    $reserva = new Propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'], $data['cantidad_banios'], $data['cochera'], $data['cantidad_huespedes'], $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'], $data['tipo_imagen']);
+                    if ($reserva->update($id, $reserva)) {
+                        $data = [
+                            'status' => 'Success',
+                            'code' => 200,
+                        ];
+                        $statusCode = 200;
+                    } else {
+                        $data = [
+                            'status' => 'Error al actualizar en la base de datos',
+                            'code' => 500,
+                        ];
+                        $statusCode = 500;
+                    }
+                } else {
+                    $data = [
+                        'status' => 'Error. ya hay una reserva para esta fecha.',
+                        'code' => 409,
+                    ];
+                    $statusCode = 409;
+                }
+            } else {
+                $data = [
+                    'code' => 404,
+                    'message' => 'Propiedad no encontrada',
+                ];
+                $statusCode = 404;
+            }
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
+    }
 }
