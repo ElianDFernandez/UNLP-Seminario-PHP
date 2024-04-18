@@ -20,8 +20,8 @@ class ReservaController
             if ($reserva == null) {
                 $error = 'Error. el inquilino no existe.';
                 $respuesta[] = $error;
-        }
-        if (isset($data['fechaInicio']) && !empty($data['fechaInicio'])) {
+            }
+            if (isset($data['fechaInicio']) && !empty($data['fechaInicio'])) {
                 $error = 'Error. el campo frvhaInicio es obligatorio.';
                 $respuesta[] = $error;
             }
@@ -30,10 +30,11 @@ class ReservaController
             $error = 'Error. El campo cantidad de noches es obligatorio.';
             $respuesta[] = $error;
         }
-    }
+
         if (count($respuesta) > 0) {
             return $respuesta;
         } else {
             return false;
         }
+    }
 }

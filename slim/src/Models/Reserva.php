@@ -11,9 +11,9 @@ class Reserva extends DataBase
     protected $id;
     protected int $reservaId;
     protected int $inquilinoId;
-    protected ? string $fechaInicio;
-    protected ? int $cantNoches;
-    protected ? int $montoTotal;
+    protected ?string $fechaInicio;
+    protected ?int $cantNoches;
+    protected ?int $montoTotal;
 
     public function getMontoTotal()
     {
@@ -21,12 +21,13 @@ class Reserva extends DataBase
         $prop = self::select("WHERE id = $id");
         return $prop['precioNoche'] * $this->cantNoches;
     }
-    public function __construct($reservaId, $inquilinoId,$fechaInicio,$cantNoches = null) {
+    public function __construct($reservaId, $inquilinoId, $fechaInicio, $cantNoches = null)
+    {
         $this->reservaId = $reservaId;
-        $this->inquilinoId = $inquilinoId;      
-        $this->fechaInicio = $fechaInicio;  
+        $this->inquilinoId = $inquilinoId;
+        $this->fechaInicio = $fechaInicio;
         $this->cantNoches = $cantNoches;
-        $this->montoTotal = self::getMontoTotal()   //asi esta bien?//
+        $this->montoTotal = self::getMontoTotal();   //asi esta bien?//
     }
 
     public static function findOrNew($data)
