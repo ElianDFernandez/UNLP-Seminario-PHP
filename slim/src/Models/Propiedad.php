@@ -65,4 +65,19 @@ class propiedad extends DataBase
         }
         return $this->save($this);
     }
+
+    public static function estaDisponible($id, $fechaInicio, $cantNoches)
+    {
+        $propiedad = Propiedad::find($id);
+        $fechaInicio = strtotime($fechaInicio);
+        $fechaFin = strtotime('+' . $cantNoches . ' days', $fechaInicio);
+        $fechaInicioDisponibilidad = strtotime($propiedad['fecha_inicio_disponibilidad']);
+        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fechaInicioDisponibilidad);
+        if ($fechaInicio >= $fechaInicioDisponibilidad && $fechaFin <= $fechaFinDisponibilidad) {
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

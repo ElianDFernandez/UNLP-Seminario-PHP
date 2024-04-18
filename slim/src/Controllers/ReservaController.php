@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Reserva;
-use App\Models\propiedad;
+use App\Models\Propiedad;
 use app\Models\Inquilino;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -31,7 +31,7 @@ class ReservaController
                 $respuesta[] = $error;
             }
         }
-        if (isset($data['fechaInicio']) && !empty($data['fechaInicio'])) {
+        if (!isset($data['fechaInicio']) || empty($data['fechaInicio'])) {
             $error = 'Error. el campo fechaInicio es obligatorio.';
             $respuesta[] = $error;
         }
@@ -43,6 +43,20 @@ class ReservaController
             return $respuesta;
         } else {
             return false;
+        }
+    }
+    public function reservaValida($data)
+    {
+        $reserva = Reserva::select("WHERE propiedadId = '" . $data['propiedadId'] . "' AND fechaInicio = '" . $data['fechaInicio'] . "'");
+        if ($reserva) {
+            return false;
+        } else {
+            $propiedad = Propiedad::estaDisponible($data['propiedadId'], $data['fechaInicio'], $data['cantNoches']);
+            if ($propiedad) {
+                return Reserva::estaDisponible($data['fechaInicio'], $data['cantNoches'], $data['propiedadId']);
+            } else {
+                return false;
+            }
         }
     }
 }
