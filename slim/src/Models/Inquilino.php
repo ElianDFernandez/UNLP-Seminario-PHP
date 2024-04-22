@@ -31,7 +31,7 @@ class Inquilino extends DataBase
         if (!$inquilino) {
             return new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], null);
         } else {
-            return new Inquilino($inquilino[0]['nombre'], $inquilino[0]['apellido'], $inquilino[0]['documento'], $inquilino[0]['email'], $inquilino[0]['activo'], $inquilino[0]['id']);
+            return new Inquilino($inquilino['nombre'], $inquilino['apellido'], $inquilino['documento'], $inquilino['email'], $inquilino['activo'], $inquilino['id']);
         }
     }
 

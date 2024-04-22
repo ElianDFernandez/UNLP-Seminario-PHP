@@ -65,22 +65,6 @@ class ReservaController
         }
     }
 
-    public function edicionReservaValida($data)
-    {
-        $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "' AND id <> '" . $data['id'] . "'");
-        if ($reserva === false || $reserva !== null) {
-            return false;
-        }
-        else {
-            $propiedad = Propiedad::estaDisponible($data['propiedad_id'], $data['fecha_desde'], $data['cantidad_noches']);
-            if ($propiedad) {
-                return Reserva::estaDisponible($data['fecha_desde'], $data['cantidad_noches'], $data['propiedad_id'], $data['id']);
-            } else {
-                return false;
-            }
-        }
-    }
-
     public function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
@@ -111,7 +95,7 @@ class ReservaController
                 }
             } else {
                 $data = [
-                    'status' => 'Error. ya hay una reserva para esta fecha.',
+                    'status' => 'Error. Ya hay una reserva para esta fecha o fecha no disponile para la propiedad.',
                     'code' => 400,
                 ];
                 $statusCode = 400;
@@ -136,7 +120,7 @@ class ReservaController
         } else {
             $id = $args['id'];
             $reservaDb = Reserva::find($id);
-            if ($reservaDb && $reservaDb['fecha_desde'] < Date('Y-m-d')) {
+            if ($reservaDb && $reservaDb['fecha_desde'] > Date('Y-m-d')) {
                 if (self::reservaValida($data, $args['id'])) {
                     $reserva = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
                     if ($reserva->update($id, $reserva)) {
@@ -154,7 +138,7 @@ class ReservaController
                     }
                 } else {
                     $data = [
-                        'status' => 'Error. Ya hay una reserva para esta fecha.',
+                        'status' => 'Error. Ya hay una reserva para esta fecha o fecha no disponile para la propiedad.',
                         'code' => 409,
                     ];
                     $statusCode = 409;

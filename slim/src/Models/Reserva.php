@@ -18,7 +18,7 @@ class Reserva extends DataBase
     public function getMontoTotal()
     {
         $id = $this->propiedad_id;
-        $prop = Propiedad::select("WHERE id = $id");
+        $prop = Propiedad::find($id);
         return $prop['valor_noche'] * $this->cantidad_noches;
     }
     public function __construct($propiedad_id, $inquilino_id, $fecha_desde, $cantidad_noches, $id = null)
@@ -62,17 +62,22 @@ class Reserva extends DataBase
         } else {
             $reservas = Reserva::select("WHERE propiedad_id = " . $propiedadId . " AND id <> '" . $reservaId . "'");
         }
-        foreach ($reservas as $reserva) {
-            $fechaFinReservaNueva = date('Y-m-d', strtotime($fecheInicioReservaNueva . ' + ' . $cantidadNoches . ' days'));
-            $fechaFinReservaDb = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
-            $fecheInicioReservaDb = $reserva['fecha_desde'];
-            if ($fecheInicioReservaNueva >= $fecheInicioReservaDb && $fecheInicioReservaNueva <= $fechaFinReservaDb) {
-                return false;
+        if ($reservas != null) {
+            if (!is_array(reset($reservas))) {
+                $reservas = [$reservas];
             }
-            if ($fechaFinReservaNueva >= $fecheInicioReservaDb && $fechaFinReservaNueva <= $fechaFinReservaDb) {
-                return false;
+            foreach ($reservas as $reserva) {
+                $fechaFinReservaNueva = date('Y-m-d', strtotime($fecheInicioReservaNueva . ' + ' . $cantidadNoches . ' days'));
+                $fechaFinReservaDb = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
+                $fecheInicioReservaDb = $reserva['fecha_desde'];
+                if ($fecheInicioReservaNueva >= $fecheInicioReservaDb && $fecheInicioReservaNueva <= $fechaFinReservaDb) {
+                    return false;
+                }
+                if ($fechaFinReservaNueva >= $fecheInicioReservaDb && $fechaFinReservaNueva <= $fechaFinReservaDb) {
+                    return false;
+                }
             }
-        }
+        } 
         return true;
     }
 }
