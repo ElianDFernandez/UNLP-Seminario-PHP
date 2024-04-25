@@ -131,7 +131,7 @@ class  TipoPropiedadController
             $statusCode = 500;
         } else {
             $data = [
-                'Inquilinos' => $tipoPropDb,
+                'Tipo de propiedades' => $tipoPropDb,
             ];
             $statusCode = 200;
         }

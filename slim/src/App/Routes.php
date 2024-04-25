@@ -6,11 +6,6 @@ use App\Controllers\InquilinoController;
 use App\Controllers\LocalidadController;
 use App\Controllers\ReservaController;
 use App\Controllers\TipoPropiedadController;
-use App\Models\Reserva;
-use App\Models\Propiedad;
-use App\Models\Inquilino;
-use App\Models\Localidad;
-use App\Models\TipoPropiedad;
 
 // Inicio APP
 $app->get('/', HomeController::class . ':index');
@@ -44,10 +39,10 @@ $app->delete('/reservas/{id}', ReservaController::class . ':eliminar');
 $app->get('/reservas', ReservaController::class . ':listar');
 
 //TipoPropiedad
-$app->post('/tiposPropiedades', TipoPropiedadController::class . ':crear');
-$app->put('/tiposPropiedades/{id}', TipoPropiedadController::class . ':editar');
-$app->delete('/tiposPropiedades/{id}', TipoPropiedadController::class . ':eliminar');
-$app->get('/tiposPropiedades', TipoPropiedadController::class . ':listar');
+$app->post('/tipos_propiedad', TipoPropiedadController::class . ':crear');
+$app->put('/tipos_propiedad/{id}', TipoPropiedadController::class . ':editar');
+$app->delete('/tipos_propiedad/{id}', TipoPropiedadController::class . ':eliminar');
+$app->get('/tipos_propiedad', TipoPropiedadController::class . ':listar');
 
 //test
 
