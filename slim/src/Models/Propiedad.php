@@ -71,10 +71,9 @@ class propiedad extends DataBase
         $propiedad = Propiedad::find($id);
         $fecha_desde = strtotime($fecha_desde);
         $fechaFin = strtotime('+' . $cantidad_noches . ' days', $fecha_desde);
-        $fecha_desdeDisponibilidad = strtotime($propiedad['fecha_inicio_disponibilidad']);
-        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fecha_desdeDisponibilidad);
-        if ($fecha_desde >= $fecha_desdeDisponibilidad && $fechaFin <= $fechaFinDisponibilidad) {
-
+        $fechaDesdeDisponibilidad = strtotime($propiedad['fecha_inicio_disponibilidad']);
+        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fechaDesdeDisponibilidad)-1;
+        if ($fecha_desde >= $fechaDesdeDisponibilidad && $fechaFin <= $fechaFinDisponibilidad) {
             return true;
         } else {
             return false;

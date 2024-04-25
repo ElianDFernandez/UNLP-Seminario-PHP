@@ -70,10 +70,10 @@ class Reserva extends DataBase
                 $fechaFinReservaNueva = date('Y-m-d', strtotime($fecheInicioReservaNueva . ' + ' . $cantidadNoches . ' days'));
                 $fechaFinReservaDb = date('Y-m-d', strtotime($reserva['fecha_desde'] . ' + ' . $reserva['cantidad_noches'] . ' days'));
                 $fecheInicioReservaDb = $reserva['fecha_desde'];
-                if ($fecheInicioReservaNueva >= $fecheInicioReservaDb && $fecheInicioReservaNueva <= $fechaFinReservaDb) {
+                if ($fecheInicioReservaNueva > $fecheInicioReservaDb && $fecheInicioReservaNueva < $fechaFinReservaDb) {
                     return false;
                 }
-                if ($fechaFinReservaNueva >= $fecheInicioReservaDb && $fechaFinReservaNueva <= $fechaFinReservaDb) {
+                if ($fechaFinReservaNueva > $fecheInicioReservaDb && $fechaFinReservaNueva < $fechaFinReservaDb) {
                     return false;
                 }
             }
