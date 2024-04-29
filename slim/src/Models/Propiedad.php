@@ -21,8 +21,8 @@ class propiedad extends DataBase
     protected int $valor_noche;
     protected int $moneda_id;
     protected int $tipo_propiedad_id;
-    protected ?string $imagen;
-    protected ?string $tipo_imagen;
+    protected string $imagen;
+    protected string $tipo_imagen;
 
     public function __construct($domicilio, $localidad_id, $cantidad_habitaciones, $cantidad_banios, $cochera, $cantidad_huespedes, $fecha_inicio_disponibilidad, $cantidad_dias, $disponible, $valor_noche, $tipo_propiedad_id, $imagen, $tipo_imagen, $id = null)
     {

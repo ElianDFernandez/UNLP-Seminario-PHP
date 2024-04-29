@@ -10,15 +10,35 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class  TipoPropiedadController
 {
+    public function comprobarCampos($data)
+    {
+        $respuesta = null;
+        if (!isset($data['nombre']) || empty($data['nombre'])) {
+            return [
+                $respuesta = [
+                    'code' => 400,
+                    'message' => 'Error. El campo nombre es obligatorio.',
+                ]
+            ];
+        } else {
+            if (strlen($data['nombre']) > 50) {
+                return [
+                    $respuesta = [
+                        'code' => 400,
+                        'message' => 'Error. El campo nombre no puede tener más de 50 caracteres.',
+                    ]
+                ];
+            }
+        }
+        return $respuesta;
+    }
     public function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
-        if (!isset($data['nombre']) || empty($data['nombre'])) {
-            $data = [
-                'code' => 400,
-                'message' => 'Error. El campo nombre es obligatorio.',
-            ];
+        $comprobacion = self::comprobarCampos($data);
+        if ($comprobacion) {
+            $data = [$comprobacion];
             $statusCode = 400;
         } else {
             $tipoPropiedad = TipoPropiedad::findOrNew($data);
@@ -53,7 +73,8 @@ class  TipoPropiedadController
     {
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
-        if (isset($data['nombre']) && !empty($data['nombre'])) {
+        $comprobacion = self::comprobarCampos($data);
+        if (!$comprobacion) {
             $id = $args['id'];
             $tipoPropDb = TipoPropiedad::find($id);
             if ($tipoPropDb) {
@@ -95,7 +116,7 @@ class  TipoPropiedadController
         $id = $args['id'];
         $tipoPropDb = TipoPropiedad::find($id);
         if ($tipoPropDb) {
-            if (TipoPropiedad::delete($id)){
+            if (TipoPropiedad::delete($id)) {
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
