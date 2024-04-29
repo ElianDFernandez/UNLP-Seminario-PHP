@@ -38,7 +38,7 @@ class LocalidadController
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
         if ($comprobacion) {
-            $data = [$comprobacion];
+            $data = $comprobacion;
             $statusCode = 400;
         } else {
             $localidad = Localidad::findOrNew($data);
@@ -100,10 +100,7 @@ class LocalidadController
                 $statusCode = 404;
             }
         } else {
-            $data = [
-                'code' => 400,
-                'message' => 'Error. El campo nombre es obligatorio',
-            ];
+            $data = $comprobacion;
             $statusCode = 400;
         }
         $response->getBody()->write(json_encode($data));
