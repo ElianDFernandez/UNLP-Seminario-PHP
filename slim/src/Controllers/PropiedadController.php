@@ -19,7 +19,7 @@ class PropiedadController
             $respuesta[] = $error;
         }
         if (!isset($data['localidad_id']) || empty($data['localidad_id'])) {
-            $error ='Error. El campo localidad es obligatorio.';
+            $error = 'Error. El campo localidad es obligatorio.';
             $respuesta[] = $error;
         }
         if (isset($data['localidad_id']) && !empty($data['localidad_id'])) {
@@ -95,7 +95,7 @@ class PropiedadController
                     ];
                     $statusCode = 409;
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $data = [
                     'code' => 500,
                     'message' => 'Error en la base de datos: ' . $e->getMessage(),
@@ -212,7 +212,7 @@ class PropiedadController
         if ($data['cantidad_huespedes'] !== null) {
             $filtros[] = 'cantidad_huespedes = ' . $data['cantidad_huespedes'];
         }
-        
+
         if (!empty($filtros)) {
             $where = ' WHERE ' . implode(' AND ', $filtros);
         }
