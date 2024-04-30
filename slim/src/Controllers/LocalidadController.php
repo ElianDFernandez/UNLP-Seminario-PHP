@@ -4,6 +4,7 @@
 
 namespace App\Controllers;
 
+use Exception;
 use App\Models\Localidad;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -32,6 +33,7 @@ class LocalidadController
         }
         return $respuesta;
     }
+    
     public function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
@@ -41,9 +43,10 @@ class LocalidadController
             $data = $comprobacion;
             $statusCode = 400;
         } else {
-            $localidad = Localidad::findOrNew($data);
-            if ($localidad->esNuevo()) {
-                if ($localidad->guardar()) {
+            try {
+                $localidad = Localidad::findOrNew($data);
+                if ($localidad->esNuevo()) {
+                    $localidad->guardar();
                     $data = [
                         'status' => 'Success. Localidad creada.',
                         'code' => 200,
@@ -51,21 +54,21 @@ class LocalidadController
                     $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error. Fallo al guardar.',
-                        'code' => 500,
+                        'status' => 'Error. Localidad existente.',
+                        'code' => 409,
                     ];
-                    $statusCode = 500;
+                    $statusCode = 409;
                 }
-            } else {
+            }
+            catch (Exception $e) {
                 $data = [
-                    'status' => 'Error. Localidad existente.',
-                    'code' => 409,
+                    'code' => 500,
+                    'message' => 'Error en la base de datos. ' . $e->getMessage(),
                 ];
-                $statusCode = 409;
+                $statusCode = 500;
             }
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
@@ -74,65 +77,82 @@ class LocalidadController
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
-        if (!$comprobacion) {
-            $id = $args['id'];
-            $LocalidadDb = Localidad::find($id);
-            if ($LocalidadDb) {
-                $Localidad = new Localidad($data['nombre']);
-                if ($Localidad->update($id, $Localidad)) {
-                    $data = [
-                        'status' => 'Success',
-                        'code' => 200,
-                    ];
-                    $statusCode = 200;
-                } else {
-                    $data = [
-                        'status' => 'Error al actualizar en la base de datos',
-                        'code' => 500,
-                    ];
-                    $statusCode = 500;
-                }
-            } else {
-                $data = [
-                    'code' => 404,
-                    'message' => 'Localidad no encontrada',
-                ];
-                $statusCode = 404;
-            }
-        } else {
+        if ($comprobacion) {
             $data = $comprobacion;
             $statusCode = 400;
+        } else {
+            try {
+                $id = $args['id'];
+                if (Localidad::find($id)) { // Buscar por id para asegurar que existe, y verificar que no tenga mismos datos que otra localidad con findornew
+                    $localidadDb = Localidad::findOrNew($data); // Si encontro una en DB vuelve con id, si no vuelve con id null, es decir es nuevo
+                    if (!$localidadDb->esNuevo()) {
+                        $data = [
+                            'code' => 409,
+                            'message' => 'Error. Localidad existente.',
+                        ];
+                        $statusCode = 409;
+                    } else {
+                        $localidadDb->update($id, $data);
+                        $data = [
+                            'status' => 'Success. Localidad Actualizada.',
+                            'code' => 200,
+                        ];
+                        $statusCode = 200;
+                    }
+                } else {
+                    $data = [
+                        'code' => 404,
+                        'message' => 'Error. Localidad no encontrada.',
+                    ];
+                    $statusCode = 404;
+                }
+            } catch (Exception $e) {
+                $data = [
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
+                ];
+                $statusCode = 500;
+            }
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $localidadDB = Localidad::find($id);
-        if ($localidadDB) {
-            if (Localidad::delete($id)) {
+        try {
+            $localidadDB = Localidad::find($id);
+            if ($localidadDB) {
+                $propiedades = Localidad::propiedades($id); // Antes de eliminar una localidad debo asegurarme que no esta vincula con ninguna propiedad
+                if (count($propiedades) > 0) {
+                    $data = [
+                        'code' => 409,
+                        'message' => 'Error. Localidad en uso.',
+                    ];
+                    $statusCode = 409;
+                }   
+                Localidad::delete($id);
                 $data = [
-                    'status' => 'Success',
+                    'status' => 'Success. Localidad eliminada.',
                     'code' => 200,
                 ];
                 $statusCode = 200;
             } else {
                 $data = [
-                    'status' => 'Error al eliminar en la base de datos',
-                    'code' => 500,
+                    'code' => 404,
+                    'message' => 'Error. Localidad no encontrada.',
                 ];
-                $statusCode = 500;
+                $statusCode = 404;
             }
-        } else {
+        } catch (Exception $e) {
             $data = [
-                'code' => 404,
-                'message' => 'Localidad no encontrado',
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
             ];
-            $statusCode = 404;
+            $statusCode = 500;
         }
+        
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
@@ -140,18 +160,18 @@ class LocalidadController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $localidadesDb = Localidad::select();
-        if ($localidadesDb === false) {
-            $data = [
-                'code' => 500,
-                'message' => 'Error en base de datos',
-            ];
-            $statusCode = 500;
-        } else {
+        try {
+            $localidadesDb = Localidad::select();
             $data = [
                 'Inquilinos' => $localidadesDb,
             ];
             $statusCode = 200;
+        }   catch (Exception $e) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en base de datos: ' . $e->getMessage(),
+            ];
+            $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
 

@@ -45,7 +45,7 @@ class  TipoPropiedadController
             if ($tipoPropiedad->esNuevo()) {
                 if ($tipoPropiedad->guardar()) {
                     $data = [
-                        'status' => 'Success. Localidad creada.',
+                        'status' => 'Success. Tipo propiedad creada.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
@@ -58,7 +58,7 @@ class  TipoPropiedadController
                 }
             } else {
                 $data = [
-                    'status' => 'Error. Localidad existente.',
+                    'status' => 'Error. Tipo propiedad existente.',
                     'code' => 409,
                 ];
                 $statusCode = 409;

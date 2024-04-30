@@ -27,7 +27,7 @@ class Inquilino extends DataBase
 
     public static function findOrnew($data)
     {
-        $inquilino = Inquilino::select('WHERE nombre = "' . $data['documento'] . '"');
+        $inquilino = Inquilino::select('WHERE documento = "' . $data['documento'] . '"');
         if (!$inquilino) {
             return new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], null);
         } else {
