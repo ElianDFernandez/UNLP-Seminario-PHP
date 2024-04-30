@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Exception;
 use App\Models\Inquilino;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -61,27 +62,29 @@ class InquilinoController
             ];
             $statusCode = 400;
         } else {
-            $inquilino = Inquilino::findOrNew($data);
-            if ($inquilino->esNuevo()) {
-                if ($inquilino->guardar()) {
+            try{
+                $inquilino = Inquilino::findOrNew($data);
+                if ($inquilino->esNuevo()) {
+                    $inquilino->guardar();
                     $data = [
                         'status' => 'Success. Inquilino creado.',
                         'code' => 200,
-                    ];
+                        ];
                     $statusCode = 200;
                 } else {
-                    $data = [
-                        'status' => 'Error. Fallo al guardar.',
-                        'code' => 500,
-                    ];
-                    $statusCode = 500;
-                }
-            } else {
                 $data = [
                     'status' => 'Error. Inquilino existente.',
                     'code' => 409,
                 ];
                 $statusCode = 409;
+                }
+            }
+          catch (Exception $e) {
+                $data = [
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
+                ];
+                $statusCode = 500;
             }
         }
         $response->getBody()->write(json_encode($data));
@@ -101,60 +104,61 @@ class InquilinoController
             ];
             $statusCode = 409;
         } else {
-            $id = $args['id'];
-            $inquilinoDb = Inquilino::find($id);
-            if ($inquilinoDb) {
-                $inquilino = new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], $data['activo']);
-                if ($inquilino->update($id, $inquilino)) {
+            try {
+                $id = $args['id'];
+                $inquilinoDb = Inquilino::find($id);
+                if ($inquilinoDb) {
+                    $inquilino = new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], $data['activo']);
+                    $inquilino->update($id, $inquilino);
                     $data = [
                         'status' => 'Success. Inquilino actualizado',
                         'code' => 200,
-                    ];
-                    $statusCode = 200;
+                        ];
+                        $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error al actualizar en la base de datos',
-                        'code' => 500,
+                        'code' => 404,
+                        'message' => 'Iniquilino no encontrado',
                     ];
-                    $statusCode = 500;
+                    $statusCode = 404;
                 }
-            } else {
+            } catch (Exception $e) {
                 $data = [
-                    'code' => 404,
-                    'message' => 'Iniquilino no encontrado',
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
                 ];
-                $statusCode = 404;
+                $statusCode = 500;
             }
-        }
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
     public function eliminar(Request $request, Response $response, $args)
-    {
+    {   
         $id = $args['id'];
         $inquilinoDb = Inquilino::find($id);
-        if ($inquilinoDb) {
-            if (Inquilino::delete($id)) {
+        try {
+            if ($inquilinoDb) {
+                Inquilino::delete($id);
                 $data = [
                     'status' => 'Success',
-                    'code' => 200,
+                     'code' => 200,
                 ];
                 $statusCode = 200;
             } else {
-                $data = [
-                    'status' => 'Error al eliminar en la base de datos',
-                    'code' => 500,
-                ];
-                $statusCode = 500;
-            }
-        } else {
-            $data = [
-                'code' => 404,
-                'message' => 'Inquilino no encontrado',
-            ];
+             $data = [
+                 'code' => 404,
+                 'message' => 'Inquilino no encontrado',
+                 ];
             $statusCode = 404;
+        }
+        }catch (Exception $e) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            ];
+            $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
 
@@ -163,20 +167,19 @@ class InquilinoController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $inquilinosDb = Inquilino::select();
-        if ($inquilinosDb === false) {
+        try{
+            $inquilinosDb = Inquilino::select();
+                $data = [
+                    'Inquilinos' => $inquilinosDb,
+                ];
+                $statusCode = 200;
+            } catch (Exception $e) {
             $data = [
                 'code' => 500,
-                'message' => 'Error en base de datos',
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
             ];
             $statusCode = 500;
-        } else {
-            $data = [
-                'Inquilinos' => $inquilinosDb,
-            ];
-            $statusCode = 200;
         }
-        $statusCode = 200;
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
