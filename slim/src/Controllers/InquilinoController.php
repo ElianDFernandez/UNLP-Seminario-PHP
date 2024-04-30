@@ -10,15 +10,24 @@ class InquilinoController
 {
     public static function comprobarCampos($data)
     {
-        // uso de coleccion
         $respuesta = array();
         if (!isset($data['nombre']) || empty($data['nombre'])) {
             $error = 'Error. El campo nombre es obligatorio.';
             $respuesta[] = $error;
+        } else {
+            if (strlen($data['nombre']) > 25) {
+                $error = 'Error. El campo nombre no puede tener más de 25 caracteres.';
+                $respuesta[] = $error;
+            }
         }
         if (!isset($data['apellido']) || empty($data['apellido'])) {
-            $error ='Error. El campo apellido es obligatorio.';
+            $error = 'Error. El campo apellido es obligatorio.';
             $respuesta[] = $error;;
+        } else {
+            if (strlen($data['apellido']) > 15) {
+                $error = 'Error. El campo apellido no puede tener más de 15 caracteres.';
+                $respuesta[] = $error;
+            }
         }
         if (!isset($data['documento']) || empty($data['documento'])) {
             $error = 'Error. El campo documento es obligatorio.';
@@ -27,6 +36,11 @@ class InquilinoController
         if (!isset($data['email']) || empty($data['email'])) {
             $error = 'Error. El campo email es obligatorio.';
             $respuesta[] = $error;
+        } else {
+            if (strlen($data['email']) > 20) {
+                $error = 'Error. El campo email no puede tener más de 20 caracteres.';
+                $respuesta[] = $error;
+            }
         }
         if (count($respuesta) > 0) {
             return $respuesta;
@@ -122,7 +136,7 @@ class InquilinoController
         $id = $args['id'];
         $inquilinoDb = Inquilino::find($id);
         if ($inquilinoDb) {
-            if (Inquilino::delete($id)){
+            if (Inquilino::delete($id)) {
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
