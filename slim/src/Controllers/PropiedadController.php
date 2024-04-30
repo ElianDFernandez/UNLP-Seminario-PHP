@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\Localidad;
 use App\Models\TipoPropiedad;
 use App\Models\Propiedad;
+use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -78,27 +79,28 @@ class PropiedadController
             ];
             $statusCode = 400;
         } else {
-            $propiedad = Propiedad::findOrNew($data);
-            if ($propiedad->esNuevo()) {
-                if ($propiedad->guardar()) {
+            try {
+                $propiedad = Propiedad::findOrNew($data);
+                if ($propiedad->esNuevo()) {
+                    $propiedad->guardar();
                     $data = [
-                        'status' => 'Success. Propiedad creada.',
+                        'message' => 'Success. Propiedad creada.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error. Fallo al guardar.',
-                        'code' => 500,
+                        'message' => 'Error. Propiedad ya existente. Misma localidad y domicilio.',
+                        'code' => 409,
                     ];
-                    $statusCode = 500;
+                    $statusCode = 409;
                 }
-            } else {
+            } catch (\Exception $e) {
                 $data = [
-                    'status' => 'Error. Propiedad existente.',
-                    'code' => 409,
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
                 ];
-                $statusCode = 409;
+                $statusCode = 500;
             }
         }
         $response->getBody()->write(json_encode($data));
@@ -112,69 +114,83 @@ class PropiedadController
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
         if ($comprobacion) {
-            $data = [
-                'code' => 409,
-                'message' => $comprobacion,
-            ];
-            $statusCode = 409;
+            $data = $comprobacion;
+            $statusCode = 400;
         } else {
-            $id = $args['id'];
-            $propiedadDb = Propiedad::find($id);
-            if ($propiedadDb) {
-                $propiedad = new Propiedad($data['domicilio'], $data['localidad_id'],$data['cantidad_habitaciones'],$data['cantidad_banios'],$data['cochera'],$data['cantidad_huespedes'],$data['fecha_inicio_disponibilidad'],$data['cantidad_dias'],$data['disponible'],$data['valor_noche'],$data['tipo_propiedad_id'],$data['imagen'],$data['tipo_imagen']);
-                if ($propiedad->update($id, $propiedad)) {
-                    $data = [
-                        'status' => 'Success',
-                        'code' => 200,
-                    ];
-                    $statusCode = 200;
+            try {
+                $id = $args['id'];
+                if (Propiedad::find($id)) { // Buscar por id para asegurar que existe, y verificar que no tenga mismos datos que otra localidad con findornew
+                    $propiedadDb = Propiedad::findOrNew($data); // Si encontro una en DB vuelve con id, si no vuelve con id null, es decir es nuevo
+                    if (!$propiedadDb->esNuevo()) {
+                        $data = [
+                            'code' => 409,
+                            'message' => 'Error. Propiedad ya existente. Misma localidad y domicilio.',
+                        ];
+                        $statusCode = 409;
+                    } else {
+                        $propiedadDb->update($id, $data);
+                        $data = [
+                            'message' => 'Success. Localidad Actualizada.',
+                            'code' => 200,
+                        ];
+                        $statusCode = 200;
+                    }
                 } else {
                     $data = [
-                        'status' => 'Error al actualizar en la base de datos',
-                        'code' => 500,
+                        'code' => 404,
+                        'message' => 'Error. Localidad no encontrada.',
                     ];
-                    $statusCode = 500;
+                    $statusCode = 404;
                 }
-            } else {
+            } catch (Exception $e) {
                 $data = [
-                    'code' => 404,
-                    'message' => 'Propiedad no encontrada',
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
                 ];
-                $statusCode = 404;
-            } 
+                $statusCode = 500;
+            }
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $propiedadDb = Propiedad::find($id);
-        if ($propiedadDb) {
-            if (Propiedad::delete($id)){
-                $data = [
-                    'status' => 'Success',
-                    'code' => 200,
-                ];
-                $statusCode = 200;
+        try {
+            $propiedadDb = Propiedad::find($id);
+            if ($propiedadDb) {
+                $propiedades = Propiedad::reservas($id); // Antes de eliminar una localidad debo asegurarme que no esta vincula con ninguna propiedad
+                if ($propiedades === null) {
+                    Propiedad::delete($id);
+                    $data = [
+                        'status' => 'Success. Propiedad eliminada.',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                } else {
+                    $data = [
+                        'code' => 409,
+                        'message' => 'Error. Propiedad con reservas.',
+                    ];
+                    $statusCode = 409;
+                }
             } else {
                 $data = [
-                    'status' => 'Error al eliminar en la base de datos',
-                    'code' => 500,
+                    'code' => 404,
+                    'message' => 'Error. Propiedad no encontrada.',
                 ];
-                $statusCode = 500;
+                $statusCode = 404;
             }
-        } else {
+        } catch (Exception $e) {
             $data = [
-                'code' => 404,
-                'message' => 'Propiedad no encontrada',
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
             ];
-            $statusCode = 404;
+            $statusCode = 500;
         }
-        $response->getBody()->write(json_encode($data));
 
+        $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
@@ -200,40 +216,45 @@ class PropiedadController
         if (!empty($filtros)) {
             $where = ' WHERE ' . implode(' AND ', $filtros);
         }
-        $propiedadesDb = Propiedad::select($where);
-        if ($propiedadesDb === false) {
-            $data = [
-                'code' => 500,
-                'message' => 'Error en base de datos',
-            ];
-            $statusCode = 500;
-        } else {
+        try {
+            $propiedadesDb = Propiedad::select($where);
             $data = [
                 'Propiedades' => $propiedadesDb,
             ];
             $statusCode = 200;
+        } catch (Exception $e) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            ];
         }
-        $statusCode = 200;
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
     public function buscar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $propiedadDb = Propiedad::find($id);
-        if ($propiedadDb) {
+        try {
+            $propiedadDb = Propiedad::find($id);
+            if ($propiedadDb) {
+                $data = [
+                    'Propiedad' => $propiedadDb,
+                ];
+                $statusCode = 200;
+            } else {
+                $data = [
+                    'code' => 404,
+                    'message' => 'Propiedad no encontrada',
+                ];
+                $statusCode = 404;
+            }
+        } catch (Exception $e) {
             $data = [
-                'Propiedad' => $propiedadDb,
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
             ];
-            $statusCode = 200;
-        } else {
-            $data = [
-                'code' => 404,
-                'message' => 'Propiedad no encontrado',
-            ];
-            $statusCode = 404;
+            $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);

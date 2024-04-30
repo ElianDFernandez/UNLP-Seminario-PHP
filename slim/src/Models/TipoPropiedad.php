@@ -42,6 +42,6 @@ class TipoPropiedad extends DataBase
     }
     public static function propiedades($id)
     {
-        return propiedad::find('WHERE tipoPropiedad = ' . $id);
+        return propiedad::select('WHERE tipo_propiedad_id = ' . $id);
     }
 }

@@ -13,22 +13,14 @@ class LocalidadController
 {
     public function comprobarCampos($data)
     {
-        $respuesta = null;
+        $respuesta = array();
         if (!isset($data['nombre']) || empty($data['nombre'])) {
-            return [
-                $respuesta = [
-                    'code' => 400,
-                    'message' => 'Error. El campo nombre es obligatorio.',
-                ]
-            ];
+            $error = 'Error. El campo nombre es obligatorio.';
+            $respuesta[] = $error;
         } else {
             if (strlen($data['nombre']) > 50) {
-                return [
-                    $respuesta = [
-                        'code' => 400,
-                        'message' => 'Error. El campo nombre no puede tener más de 50 caracteres.',
-                    ]
-                ];
+                $error = 'Error. El campo nombre no puede tener más de 50 caracteres.';
+                $respuesta[] = $error;
             }
         }
         return $respuesta;
@@ -40,7 +32,10 @@ class LocalidadController
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
         if ($comprobacion) {
-            $data = $comprobacion;
+            $data = [
+                'code' => 400,
+                'message' => $comprobacion,
+            ];
             $statusCode = 400;
         } else {
             try {
@@ -48,13 +43,13 @@ class LocalidadController
                 if ($localidad->esNuevo()) {
                     $localidad->guardar();
                     $data = [
-                        'status' => 'Success. Localidad creada.',
+                        'message' => 'Success. Localidad creada.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error. Localidad existente.',
+                        'message' => 'Error. Localidad existente.',
                         'code' => 409,
                     ];
                     $statusCode = 409;
@@ -87,13 +82,13 @@ class LocalidadController
                     if (!$localidadDb->esNuevo()) {
                         $data = [
                             'code' => 409,
-                            'message' => 'Error. Localidad existente.',
+                            'message' => 'Error. Nombre de la Localidad existente.',
                         ];
                         $statusCode = 409;
                     } else {
                         $localidadDb->update($id, $data);
                         $data = [
-                            'status' => 'Success. Localidad Actualizada.',
+                            'message' => 'Success. Localidad Actualizada.',
                             'code' => 200,
                         ];
                         $statusCode = 200;
@@ -124,19 +119,19 @@ class LocalidadController
             $localidadDB = Localidad::find($id);
             if ($localidadDB) {
                 $propiedades = Localidad::propiedades($id); // Antes de eliminar una localidad debo asegurarme que no esta vincula con ninguna propiedad
-                if (count($propiedades) > 0) {
-                    $data = [
-                        'code' => 409,
-                        'message' => 'Error. Localidad en uso.',
-                    ];
-                    $statusCode = 409;
-                } else {
+                if ($propiedades === null) {
                     Localidad::delete($id);
                     $data = [
                         'status' => 'Success. Localidad eliminada.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
+                } else {
+                    $data = [
+                        'code' => 409,
+                        'message' => 'Error. Localidad en uso.',
+                    ];
+                    $statusCode = 409;
                 }
             } else {
                 $data = [
@@ -154,7 +149,6 @@ class LocalidadController
         }
 
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
@@ -163,7 +157,7 @@ class LocalidadController
         try {
             $localidadesDb = Localidad::select();
             $data = [
-                'Inquilinos' => $localidadesDb,
+                'Localidades' => $localidadesDb,
             ];
             $statusCode = 200;
         } catch (Exception $e) {
@@ -174,7 +168,6 @@ class LocalidadController
             $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 }

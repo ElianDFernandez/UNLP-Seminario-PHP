@@ -76,6 +76,9 @@ class Reserva extends DataBase
                 if ($fechaFinReservaNueva > $fecheInicioReservaDb && $fechaFinReservaNueva < $fechaFinReservaDb) {
                     return false;
                 }
+                if ($fecheInicioReservaNueva < $fecheInicioReservaDb && $fechaFinReservaNueva > $fechaFinReservaDb) {
+                    return false;
+                }
             }
         } 
         return true;

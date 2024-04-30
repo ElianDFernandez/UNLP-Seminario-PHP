@@ -66,6 +66,10 @@ class propiedad extends DataBase
         return $this->save($this);
     }
 
+    public static function reservas($id) {
+        return Reserva::select("WHERE propiedad_id = " . $id);
+    }
+
     public static function estaDisponible($id, $fecha_desde, $cantidad_noches)
     {
         $propiedad = Propiedad::find($id);

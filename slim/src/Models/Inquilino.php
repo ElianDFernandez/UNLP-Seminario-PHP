@@ -49,6 +49,6 @@ class Inquilino extends DataBase
     }
     public static function reservas($id)
     {
-        return Reserva::find('WHERE inqulino = ' . $id);
+        return Reserva::select('WHERE inquilino_id = ' . $id);
     }
 }

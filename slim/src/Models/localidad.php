@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Exception;
 use App\Models\DataBase;
-use App\Models\propiedad;
+
 
 class Localidad extends DataBase
 {
@@ -33,7 +33,7 @@ class Localidad extends DataBase
 
     public static function propiedades($id)
     {
-        return Propiedad::find('WHERE localidad = ' . $id);
+        return Propiedad::select('WHERE localidad_id = ' . $id);
     }
 
     public function esNuevo()

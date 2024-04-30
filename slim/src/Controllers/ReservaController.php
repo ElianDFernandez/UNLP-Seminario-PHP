@@ -6,6 +6,7 @@ use App\Models\Reserva;
 use App\Models\Propiedad;
 use App\Models\Inquilino;
 use DateTime;
+use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -49,8 +50,12 @@ class ReservaController
     public function reservaValida($data, $reservaId = null)
     {   
         // Caso en el que la reserva ya exista misma propiedad misma fecha de inicio
-        $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "'");
-        if ($reserva === false || $reserva !== null) {
+        if ($reservaId === null) {
+            $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "'");
+        } else {
+            $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "' AND id <> '" . $reservaId . "'");
+        }
+        if ($reserva !== null) {
             return false;
         } 
         else {
@@ -71,16 +76,14 @@ class ReservaController
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
         if ($comprobacion) {
-            $data = [
-                'code' => 400,
-                'message' => $comprobacion,
-            ];
+            $data = $comprobacion;
             $statusCode = 400;
         } else {
-            $reserva = self::reservaValida($data);
-            if ($reserva) {
-                $res = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
-                if ($res->guardar()) {
+            try {
+                $reserva = self::reservaValida($data);
+                if ($reserva) {
+                    $res = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
+                    $res->guardar();
                     $data = [
                         'status' => 'Success. reserva creada.',
                         'code' => 200,
@@ -88,21 +91,20 @@ class ReservaController
                     $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error. Fallo al guardar.',
-                        'code' => 500,
+                        'status' => 'Error. Ya hay una reserva para esta fecha o fecha no disponile para la propiedad.',
+                        'code' => 400,
                     ];
-                    $statusCode = 500;
+                    $statusCode = 400;
                 }
-            } else {
+            } catch (Exception $e) {
                 $data = [
-                    'status' => 'Error. Ya hay una reserva para esta fecha o fecha no disponile para la propiedad.',
-                    'code' => 400,
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
                 ];
-                $statusCode = 400;
+                $statusCode = 500;
             }
-        } 
+        }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
     
@@ -112,18 +114,16 @@ class ReservaController
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
         if ($comprobacion) {
-            $data = [
-                'code' => 409,
-                'message' => $comprobacion,
-            ];
-            $statusCode = 409;
+            $data = $comprobacion;
+            $statusCode = 400;
         } else {
             $id = $args['id'];
-            $reservaDb = Reserva::find($id);
-            if ($reservaDb && $reservaDb['fecha_desde'] > Date('Y-m-d')) {
-                if (self::reservaValida($data, $args['id'])) {
-                    $reserva = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
-                    if ($reserva->update($id, $reserva)) {
+            try {
+                $reservaDb = Reserva::find($id);
+                if ($reservaDb && $reservaDb['fecha_desde'] > Date('Y-m-d')) {
+                    if (self::reservaValida($data, $args['id'])) {
+                        $reserva = new Reserva($data['propiedad_id'], $data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches']);
+                        $reserva->update($id, $reserva);
                         $data = [
                             'status' => 'Success',
                             'code' => 200,
@@ -131,55 +131,55 @@ class ReservaController
                         $statusCode = 200;
                     } else {
                         $data = [
-                            'status' => 'Error al actualizar en la base de datos',
-                            'code' => 500,
+                            'status' => 'Error. Ya hay una reserva para esta fecha o fecha no disponile para la propiedad.',
+                            'code' => 409,
                         ];
-                        $statusCode = 500;
+                        $statusCode = 409;
                     }
                 } else {
                     $data = [
-                        'status' => 'Error. Ya hay una reserva para esta fecha o fecha no disponile para la propiedad.',
-                        'code' => 409,
+                        'code' => 404,
+                        'message' => 'Reserva no encontrada o completada',
                     ];
-                    $statusCode = 409;
+                    $statusCode = 404;
                 }
-            } else {
+            } catch (Exception $e) {
                 $data = [
-                    'code' => 404,
-                    'message' => 'Reserva no encontrada o completada',
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
                 ];
-                $statusCode = 404;
+                $statusCode = 500;
             }
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
     
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $reservaDb = Reserva::find($id);
-        if ($reservaDb) {
-            if (Reserva::delete($id)) {
+        try {
+            $reservaDb = Reserva::find($id);
+            if ($reservaDb) {
+                Reserva::delete($id);
                 $data = [
-                    'status' => 'Success',
+                    'status' => 'Success. Reserva eliminada',
                     'code' => 200,
                 ];
                 $statusCode = 200;
             } else {
                 $data = [
-                    'status' => 'Error al eliminar en la base de datos',
-                    'code' => 500,
+                    'code' => 404,
+                    'message' => 'Error. Reserva no encontrada',
                 ];
-                $statusCode = 500;
+                $statusCode = 404;
             }
-        } else {
+        } catch (Exception $e) {
             $data = [
-                'code' => 404,
-                'message' => 'Reserva no encontrada',
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
             ];
-            $statusCode = 404;
+            $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
 
@@ -188,22 +188,20 @@ class ReservaController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $reservasDB = Reserva::select();
-        if ($reservasDB === false) {
+        try {
+            $reservasDb = Reserva::select();
             $data = [
-                'code' => 500,
-                'message' => 'Error en base de datos',
-            ];
-            $statusCode = 500;
-        } else {
-            $data = [
-                'reservas' => $reservasDB,
+                'reservas' => $reservasDb,
             ];
             $statusCode = 200;
+        } catch (Exception $e) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            ];
+            $statusCode = 500;
         }
-        $statusCode = 200;
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 }

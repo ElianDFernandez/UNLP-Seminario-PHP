@@ -67,13 +67,13 @@ class InquilinoController
                 if ($inquilino->esNuevo()) {
                     $inquilino->guardar();
                     $data = [
-                        'status' => 'Success. Inquilino creado.',
+                        'message' => 'Success. Inquilino creado.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error. Inquilino existente.',
+                        'message' => 'Error. DNI del Inquilino ya existente.',
                         'code' => 409,
                     ];
                     $statusCode = 409;
@@ -87,7 +87,6 @@ class InquilinoController
             }
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
@@ -97,27 +96,31 @@ class InquilinoController
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
         if ($comprobacion) {
-            $data = [
-                'code' => 409,
-                'message' => $comprobacion,
-            ];
-            $statusCode = 409;
+            $data = $comprobacion;
+            $statusCode = 400;
         } else {
             try {
                 $id = $args['id'];
-                $inquilinoDb = Inquilino::find($id);
-                if ($inquilinoDb) {
-                    $inquilino = new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], $data['activo']);
-                    $inquilino->update($id, $inquilino);
-                    $data = [
-                        'status' => 'Success. Inquilino actualizado',
-                        'code' => 200,
-                    ];
-                    $statusCode = 200;
+                if (Inquilino::find($id)) {
+                    $inquilinoDb = Inquilino::findOrNew($data);
+                    if (!$inquilinoDb->esNuevo()) {
+                        $data = [
+                            'code' => 409,
+                            'message' => 'Error. DNI del Inquilino ya existente.',
+                        ];
+                        $statusCode = 409;
+                    } else {
+                        $inquilinoDb->update($id, $data);
+                        $data = [
+                            'message' => 'Success. Inquilino Actualizada.',
+                            'code' => 200,
+                        ];
+                        $statusCode = 200;
+                    }
                 } else {
                     $data = [
                         'code' => 404,
-                        'message' => 'Iniquilino no encontrado',
+                        'message' => 'Error. Inquilino no encontrada.',
                     ];
                     $statusCode = 404;
                 }
@@ -130,29 +133,29 @@ class InquilinoController
             }
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+    
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $inquilinoDb = Inquilino::find($id);
         try {
+            $inquilinoDb = Inquilino::find($id);
             if ($inquilinoDb) {
                 $reservas = Inquilino::reservas($id);
-                if (count($reservas) > 0) {
-                    $data = [
-                        'code' => 409,
-                        'message' => 'Error. este Inquilino tiene una reserva asociada.',
-                    ];
-                    $statusCode = 409;
-                } else {
+                if ($reservas === null) {
                     Inquilino::delete($id);
                     $data = [
                         'status' => 'Success',
                         'code' => 200,
                     ];
                     $statusCode = 200;
+                } else {
+                    $data = [
+                        'code' => 409,
+                        'message' => 'Error. este Inquilino tiene una reserva asociada.',
+                    ];
+                    $statusCode = 409;
                 }
             } else {
                 $data = [
@@ -169,7 +172,6 @@ class InquilinoController
             $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
@@ -189,25 +191,32 @@ class InquilinoController
             $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
     public function buscar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $inquilinoDb = Inquilino::find($id);
-        if ($inquilinoDb) {
+        try {
+            $inquilinoDb = Inquilino::find($id);
+            if ($inquilinoDb) {
+                $data = [
+                    'Inquilino' => $inquilinoDb,
+                ];
+                $statusCode = 200;
+            } else {
+                $data = [
+                    'code' => 404,
+                    'message' => 'Inquilino no encontrado',
+                ];
+                $statusCode = 404;
+            }
+        } catch (Exception $e) {
             $data = [
-                'Inquilino' => $inquilinoDb,
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
             ];
-            $statusCode = 200;
-        } else {
-            $data = [
-                'code' => 404,
-                'message' => 'Inquilino no encontrado',
-            ];
-            $statusCode = 404;
+            $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);

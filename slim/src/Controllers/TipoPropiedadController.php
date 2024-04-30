@@ -47,13 +47,13 @@ class  TipoPropiedadController
                 if ($tipoPropiedad->esNuevo()) {
                     $tipoPropiedad->guardar();
                     $data = [
-                        'status' => 'Success. Tipo de propiedad creada.',
+                        'message' => 'Success. Tipo de propiedad creada.',
                         'code' => 200,
                     ];
                     $statusCode = 200;
                 } else {
                     $data = [
-                        'status' => 'Error. Tipo de propiedad ya existente.',
+                        'message' => 'Error. Tipo de propiedad ya existente.',
                         'code' => 409,
                     ];
                     $statusCode = 409;
@@ -76,61 +76,67 @@ class  TipoPropiedadController
         $contenido = $request->getBody()->getContents();
         $data = json_decode($contenido, true);
         $comprobacion = self::comprobarCampos($data);
-        try {
-            if (!$comprobacion) {
+        if ($comprobacion) {
+            $data = $comprobacion;
+            $statusCode = 400;
+        } else {
+            try {
                 $id = $args['id'];
-                $tipoPropDb = TipoPropiedad::find($id);
-                if ($tipoPropDb) {
-                    $tipoProp = new TipoPropiedad($data['nombre']);
-                    $tipoProp->update($id, $tipoProp);
-                    $data = [
-                        'status' => 'Success',
-                        'code' => 200,
-                    ];
-                    $statusCode = 200;
+                if (TipoPropiedad::find($id)) {
+                    $tipoPropDb = TipoPropiedad::findOrNew($data);
+                    if (!$tipoPropDb->esNuevo()) {
+                        $data = [
+                            'code' => 409,
+                            'message' => 'Error. Tipo Propiedad existente.',
+                        ];
+                        $statusCode = 409;
+                    } else {
+                        $tipoPropDb->update($id, $data);
+                        $data = [
+                            'message' => 'Success. Tipo Propiedad Actualizada.',
+                            'code' => 200,
+                        ];
+                        $statusCode = 200;
+                    }
                 } else {
                     $data = [
                         'code' => 404,
-                        'message' => 'Tipo de Propiedad no encontrado',
+                        'message' => 'Error. Tipo Propiedad no encontrada.',
                     ];
                     $statusCode = 404;
                 }
-            } else {
-                $data = $comprobacion;
-                $statusCode = 400;
+            } catch (Exception $e) {
+                $data = [
+                    'code' => 500,
+                    'message' => 'Error en la base de datos: ' . $e->getMessage(),
+                ];
+                $statusCode = 500;
             }
-        } catch (Exception $e) {
-            $data = [
-                'code' => 500,
-                'message' => 'Error en la base de datos: ' . $e->getMessage(),
-            ];
-            $statusCode = 500;
         }
         $response->getBody()->write(json_encode($data));
-
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
-        $tipoPropDb = TipoPropiedad::find($id);
         try {
+            $tipoPropDb = TipoPropiedad::find($id);
             if ($tipoPropDb) {
-                $propiedades = TipoPropiedad::propiedades($id);
-                if (count($propiedades) > 0) {
-                    $data = [
-                        'code' => 409,
-                        'message' => 'Error. este tipo de propiedad esta asignada a una o mas propiedades',
-                    ];
-                    $statusCode = 409;
-                } else {
+                $propiedades = TipoPropiedad::propiedades($id); // Antes de eliminar un TipoPropiedad debo asegurarme que no esta vincula con ninguna propiedad
+                if ($propiedades === null) {
                     TipoPropiedad::delete($id);
                     $data = [
                         'status' => 'Success',
                         'code' => 200,
                     ];
                     $statusCode = 200;
+                } else {
+                    $data = [
+                        'code' => 409,
+                        'message' => 'Error. este tipo de propiedad esta asignada a una o mas propiedades',
+                    ];
+                    $statusCode = 409;
                 }
             } else {
                 $data = [
@@ -157,7 +163,6 @@ class  TipoPropiedadController
             $tipoPropDb = TipoPropiedad::select();
             $data = [
                 'Tipo de propiedades' => $tipoPropDb,
-                'code' => 200,
             ];
             $statusCode = 200;
         } catch (Exception $e) {
