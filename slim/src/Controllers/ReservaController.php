@@ -48,7 +48,7 @@ class ReservaController
         }
     }
     public function reservaValida($data, $reservaId = null)
-    {   
+    {
         // Caso en el que la reserva ya exista misma propiedad misma fecha de inicio
         if ($reservaId === null) {
             $reserva = Reserva::select("WHERE propiedad_id = '" . $data['propiedad_id'] . "' AND fecha_desde = '" . $data['fecha_desde'] . "'");
@@ -57,8 +57,7 @@ class ReservaController
         }
         if ($reserva !== null) {
             return false;
-        } 
-        else {
+        } else {
             // Caso en el que la reserva no exista. Se comprueba que la propiedad este disponible para las fechas requeridas.
             $propiedad = Propiedad::estaDisponible($data['propiedad_id'], $data['fecha_desde'], $data['cantidad_noches']);
             if ($propiedad) {
@@ -107,7 +106,7 @@ class ReservaController
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
-    
+
     public function editar(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
@@ -154,7 +153,7 @@ class ReservaController
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
-    
+
     public function eliminar(Request $request, Response $response, $args)
     {
         $id = $args['id'];
