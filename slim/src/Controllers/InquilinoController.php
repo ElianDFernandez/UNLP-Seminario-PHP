@@ -62,24 +62,23 @@ class InquilinoController
             ];
             $statusCode = 400;
         } else {
-            try{
+            try {
                 $inquilino = Inquilino::findOrNew($data);
                 if ($inquilino->esNuevo()) {
                     $inquilino->guardar();
                     $data = [
                         'status' => 'Success. Inquilino creado.',
                         'code' => 200,
-                        ];
+                    ];
                     $statusCode = 200;
                 } else {
-                $data = [
-                    'status' => 'Error. Inquilino existente.',
-                    'code' => 409,
-                ];
-                $statusCode = 409;
+                    $data = [
+                        'status' => 'Error. Inquilino existente.',
+                        'code' => 409,
+                    ];
+                    $statusCode = 409;
                 }
-            }
-          catch (Exception $e) {
+            } catch (Exception $e) {
                 $data = [
                     'code' => 500,
                     'message' => 'Error en la base de datos: ' . $e->getMessage(),
@@ -113,8 +112,8 @@ class InquilinoController
                     $data = [
                         'status' => 'Success. Inquilino actualizado',
                         'code' => 200,
-                        ];
-                        $statusCode = 200;
+                    ];
+                    $statusCode = 200;
                 } else {
                     $data = [
                         'code' => 404,
@@ -129,31 +128,40 @@ class InquilinoController
                 ];
                 $statusCode = 500;
             }
+        }
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
-
     public function eliminar(Request $request, Response $response, $args)
-    {   
+    {
         $id = $args['id'];
         $inquilinoDb = Inquilino::find($id);
         try {
             if ($inquilinoDb) {
-                Inquilino::delete($id);
-                $data = [
-                    'status' => 'Success',
-                     'code' => 200,
-                ];
-                $statusCode = 200;
+                $reservas = Inquilino::reservas($id);
+                if (count($reservas) > 0) {
+                    $data = [
+                        'code' => 409,
+                        'message' => 'Error. este Inquilino tiene una reserva asociada.',
+                    ];
+                    $statusCode = 409;
+                } else {
+                    Inquilino::delete($id);
+                    $data = [
+                        'status' => 'Success',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                }
             } else {
-             $data = [
-                 'code' => 404,
-                 'message' => 'Inquilino no encontrado',
-                 ];
-            $statusCode = 404;
-        }
-        }catch (Exception $e) {
+                $data = [
+                    'code' => 404,
+                    'message' => 'Inquilino no encontrado',
+                ];
+                $statusCode = 404;
+            }
+        } catch (Exception $e) {
             $data = [
                 'code' => 500,
                 'message' => 'Error en la base de datos: ' . $e->getMessage(),
@@ -167,13 +175,13 @@ class InquilinoController
 
     public function listar(Request $request, Response $response, $args)
     {
-        try{
+        try {
             $inquilinosDb = Inquilino::select();
-                $data = [
-                    'Inquilinos' => $inquilinosDb,
-                ];
-                $statusCode = 200;
-            } catch (Exception $e) {
+            $data = [
+                'Inquilinos' => $inquilinosDb,
+            ];
+            $statusCode = 200;
+        } catch (Exception $e) {
             $data = [
                 'code' => 500,
                 'message' => 'Error en la base de datos: ' . $e->getMessage(),

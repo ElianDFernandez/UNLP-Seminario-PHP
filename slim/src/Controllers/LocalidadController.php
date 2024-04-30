@@ -33,7 +33,7 @@ class LocalidadController
         }
         return $respuesta;
     }
-    
+
     public function crear(Request $request, Response $response, $args)
     {
         $contenido = $request->getBody()->getContents();
@@ -59,8 +59,7 @@ class LocalidadController
                     ];
                     $statusCode = 409;
                 }
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 $data = [
                     'code' => 500,
                     'message' => 'Error en la base de datos. ' . $e->getMessage(),
@@ -131,13 +130,14 @@ class LocalidadController
                         'message' => 'Error. Localidad en uso.',
                     ];
                     $statusCode = 409;
-                }   
-                Localidad::delete($id);
-                $data = [
-                    'status' => 'Success. Localidad eliminada.',
-                    'code' => 200,
-                ];
-                $statusCode = 200;
+                } else {
+                    Localidad::delete($id);
+                    $data = [
+                        'status' => 'Success. Localidad eliminada.',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
+                }
             } else {
                 $data = [
                     'code' => 404,
@@ -152,7 +152,7 @@ class LocalidadController
             ];
             $statusCode = 500;
         }
-        
+
         $response->getBody()->write(json_encode($data));
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
@@ -166,7 +166,7 @@ class LocalidadController
                 'Inquilinos' => $localidadesDb,
             ];
             $statusCode = 200;
-        }   catch (Exception $e) {
+        } catch (Exception $e) {
             $data = [
                 'code' => 500,
                 'message' => 'Error en base de datos: ' . $e->getMessage(),
