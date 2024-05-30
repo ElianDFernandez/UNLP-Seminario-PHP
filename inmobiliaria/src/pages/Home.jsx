@@ -1,6 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
 import logo from '../logo.svg';
+import { NavLink } from 'react-router-dom';
+import Boton from '../components/boton';
+import Pipo from '../assets/images/pipo.png';
 
 const Home = () => {
     const [cont, setCont] = useState(0);
@@ -12,16 +15,16 @@ const Home = () => {
     return (
         <div>
         <h1>¡Bienvenido a PipoPropiedades!</h1>
-        <img src={logo} className="App-logo" alt="logo" />
-        {/*<Boton texto={cont} onClick={click}></Boton>*/}
+        <img src={Pipo} className="App-logo" alt="logo" />
+        <Boton texto={cont} onClick={click}></Boton>
         <p>
-          Propiedades
+          <NavLink to="/Propiedades">Propiedades</NavLink>
         </p>
-         <p>
-          tipos de Propiedades
+        <p>
+          <NavLink to="/TiposPropiedad">Tipos De Propiedad</NavLink>
          </p>
          <p>
-          Reservas
+          <NavLink to="/Reservas">Reservas</NavLink>
          </p>
         <a
           className="App-link"
