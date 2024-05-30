@@ -20,7 +20,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Propiedades" element={<Propiedades />} />
-        <Route path="/TiposPropiedades" element={<TiposPropiedad />} />
+        <Route path="/TiposPropiedad" element={<TiposPropiedad />} />
         <Route path="/Reservas" element={<Reservas />} />
       </Routes>
       <FooterComponent />
