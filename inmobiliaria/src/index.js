@@ -1,18 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './assets/styles/styles.css';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes,Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Propiedades from './pages/Propiedades';
 import TiposPropiedad from './pages/TiposPropiedad';  
 import Reservas from './pages/Reservas';
+import HeaderComponent from './components/HeaderComponent';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <HeaderComponent />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/Propiedades" element={<Propiedades />} />
