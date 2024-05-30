@@ -1,4 +1,25 @@
-.App-logo{
-    max-width: 80px;
+.App-logo {
+  max-width: 80px;
 }
-.cabeza{display: flex;}
+.cabeza {
+  display: flex;
+  justify-content: center;
+}
+
+.footclass {
+  display: flex;
+  gap: 600px;
+  position: fixed;
+  bottom: 0;
+  justify-content: center;
+}
+
+.NavBarclass {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.home {
+  justify-content: center;
+}
