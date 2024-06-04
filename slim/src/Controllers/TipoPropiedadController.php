@@ -148,9 +148,7 @@ class  TipoPropiedadController
             ];
             $statusCode = 500;
         } else {
-            $data = [
-                'Tipo de propiedades' => $tipoPropDb,
-            ];
+            $data = $tipoPropDb;
             $statusCode = 200;
         }
         $response->getBody()->write(json_encode($data));
