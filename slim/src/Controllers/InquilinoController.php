@@ -171,9 +171,7 @@ class InquilinoController
             ];
             $statusCode = 500;
         } else {
-            $data = [
-                'Inquilinos' => $inquilinosDb,
-            ];
+            $data = $inquilinosDb;
             $statusCode = 200;
         }
         $statusCode = 200;
@@ -187,9 +185,7 @@ class InquilinoController
         $id = $args['id'];
         $inquilinoDb = Inquilino::find($id);
         if ($inquilinoDb) {
-            $data = [
-                'Inquilino' => $inquilinoDb,
-            ];
+            $data = $inquilinoDb;
             $statusCode = 200;
         } else {
             $data = [

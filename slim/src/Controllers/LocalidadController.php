@@ -148,9 +148,7 @@ class LocalidadController
             ];
             $statusCode = 500;
         } else {
-            $data = [
-                'Inquilinos' => $localidadesDb,
-            ];
+            $data = $localidadesDb;
             $statusCode = 200;
         }
         $response->getBody()->write(json_encode($data));

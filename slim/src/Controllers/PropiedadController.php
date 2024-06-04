@@ -18,7 +18,7 @@ class PropiedadController
             $respuesta[] = $error;
         }
         if (!isset($data['localidad_id']) || empty($data['localidad_id'])) {
-            $error ='Error. El campo localidad es obligatorio.';
+            $error = 'Error. El campo localidad es obligatorio.';
             $respuesta[] = $error;
         }
         if (isset($data['localidad_id']) && !empty($data['localidad_id'])) {
@@ -121,7 +121,7 @@ class PropiedadController
             $id = $args['id'];
             $propiedadDb = Propiedad::find($id);
             if ($propiedadDb) {
-                $propiedad = new Propiedad($data['domicilio'], $data['localidad_id'],$data['cantidad_habitaciones'],$data['cantidad_banios'],$data['cochera'],$data['cantidad_huespedes'],$data['fecha_inicio_disponibilidad'],$data['cantidad_dias'],$data['disponible'],$data['valor_noche'],$data['tipo_propiedad_id'],$data['imagen'],$data['tipo_imagen']);
+                $propiedad = new Propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'], $data['cantidad_banios'], $data['cochera'], $data['cantidad_huespedes'], $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'], $data['tipo_imagen']);
                 if ($propiedad->update($id, $propiedad)) {
                     $data = [
                         'status' => 'Success',
@@ -141,7 +141,7 @@ class PropiedadController
                     'message' => 'Propiedad no encontrada',
                 ];
                 $statusCode = 404;
-            } 
+            }
         }
         $response->getBody()->write(json_encode($data));
 
@@ -153,7 +153,7 @@ class PropiedadController
         $id = $args['id'];
         $propiedadDb = Propiedad::find($id);
         if ($propiedadDb) {
-            if (Propiedad::delete($id)){
+            if (Propiedad::delete($id)) {
                 $data = [
                     'status' => 'Success',
                     'code' => 200,
@@ -196,7 +196,7 @@ class PropiedadController
         if ($data['cantidad_huespedes'] !== null) {
             $filtros[] = 'cantidad_huespedes = ' . $data['cantidad_huespedes'];
         }
-        
+
         if (!empty($filtros)) {
             $where = ' WHERE ' . implode(' AND ', $filtros);
         }
@@ -208,9 +208,7 @@ class PropiedadController
             ];
             $statusCode = 500;
         } else {
-            $data = [
-                'Propiedades' => $propiedadesDb,
-            ];
+            $data = $propiedadesDb;
             $statusCode = 200;
         }
         $statusCode = 200;
@@ -224,9 +222,7 @@ class PropiedadController
         $id = $args['id'];
         $propiedadDb = Propiedad::find($id);
         if ($propiedadDb) {
-            $data = [
-                'Propiedad' => $propiedadDb,
-            ];
+            $data = $propiedadDb;
             $statusCode = 200;
         } else {
             $data = [
