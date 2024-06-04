@@ -45,5 +45,8 @@ $app->delete('/tipos_propiedad/{id}', TipoPropiedadController::class . ':elimina
 $app->get('/tipos_propiedad', TipoPropiedadController::class . ':listar');
 
 //test
-
+$app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {
+    $handler = $this->notFoundHandler; // handle using the default Slim page not found handler
+    return $handler($req, $res);
+});
 // Fin APP
