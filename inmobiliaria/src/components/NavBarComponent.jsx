@@ -4,6 +4,9 @@ const NavBarComponent = () => {
   return (
     <div className="NavBarclass">
       <p>
+        <NavLink to="/">Home</NavLink>
+      </p>
+      <p>
         <NavLink to="/Propiedades">Propiedades</NavLink>
       </p>
       <p>
