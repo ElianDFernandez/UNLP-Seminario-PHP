@@ -156,9 +156,7 @@ class LocalidadController
     {
         try {
             $localidadesDb = Localidad::select();
-            $data = [
-                'Localidades' => $localidadesDb,
-            ];
+            $data = $localidadesDb;
             $statusCode = 200;
         } catch (Exception $e) {
             $data = [

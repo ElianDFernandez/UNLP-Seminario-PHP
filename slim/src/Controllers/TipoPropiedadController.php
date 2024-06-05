@@ -161,9 +161,7 @@ class  TipoPropiedadController
     {
         try {
             $tipoPropDb = TipoPropiedad::select();
-            $data = [
-                'Tipo de propiedades' => $tipoPropDb,
-            ];
+            $data = $tipoPropDb;
             $statusCode = 200;
         } catch (Exception $e) {
             $data = [

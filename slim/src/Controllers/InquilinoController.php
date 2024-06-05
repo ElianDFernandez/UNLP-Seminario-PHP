@@ -179,9 +179,7 @@ class InquilinoController
     {
         try {
             $inquilinosDb = Inquilino::select();
-            $data = [
-                'Inquilinos' => $inquilinosDb,
-            ];
+            $data = $inquilinosDb;
             $statusCode = 200;
         } catch (Exception $e) {
             $data = [

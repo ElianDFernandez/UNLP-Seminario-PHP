@@ -189,9 +189,7 @@ class ReservaController
     {
         try {
             $reservasDb = Reserva::select();
-            $data = [
-                'reservas' => $reservasDb,
-            ];
+            $data = $reservasDb;
             $statusCode = 200;
         } catch (Exception $e) {
             $data = [
