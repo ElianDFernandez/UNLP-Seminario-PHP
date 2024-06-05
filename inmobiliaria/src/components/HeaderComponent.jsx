@@ -6,7 +6,6 @@ const HeaderComponent = () => {
         <header className='cabeza'>
             <img src={Pipo} className="App-logo" alt="logo" />
             <h1>Pipo Propiedades</h1>
-
         </header>
     );
 };
