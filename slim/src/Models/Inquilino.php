@@ -8,7 +8,7 @@ class Inquilino extends DataBase
 {
     static $tabla = "inquilinos";
 
-    protected ? int $id;
+    protected ?int $id;
     protected String $nombre;
     protected String $apellido;
     protected int $documento;
@@ -17,17 +17,17 @@ class Inquilino extends DataBase
 
     public function __construct($nombre, $apellido, $documento, $email, $activo, $id = null)
     {
-        $this->nombre=$nombre;
-        $this->apellido=$apellido;
-        $this->documento=$documento;
-        $this->email=$email;
-        $this->activo= $activo ?? true;
-        $this->id=$id;
+        $this->nombre = $nombre;
+        $this->apellido = $apellido;
+        $this->documento = $documento;
+        $this->email = $email;
+        $this->activo = $activo ?? true;
+        $this->id = $id;
     }
 
     public static function findOrnew($data)
     {
-        $inquilino = Inquilino::select('WHERE nombre = "' . $data['documento'] . '"');
+        $inquilino = Inquilino::select('WHERE documento = "' . $data['documento'] . '"');
         if (!$inquilino) {
             return new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], null);
         } else {
@@ -46,5 +46,9 @@ class Inquilino extends DataBase
             unset($this->id);
         }
         return $this->save($this);
+    }
+    public static function reservas($id)
+    {
+        return Reserva::select('WHERE inquilino_id = ' . $id);
     }
 }

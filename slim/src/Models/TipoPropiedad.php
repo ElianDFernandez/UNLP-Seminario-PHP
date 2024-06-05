@@ -8,7 +8,7 @@ class TipoPropiedad extends DataBase
 {
     static $tabla = "tipo_propiedades";
 
-    protected ? int $id;
+    protected ?int $id;
     protected string $nombre;
 
     public function __construct($nombre, $id = null)
@@ -39,5 +39,9 @@ class TipoPropiedad extends DataBase
             unset($this->id);
         }
         return $this->save($this);
+    }
+    public static function propiedades($id)
+    {
+        return propiedad::select('WHERE tipo_propiedad_id = ' . $id);
     }
 }

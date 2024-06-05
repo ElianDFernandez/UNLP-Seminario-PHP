@@ -4,6 +4,8 @@ namespace App\Models;
 
 use PDO;
 use App\Models\Helper;
+use Exception;
+
 /** En esta clase defino metodos estaticos para el manejo de mi base de datos, en cada herencia de esta clase reemplazo $tabla con la tabla conrrespondiente al modelo.
  *  En cada modelo me ahorro el codigo de las consultas a base de datos y simplemente trabajo cosas especificas de cada uno.
  */
@@ -20,9 +22,8 @@ class DataBase
             $consultaStm = $conexion->prepare($consulta);
             $consultaStm->execute();
             return $consultaStm;
-        } catch (\Throwable $th) {
-            Helper::logError($th);
-            return false;
+        } catch (Exception $e) {
+            throw new Exception("Fallo la ejecucion de la consulta.: " . $consulta);
         }
     }
 
@@ -40,9 +41,8 @@ class DataBase
             $result = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
             return $result;
-        } catch (\Throwable $th) {
-            Helper::logError($th);
-            return false;
+        } catch (Exception $e) {
+            throw new Exception("Fallo en SQL: ". $consulta);
         }
     }
 
@@ -56,9 +56,8 @@ class DataBase
             $consulta = "INSERT INTO " . static::$tabla . " (" . implode(", ", $nombresAtributos) . ") VALUES (" . implode(", ", $valoresAtributos) . ")";
             $resultado = self::execute($consulta);
             return $resultado;
-        } catch (\Throwable $th) {
-            Helper::logError($th);
-            return false;
+        } catch (Exception $e) {
+            throw new Exception("Fallo en SQL: ". $consulta);
         }
     }
 
@@ -75,9 +74,8 @@ class DataBase
             }
             $r = $resultado->fetch(PDO::FETCH_ASSOC);
             return $r;
-        } catch (\Throwable $th) {
-            Helper::logError($th);
-            return false;
+        } catch (Exception $e) {
+            throw new Exception("Fallo en SQL: ". $consulta);
         }
     }
     public static function update($id, $objeto)
@@ -96,9 +94,8 @@ class DataBase
                 return false;
             }
             return $resultado;
-        } catch (\Throwable $th) {
-            Helper::logError($th);
-            return false;
+        } catch (Exception $e) {
+            throw new Exception("Fallo en SQL: ". $consulta);
         }
     }
 
@@ -106,14 +103,10 @@ class DataBase
     {
         try {
             $consulta = "DELETE FROM " . static::$tabla . " WHERE id = $id";
-            $resultado = self::execute($consulta);
-            if ($resultado == false) {
-                return false;
-            };
+            self::execute($consulta);
             return true;
-        } catch (\Throwable $th) {
-            Helper::logError($th);
-            return false;
+        } catch (Exception $e) {
+            throw new Exception("Fallo en SQL: ". $consulta);
         }
     }
 }

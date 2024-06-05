@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Exception;
 use App\Models\DataBase;
+
 
 class Localidad extends DataBase
 {
@@ -27,6 +29,11 @@ class Localidad extends DataBase
             $localidad = new Localidad($localidad['nombre'], $localidad["id"]);
         }
         return $localidad;
+    }
+
+    public static function propiedades($id)
+    {
+        return Propiedad::select('WHERE localidad_id = ' . $id);
     }
 
     public function esNuevo()
