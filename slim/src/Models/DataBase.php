@@ -38,9 +38,7 @@ class DataBase
                 return null;
             }
             $result = $resultado->fetchAll(PDO::FETCH_ASSOC);
-            if (count($result) === 1) {
-                return $result[0];
-            }
+
             return $result;
         } catch (\Throwable $th) {
             Helper::logError($th);

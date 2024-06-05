@@ -180,26 +180,30 @@ class PropiedadController
 
     public function listar(Request $request, Response $response, $args)
     {
-        $contenido = $request->getBody()->getContents();
-        $data = json_decode($contenido, true);
+        $localidad_id = $args['localidad_id'] ?? null;
+        $disponible = $args['disponible'] ?? null;
+        $fecha_inicio_disponibilidad = $args['fecha_inicio_disponibilidad'] ?? null;
+        $cantidad_huespedes = $args['cantidad_huespedes'] ?? null;
+
         $where = '';
         $filtros = [];
-        if ($data['localidad_id'] !== null) {
-            $filtros[] = 'localidad_id = ' . $data['localidad_id'];
+        if ($localidad_id !== "null") {
+            $filtros[] = 'localidad_id = ' . $localidad_id;
         }
-        if ($data['disponible'] !== null) {
-            $filtros[] = 'disponible = ' . $data['disponible'];
+        if ($disponible !== "null") {
+            $filtros[] = 'disponible = ' . $disponible;
         }
-        if ($data['fecha_inicio_disponibilidad'] !== null) {
-            $filtros[] = "fecha_inicio_disponibilidad = '" . $data['fecha_inicio_disponibilidad'] . "'";
+        if ($fecha_inicio_disponibilidad !== "null") {
+            $filtros[] = "fecha_inicio_disponibilidad = '" . $fecha_inicio_disponibilidad . "'";
         }
-        if ($data['cantidad_huespedes'] !== null) {
-            $filtros[] = 'cantidad_huespedes = ' . $data['cantidad_huespedes'];
+        if ($cantidad_huespedes !== "null") {
+            $filtros[] = 'cantidad_huespedes = ' . $cantidad_huespedes;
         }
 
         if (!empty($filtros)) {
             $where = ' WHERE ' . implode(' AND ', $filtros);
         }
+        
         $propiedadesDb = Propiedad::select($where);
         if ($propiedadesDb === false) {
             $data = [
@@ -211,9 +215,8 @@ class PropiedadController
             $data = $propiedadesDb;
             $statusCode = 200;
         }
-        $statusCode = 200;
-        $response->getBody()->write(json_encode($data));
 
+        $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
 
