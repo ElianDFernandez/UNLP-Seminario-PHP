@@ -221,9 +221,7 @@ class PropiedadController
         }
         try {
             $propiedadesDb = Propiedad::select($where);
-            $data = [
-                'Propiedades' => $propiedadesDb,
-            ];
+            $data = $propiedadesDb;
             $statusCode = 200;
         } catch (Exception $e) {
             $data = [
