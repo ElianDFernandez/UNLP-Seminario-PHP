@@ -1,10 +1,11 @@
 import React from "react";
 import "../assets/styles/components/propiedad.css";
 
-const TipoPropiedad = ({ TipoPropiedad }) => {
+const TipoPropiedad = ({ tipoPropiedades }) => {
+  debugger;
   return (
     <div>
-      <p>{TipoPropiedad.nombre}</p>
+      <p>{tipoPropiedades.nombre}</p>
     </div>
   );
 };

@@ -27,12 +27,15 @@ const TiposPropiedad = () => {
       <h1>TiposPropiedad</h1>
 
       {TiposPropiedad.length > 0 ? (
-        TiposPropiedad.map((tipoPropiedades) => (
-          <TipoPropiedad
-            key={tipoPropiedades.id}
-            tipoPropiedades={tipoPropiedades}
-          />
-        ))
+        TiposPropiedad.map((tipoPropiedades) => {
+          debugger;
+          return (
+            <TipoPropiedad
+              key={tipoPropiedades.id}
+              tipoPropiedades={tipoPropiedades}
+            />
+          );
+        })
       ) : (
         <p>No hay Tipos de propiedad disponibles</p>
       )}
