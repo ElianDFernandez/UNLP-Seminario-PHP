@@ -2,6 +2,7 @@ import React from "react";
 import Boton from "../components/commons/Boton";
 import { useState, useEffect } from "react";
 import { Apiget } from "../utils/api";
+import TipoPropiedad from "../components/TipoPropiedadComponent";
 
 const TiposPropiedad = () => {
   const [TiposPropiedad, setTiposPropiedad] = useState([]);
@@ -24,11 +25,17 @@ const TiposPropiedad = () => {
   return (
     <div>
       <h1>TiposPropiedad</h1>
-      {TiposPropiedad.map((tipo, index) => (
-        <div key={index}>
-          <p>{tipo.nombre}</p>
-        </div>
-      ))}
+
+      {TiposPropiedad.length > 0 ? (
+        TiposPropiedad.map((tipoPropiedades) => (
+          <TipoPropiedad
+            key={tipoPropiedades.id}
+            tipoPropiedades={tipoPropiedades}
+          />
+        ))
+      ) : (
+        <p>No hay Tipos de propiedad disponibles</p>
+      )}
       <Boton texto="nuevo Tipo de Propiedad" onClick={crearTipoPropiedad} />
     </div>
   );
