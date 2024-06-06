@@ -11,7 +11,7 @@ const TiposPropiedad = () => {
   };
 
   useEffect(() => {
-    Apiget("http://localhost:80/tipos_propiedad").then((data) => {
+    Apiget("http://localhost/tipos_propiedad").then((data) => {
       console.log(data);
       if (Array.isArray(data)) {
         setTiposPropiedad(data);

@@ -7,7 +7,7 @@ const Propiedades = () => {
   const [propiedades, setPropiedades] = useState([]);
 
   useEffect(() => {
-    Apiget("http://localhost:80/propiedades/null/null/null/null")
+    Apiget("http://localhost/propiedades/null/null/null/null")
       .then((data) => {
         console.log("Datos recibidos:", data); // Verifica que recibes los datos correctamente
         setPropiedades(data);
