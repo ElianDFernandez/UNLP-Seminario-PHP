@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Boton from "../components/commons/Boton";
-import { Apiget } from "../utils/api";
-import Propiedad from "../components/Propiedad"; // Asegúrate de importar el componente Propiedad desde la ubicación correcta
+import Boton from "../../components/commons/Boton";
+import { Apiget } from "../../utils/api";
+import Propiedad from "../../components/Propiedad"; // Asegúrate de importar el componente Propiedad desde la ubicación correcta
 
 const Propiedades = () => {
   const [propiedades, setPropiedades] = useState([]);

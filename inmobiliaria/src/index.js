@@ -4,12 +4,14 @@ import "./assets/styles/styles.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Propiedades from "./pages/Propiedades";
-import TiposPropiedad from "./pages/TiposPropiedad";
-import Reservas from "./pages/Reservas";
+import Propiedades from "./pages/propiedades/PropiedadesPage";
+import TiposPropiedad from "./pages/tipoPropiedad/TiposPropiedadPage";
+import Reservas from "./pages/reservas/ReservasPage";
 import HeaderComponent from "./components/HeaderComponent";
 import FooterComponent from "./components/FooterComponent";
 import NavBarComponent from "./components/NavBarComponent";
+import EditarTiposPropiedad from "./pages/tipoPropiedad/EditarTiposPropiedadPage";
+import newTipoPropiedad from "./pages/tipoPropiedad/newTipoPropiedadPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,6 +24,14 @@ root.render(
         <Route path="/Propiedades" element={<Propiedades />} />
         <Route path="/TiposPropiedad" element={<TiposPropiedad />} />
         <Route path="/Reservas" element={<Reservas />} />
+        <Route
+          path="/TiposPropiedad/EditarTipoPropiedad"
+          element={<EditarTiposPropiedad />}
+        />
+        <Route
+          path="/TiposPropiedad/newTipoPropiedad"
+          element={<newTipoPropiedad />}
+        />
       </Routes>
       <FooterComponent />
     </BrowserRouter>

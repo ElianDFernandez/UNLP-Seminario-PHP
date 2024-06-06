@@ -1,15 +1,12 @@
 import React from "react";
-import Boton from "../components/commons/Boton";
+import Boton from "../../components/commons/Boton";
 import { useState, useEffect } from "react";
-import { Apiget } from "../utils/api";
-import TipoPropiedad from "../components/TipoPropiedadComponent";
+import { Apiget } from "../../utils/api";
+import TipoPropiedad from "../../components/TipoPropiedadComponent";
+import { NavLink } from "react-router-dom";
 
 const TiposPropiedad = () => {
   const [TiposPropiedad, setTiposPropiedad] = useState([]);
-
-  const crearTipoPropiedad = () => {
-    console.log("crearPropiedad");
-  };
 
   useEffect(() => {
     Apiget("http://localhost/tipos_propiedad").then((data) => {
@@ -30,16 +27,28 @@ const TiposPropiedad = () => {
         TiposPropiedad.map((tipoPropiedades) => {
           debugger;
           return (
-            <TipoPropiedad
-              key={tipoPropiedades.id}
-              tipoPropiedades={tipoPropiedades}
-            />
+            <>
+              <TipoPropiedad
+                key={tipoPropiedades.id}
+                tipoPropiedades={tipoPropiedades}
+              />
+              <p>
+                <NavLink to="/TiposPropiedad/EditarTipoPropiedad">
+                  Editar Tipo De Propiedad
+                </NavLink>
+              </p>
+              ;
+            </>
           );
         })
       ) : (
         <p>No hay Tipos de propiedad disponibles</p>
       )}
-      <Boton texto="nuevo Tipo de Propiedad" onClick={crearTipoPropiedad} />
+      <p>
+        <NavLink to="/TiposPropiedad/newTipoPropiedad">
+          Crear Nuevo Tipo
+        </NavLink>
+      </p>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
-import Boton from "../components/commons/Boton";
+import Boton from "../../components/commons/Boton";
 import { useState, useEffect } from "react";
-import { Apiget } from "../utils/api";
+import { Apiget } from "../../utils/api";
 
 const Reservas = () => {
   const crearReserva = () => {
