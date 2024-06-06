@@ -36,13 +36,13 @@ class DataBase
                 return false;
             }
             if ($resultado->rowCount() == 0) {
-                return null;
+                return 0;
             }
             $result = $resultado->fetchAll(PDO::FETCH_ASSOC);
 
             return $result;
         } catch (Exception $e) {
-            throw new Exception("Fallo en SQL: ". $consulta);
+            throw new Exception("Fallo en SQL: " . $consulta);
         }
     }
 
@@ -57,7 +57,7 @@ class DataBase
             $resultado = self::execute($consulta);
             return $resultado;
         } catch (Exception $e) {
-            throw new Exception("Fallo en SQL: ". $consulta);
+            throw new Exception("Fallo en SQL: " . $consulta);
         }
     }
 
@@ -75,7 +75,7 @@ class DataBase
             $r = $resultado->fetch(PDO::FETCH_ASSOC);
             return $r;
         } catch (Exception $e) {
-            throw new Exception("Fallo en SQL: ". $consulta);
+            throw new Exception("Fallo en SQL: " . $consulta);
         }
     }
     public static function update($id, $objeto)
@@ -95,7 +95,7 @@ class DataBase
             }
             return $resultado;
         } catch (Exception $e) {
-            throw new Exception("Fallo en SQL: ". $consulta);
+            throw new Exception("Fallo en SQL: " . $consulta);
         }
     }
 
@@ -106,7 +106,7 @@ class DataBase
             self::execute($consulta);
             return true;
         } catch (Exception $e) {
-            throw new Exception("Fallo en SQL: ". $consulta);
+            throw new Exception("Fallo en SQL: " . $consulta);
         }
     }
 }

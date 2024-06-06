@@ -14,13 +14,13 @@ body {
 
 .footclass {
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
-  padding: 10px; 
+  padding: 10px;
   background-color: rgb(229, 229, 229);
 }
 
