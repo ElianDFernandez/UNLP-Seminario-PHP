@@ -1,21 +1,19 @@
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const NavBarComponent = () => {
-  return (
-    <div className="NavBarclass">
-      <p>
-        <NavLink to="/">Home</NavLink>
-      </p>
-      <p>
-        <NavLink to="/Propiedades">Propiedades</NavLink>
-      </p>
-      <p>
-        <NavLink to="/TiposPropiedad">Tipos De Propiedad</NavLink>
-      </p>
-      <p>
-        <NavLink to="/Reservas">Reservas</NavLink>
-      </p>
-    </div>
-  );
+const NavBar = () => {
+    return (
+        <nav className="navbar">
+            <ul className="nav-list">
+                <li className="nav-item">
+                    <Link to="/" className="nav-link">Inicio</Link>
+                </li>
+                <li className="nav-item">
+                    <Link to="/tipo-propiedades" className="nav-link">Tipo Propiedades</Link>
+                </li>
+            </ul>
+        </nav>
+    );
 };
-export default NavBarComponent;
+
+export default NavBar;

@@ -23,6 +23,9 @@ class TipoPropiedad extends DataBase
         if (!$tipoPropiedad) {
             $tipoPropiedad = new TipoPropiedad($data['nombre']);
         } else {
+            if (is_array($tipoPropiedad) && count($tipoPropiedad) > 0) {
+                $tipoPropiedad = $tipoPropiedad[0];
+            }
             $tipoPropiedad = new Tipopropiedad($tipoPropiedad['nombre'], $tipoPropiedad["id"]);
         }
         return $tipoPropiedad;
