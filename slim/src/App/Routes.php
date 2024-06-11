@@ -43,6 +43,7 @@ $app->post('/tipos_propiedad', TipoPropiedadController::class . ':crear');
 $app->put('/tipos_propiedad/{id}', TipoPropiedadController::class . ':editar');
 $app->delete('/tipos_propiedad/{id}', TipoPropiedadController::class . ':eliminar');
 $app->get('/tipos_propiedad', TipoPropiedadController::class . ':listar');
+$app->get('/tipos_propiedad/{id}', TipoPropiedadController::class . ':buscar');
 
 //test
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($req, $res) {

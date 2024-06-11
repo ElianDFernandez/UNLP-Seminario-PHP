@@ -174,4 +174,31 @@ class  TipoPropiedadController
 
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+
+    public function buscar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        try {
+            $tipoPropDb = TipoPropiedad::find($id);
+            if ($tipoPropDb) {
+                $data = $tipoPropDb;
+                $statusCode = 200;
+            } else {
+                $data = [
+                    'code' => 404,
+                    'message' => 'Tipo de Propiedad no encontrado',
+                ];
+                $statusCode = 404;
+            }
+        } catch (Exception $e) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            ];
+            $statusCode = 500;
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
+    }
 }

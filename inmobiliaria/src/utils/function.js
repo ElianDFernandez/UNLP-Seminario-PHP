@@ -19,10 +19,10 @@ export const useFetch = (url) => {
 
 export const useEnviarForm = () => {
     const [mensaje, setMensaje] = useState('');
-    const enviarForm = async (data, url) => {
+    const enviarForm = async (data, url, method = 'POST', callback = null) => {
         try {
             let config = {
-                method: 'POST',
+                method: method,
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
@@ -34,6 +34,7 @@ export const useEnviarForm = () => {
             console.log(json);
             setMensaje(json.message);
             setTimeout(() => { setMensaje(''); }, 3000);
+            if (callback) callback();
         } catch (error) {
             console.error('Error:', error);
             setMensaje('Error de red. Por favor, inténtalo de nuevo más tarde.');
@@ -61,3 +62,17 @@ export const useEnviarDelete = () => {
     return { mensaje, enviarDelete };
 };
 
+export const useFindById = (url) => {
+    const [data, setData] = useState(null);
+    const [updateFlag, setUpdateFlag] = useState(false);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await fetch(url);
+            const result = await response.json();
+            setData(result);
+        };
+        fetchData();
+    }, [updateFlag]);
+    return { data, fetchData: () => setUpdateFlag(!updateFlag) };
+}

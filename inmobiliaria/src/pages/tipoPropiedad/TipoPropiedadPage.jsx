@@ -1,11 +1,10 @@
 import React from 'react';
 import { useFetch, useEnviarDelete } from '../../utils/function.js';
 import { useNavigate } from 'react-router-dom';
+import { urlTipoPropiedad } from '../../config/general-config.js';
 
 const TipoPropiedadPage = () => {
-    const apiport = process.env.APIPORT || 8003;
-    const url = `http://localhost:${apiport}/tipos_propiedad`;
-    const { data, fetchData } = useFetch(url);
+    const { data, fetchData } = useFetch(urlTipoPropiedad);
     const navigate = useNavigate();
     const { mensaje, enviarDelete } = useEnviarDelete();
 
@@ -14,8 +13,12 @@ const TipoPropiedadPage = () => {
     };
 
     const handleDelete = (id) => {
-        const deleteUrl = `http://localhost:${apiport}/tipos_propiedad/${id}`;
+        const deleteUrl = `${urlTipoPropiedad}/${id}`;
         enviarDelete(deleteUrl, fetchData);
+    };
+
+    const handleEdit = (id) => {
+        navigate(`/tipo-propiedades/edit/${id}`);
     };
 
     return (
@@ -29,6 +32,7 @@ const TipoPropiedadPage = () => {
                         data.map((tipoPropiedad) => (
                             <li key={tipoPropiedad.id}>
                                 {tipoPropiedad.nombre}
+                                <button onClick={() => handleEdit(tipoPropiedad.id)}>Editar</button>
                                 <button onClick={() => handleDelete(tipoPropiedad.id)}>Eliminar</button>
                             </li>
                         ))
