@@ -30,8 +30,7 @@ const TipoPropiedadPage = () => {
                     {mensaje && <p>{mensaje}</p>}
                     {data ? (
                         data.map((tipoPropiedad) => (
-                            <li key={tipoPropiedad.id}>
-                                {tipoPropiedad.nombre}
+                            <li key={tipoPropiedad.id}>{tipoPropiedad.nombre}
                                 <button onClick={() => handleEdit(tipoPropiedad.id)}>Editar</button>
                                 <button onClick={() => handleDelete(tipoPropiedad.id)}>Eliminar</button>
                             </li>

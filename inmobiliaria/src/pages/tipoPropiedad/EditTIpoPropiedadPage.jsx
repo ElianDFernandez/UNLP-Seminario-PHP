@@ -37,13 +37,7 @@ const EditTipoPropiedadPage = () => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Nombre:
-                        <input
-                            type="text"
-                            placeholder={data.nombre}
-                            value={nombre}
-                            onChange={(event) => setNombre(event.target.value)}
-                            disabled={loading}
-                        />
+                        <input type="text" placeholder={data.nombre} value={nombre} onChange={(event) => setNombre(event.target.value)} disabled={loading}/>
                     </label>
                     <button type="submit" disabled={loading}>
                         {loading ? 'Cargando...' : 'Guardar'}

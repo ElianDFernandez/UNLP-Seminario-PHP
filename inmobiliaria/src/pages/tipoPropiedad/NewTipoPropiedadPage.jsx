@@ -31,12 +31,7 @@ const NewTipoPropiedadPage = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     Nombre:
-                    <input 
-                        type="text" 
-                        value={nombre} 
-                        onChange={(e) => setNombre(e.target.value)} 
-                        disabled={loading}
-                    />
+                    <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} disabled={loading}/>
                 </label>
                 <button type="submit" disabled={loading}>
                     {loading ? 'Cargando...' : 'Crear'}
