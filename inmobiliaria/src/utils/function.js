@@ -67,6 +67,7 @@ export const useFindById = (url) => {
     const [updateFlag, setUpdateFlag] = useState(false);
     
     useEffect(() => {
+        console.log(url);
         const fetchData = async () => {
             const response = await fetch(url);
             const result = await response.json();

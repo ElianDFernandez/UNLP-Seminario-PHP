@@ -198,9 +198,7 @@ class InquilinoController
         try {
             $inquilinoDb = Inquilino::find($id);
             if ($inquilinoDb) {
-                $data = [
-                    'Inquilino' => $inquilinoDb,
-                ];
+                $data =  $inquilinoDb;
                 $statusCode = 200;
             } else {
                 $data = [
