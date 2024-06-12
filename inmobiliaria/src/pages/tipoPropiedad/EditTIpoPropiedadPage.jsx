@@ -29,7 +29,7 @@ const EditTipoPropiedadPage = () => {
 
     return (
         <div className='App'>
-            <h1>Crear Tipo de Propiedad</h1>
+            <h1>Editar Tipo de Propiedad</h1>
             {mensaje && <p>{mensaje}</p>}
             {!data ? (
                 <p>Cargando datos...</p>
