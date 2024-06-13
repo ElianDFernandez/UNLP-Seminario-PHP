@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
-import { useFindById, useEnviarForm } from '../../utils/function.js';
-import { useNavigate } from 'react-router-dom';
-import { urlTipoPropiedad } from '../../config/general-config.js';
+import React, { useState } from "react";
+import { useFindById, useEnviarForm } from "../../utils/function.js";
+import { useNavigate } from "react-router-dom";
+import { urlTipoPropiedad } from "../../config/general-config.js";
 
 const EditTipoPropiedadPage = () => {
-    const navigate = useNavigate();
-    const id = window.location.pathname.split('/').pop();
-    const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`); 
-    const [nombre, setNombre] = useState(data && data.nombre);
-    const { mensaje, enviarForm } = useEnviarForm();
-    const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const id = window.location.pathname.split("/").pop();
+  const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`);
+  const [nombre, setNombre] = useState(data && data.nombre);
+  const { mensaje, enviarForm } = useEnviarForm();
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const form = {
-            nombre: nombre,
-        };
-        const updateUrl = `${urlTipoPropiedad}/${id}`;
-        setLoading(true);
-        await enviarForm(form, updateUrl, 'PUT', fetchData);
-        setLoading(false);        
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = {
+      nombre: nombre,
     };
+    const updateUrl = `${urlTipoPropiedad}/${id}`;
+    setLoading(true);
+    await enviarForm(form, updateUrl, "PUT", fetchData);
+    setLoading(false);
+    setNombre("");
+  };
 
-    const handleGoBack = () => {
-        navigate(-1);
-    };
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
     return (
         <div className='App'>
@@ -50,5 +51,4 @@ const EditTipoPropiedadPage = () => {
     );
 };
 
-
-export default EditTipoPropiedadPage
+export default EditTipoPropiedadPage;
