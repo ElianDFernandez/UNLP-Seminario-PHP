@@ -40,6 +40,7 @@ const NewLocalidadPage = () => {
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             disabled={loading}
+            required
           />
         </label>
         <button type="submit" disabled={loading}>

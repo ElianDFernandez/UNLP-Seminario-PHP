@@ -44,6 +44,7 @@ const EditLocalidadPage = () => {
               value={nombre}
               onChange={(event) => setNombre(event.target.value)}
               disabled={loading}
+              required
             />
           </label>
           <button type="submit" disabled={loading}>
