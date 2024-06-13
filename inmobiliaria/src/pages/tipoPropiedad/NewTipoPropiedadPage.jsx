@@ -11,6 +11,10 @@ const NewTipoPropiedadPage = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!nombre) {
+            alert('Por favor, ingrese un nombre para el tipo de propiedad.');
+            return;
+        }
         const data = {
             nombre: nombre,
         };

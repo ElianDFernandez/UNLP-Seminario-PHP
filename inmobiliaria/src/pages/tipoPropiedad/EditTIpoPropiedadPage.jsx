@@ -6,8 +6,8 @@ import { urlTipoPropiedad } from '../../config/general-config.js';
 const EditTipoPropiedadPage = () => {
     const navigate = useNavigate();
     const id = window.location.pathname.split('/').pop();
-    const [nombre, setNombre] = useState('');
-    const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`);
+    const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`); 
+    const [nombre, setNombre] = useState(data && data.nombre);
     const { mensaje, enviarForm } = useEnviarForm();
     const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,7 @@ const EditTipoPropiedadPage = () => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Nombre:
-                        <input type="text" placeholder={data.nombre} value={nombre} onChange={(event) => setNombre(event.target.value)} disabled={loading}/>
+                        <input type="text" defaultValue={data.nombre} placeholder={data.nombre} value={nombre} onChange={(event) => setNombre(event.target.value)} disabled={loading}/>
                     </label>
                     <button type="submit" disabled={loading}>
                         {loading ? 'Cargando...' : 'Guardar'}
