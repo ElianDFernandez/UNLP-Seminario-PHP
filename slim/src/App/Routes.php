@@ -17,6 +17,7 @@ $app->post('/localidades', LocalidadController::class . ':crear');
 $app->put('/localidades/{id}', LocalidadController::class . ':editar');
 $app->delete('/localidades/{id}', LocalidadController::class . ':eliminar');
 $app->get('/localidades', LocalidadController::class . ':listar');
+$app->get('/localidades/{id}', LocalidadController::class . ':buscar');
 
 //Inquilino
 $app->post('/inquilinos', InquilinoController::class . ':crear');

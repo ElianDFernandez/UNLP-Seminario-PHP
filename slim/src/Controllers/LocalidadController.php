@@ -168,4 +168,31 @@ class LocalidadController
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
     }
+
+    public function buscar(Request $request, Response $response, $args)
+    {
+        $id = $args['id'];
+        try {
+            $localidadDb = Localidad::find($id);
+            if ($localidadDb) {
+                $data = $localidadDb;
+                $statusCode = 200;
+            } else {
+                $data = [
+                    'code' => 404,
+                    'message' => 'Localidad no encontrada',
+                ];
+                $statusCode = 404;
+            }
+        } catch (Exception $e) {
+            $data = [
+                'code' => 500,
+                'message' => 'Error en la base de datos: ' . $e->getMessage(),
+            ];
+            $statusCode = 500;
+        }
+        $response->getBody()->write(json_encode($data));
+
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($statusCode);
+    }
 }

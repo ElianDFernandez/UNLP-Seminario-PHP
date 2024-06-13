@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useFindById, useEnviarForm } from "../../utils/function.js";
 import { useNavigate } from "react-router-dom";
-import { urlTipoPropiedad } from "../../config/general-config.js";
+import { urlLocalidad } from "../../config/general-config.js";
 
-const EditTipoPropiedadPage = () => {
+const EditLocalidadPage = () => {
   const navigate = useNavigate();
   const id = window.location.pathname.split("/").pop();
-  const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`);
+  const { data, fetchData } = useFindById(`${urlLocalidad}/${id}`);
   const [nombre, setNombre] = useState(data && data.nombre);
   const { mensaje, enviarForm } = useEnviarForm();
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const EditTipoPropiedadPage = () => {
     const form = {
       nombre: nombre,
     };
-    const updateUrl = `${urlTipoPropiedad}/${id}`;
+    const updateUrl = `${urlLocalidad}/${id}`;
     setLoading(true);
     await enviarForm(form, updateUrl, "PUT", fetchData);
     setLoading(false);
@@ -29,7 +29,7 @@ const EditTipoPropiedadPage = () => {
 
   return (
     <div className="App">
-      <h1>Editar Tipo de Propiedad</h1>
+      <h1>Editar Localidad</h1>
       {mensaje && <p>{mensaje}</p>}
       {!data ? (
         <p>Cargando datos...</p>
@@ -58,4 +58,4 @@ const EditTipoPropiedadPage = () => {
   );
 };
 
-export default EditTipoPropiedadPage;
+export default EditLocalidadPage;
