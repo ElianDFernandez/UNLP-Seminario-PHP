@@ -74,6 +74,6 @@ export const useFindById = (url) => {
             setData(result);
         };
         fetchData();
-    }, [updateFlag]);
+    }, [url,updateFlag]);
     return { data, fetchData: () => setUpdateFlag(!updateFlag) };
 }

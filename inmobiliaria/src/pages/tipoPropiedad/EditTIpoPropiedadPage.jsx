@@ -19,8 +19,7 @@ const EditTipoPropiedadPage = () => {
         const updateUrl = `${urlTipoPropiedad}/${id}`;
         setLoading(true);
         await enviarForm(form, updateUrl, 'PUT', fetchData);
-        setLoading(false);
-        setNombre('');
+        setLoading(false);        
     };
 
     const handleGoBack = () => {
@@ -37,7 +36,7 @@ const EditTipoPropiedadPage = () => {
                 <form onSubmit={handleSubmit}>
                     <label>
                         Nombre:
-                        <input type="text" defaultValue={data.nombre} placeholder={data.nombre} value={nombre} onChange={(event) => setNombre(event.target.value)} disabled={loading}/>
+                        <input type="text" defaultValue={data.nombre} value={nombre} placeholder={data.nombre} onChange={(event) => setNombre(event.target.value)} disabled={loading} required/>
                     </label>
                     <button type="submit" disabled={loading}>
                         {loading ? 'Cargando...' : 'Guardar'}

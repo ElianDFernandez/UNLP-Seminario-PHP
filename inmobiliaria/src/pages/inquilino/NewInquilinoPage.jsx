@@ -39,23 +39,23 @@ const NewInquilinoPage = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     Nombre:
-                    <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} disabled={loading}/>
+                    <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} disabled={loading} required/>
                 </label>
                 <label>
                     Apellido:
-                    <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} disabled={loading}/>
+                    <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} disabled={loading} required/>
                 </label>
                 <label>
                     Documento:
-                    <input type="text" value={documento} onChange={(e) => setDocumento(e.target.value)} disabled={loading}/>
+                    <input type="text" value={documento} onChange={(e) => setDocumento(e.target.value)} disabled={loading} required/>
                 </label>
                 <label>
                     Email:
-                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} disabled={loading}/>
+                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
                 </label>
                 <label>
                     Activo:
-                    <input type="checkbox" checked={activo} onChange={(e) => setActivo(e.target.checked)} disabled={loading}/>
+                    <input type="checkbox" checked={activo} onChange={(e) => setActivo(e.target.checked)} disabled={loading} required/>
                 </label>
                 <button type="submit" disabled={loading}>
                     {loading ? 'Cargando...' : 'Crear'}
