@@ -14,6 +14,10 @@ import LocalidadPage from "../pages/localidad/LocalidadPage";
 import NewLocalidadPage from "../pages/localidad/NewLocalidadPage";
 import EditLocalidadPage from "../pages/localidad/EditLocalidadPage";
 
+import ReservaPage from "../pages/reserva/ReservaPage";
+import NewReservaPage from "../pages/reserva/NewReservaPage";
+import EditReservaPage from "../pages/reserva/EditReservaPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +39,10 @@ function App() {
         <Route path="/localidades" element={<LocalidadPage />} />
         <Route path="/localidades/new" element={<NewLocalidadPage />} />
         <Route path="/localidades/edit/:id" element={<EditLocalidadPage />} />
+
+        <Route path="/reservas" element={<ReservaPage />} />
+        <Route path="/reservas/new" element={<NewReservaPage />} />
+        <Route path="/reservas/edit/:id" element={<EditReservaPage />} />
       </Routes>
     </BrowserRouter>
   );
