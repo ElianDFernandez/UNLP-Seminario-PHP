@@ -5,7 +5,7 @@ import { urlReserva } from "../../config/general-config.js";
 
 const NewReservaPage = () => {
   const [inquilino, setInquilino] = useState("");
-  const [localidad, setLocalidad] = useState("");
+  const [propiedad, setPropiedad] = useState("");
   const [fecha_desde, setFecha] = useState("");
   const [cant_noches, setNoches] = useState("");
   const [valor_total, setValor] = useState("");
@@ -17,7 +17,7 @@ const NewReservaPage = () => {
     event.preventDefault();
     const data = {
       inquilino_id: inquilino,
-      localidad_id: localidad,
+      propiedad_id: propiedad,
       fecha_desde: fecha_desde,
       cantidad_noches: cant_noches,
     };
@@ -46,11 +46,11 @@ const NewReservaPage = () => {
           />
         </label>
         <label>
-          Localidad:
+          Propiedad:
           <input
             type="text"
-            value={localidad}
-            onChange={(e) => setLocalidad(e.target.value)}
+            value={propiedad}
+            onChange={(e) => setPropiedad(e.target.value)}
             disabled={loading}
           />
         </label>
