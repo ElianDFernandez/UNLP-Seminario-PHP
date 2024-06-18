@@ -11,9 +11,6 @@ class propiedad extends DataBase
     protected ?int $id;
     protected string $domicilio;
     protected int $localidad_id;
-    protected ?int $cantidad_habitaciones;
-    protected ?int $cantidad_banios;
-    protected bool $cochera;
     protected int $cantidad_huespedes;
     protected string $fecha_inicio_disponibilidad;
     protected int $cantidad_dias;
@@ -24,13 +21,10 @@ class propiedad extends DataBase
     protected string $imagen;
     protected string $tipo_imagen;
 
-    public function __construct($domicilio, $localidad_id, $cantidad_habitaciones, $cantidad_banios, $cochera, $cantidad_huespedes, $fecha_inicio_disponibilidad, $cantidad_dias, $disponible, $valor_noche, $tipo_propiedad_id, $imagen, $tipo_imagen, $id = null)
+    public function __construct($domicilio, $localidad_id, $cantidad_huespedes, $fecha_inicio_disponibilidad, $cantidad_dias, $disponible, $valor_noche, $tipo_propiedad_id, $imagen, $tipo_imagen, $id = null)
     {
         $this->domicilio = $domicilio;
         $this->localidad_id = $localidad_id;
-        $this->cantidad_habitaciones = $cantidad_habitaciones;
-        $this->cantidad_banios = $cantidad_banios;
-        $this->cochera = $cochera;
         $this->cantidad_huespedes = $cantidad_huespedes;
         $this->fecha_inicio_disponibilidad = $fecha_inicio_disponibilidad;
         $this->cantidad_dias = $cantidad_dias;
@@ -66,7 +60,8 @@ class propiedad extends DataBase
         return $this->save($this);
     }
 
-    public static function reservas($id) {
+    public static function reservas($id)
+    {
         return Reserva::select("WHERE propiedad_id = " . $id);
     }
 
@@ -76,7 +71,7 @@ class propiedad extends DataBase
         $fecha_desde = strtotime($fecha_desde);
         $fechaFin = strtotime('+' . $cantidad_noches . ' days', $fecha_desde);
         $fechaDesdeDisponibilidad = strtotime($propiedad['fecha_inicio_disponibilidad']);
-        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fechaDesdeDisponibilidad)-1;
+        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fechaDesdeDisponibilidad) - 1;
         if ($fecha_desde >= $fechaDesdeDisponibilidad && $fechaFin <= $fechaFinDisponibilidad) {
             return true;
         } else {
