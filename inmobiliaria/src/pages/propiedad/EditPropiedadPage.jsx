@@ -130,6 +130,17 @@ const EditPropiedadPage = () => {
               disabled={loading}
             />
           </label>
+          <label>
+            dias:
+            <input
+              type="text"
+              placeholder={data.dias}
+              value={dias}
+              onChange={(event) => setDias(event.target.value)}
+              disabled={loading}
+            />
+          </label>
+
           <button type="submit" disabled={loading}>
             {loading ? "Cargando..." : "Guardar"}
           </button>

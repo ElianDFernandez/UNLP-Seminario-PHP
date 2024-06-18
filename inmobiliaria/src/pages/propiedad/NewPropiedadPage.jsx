@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEnviarForm } from "../../utils/function.js";
 import { urlPropiedad } from "../../config/general-config.js";
 
-const newPropiedadPage = () => {
+const NewPropiedadPage = () => {
   const [domicilio, setDomicilio] = useState("");
   const [localidad, setLocalidad] = useState("");
   const [huespedes, setHuespedes] = useState("");
@@ -13,6 +13,7 @@ const newPropiedadPage = () => {
   const [valorNoche, setValor] = useState("");
   const [tipo, setTipo] = useState("");
   const [imagen, setImagen] = useState("");
+  const [loading, setLoading] = useState(false);
   const { mensaje, enviarForm } = useEnviarForm();
   const navigate = useNavigate();
 
@@ -27,12 +28,12 @@ const newPropiedadPage = () => {
       disponible: disponible,
       valor_noche: valorNoche,
       tipo_propiedad_id: tipo,
-      imagen: imagen,
+      imagen: imagen
     };
     setLoading(true);
     await enviarForm(data, urlPropiedad);
     setLoading(false);
-    setdomicilio("");
+    setDomicilio("");
   };
 
   const handleGoBack = () => {
@@ -83,9 +84,9 @@ const newPropiedadPage = () => {
         <label>
           dias:
           <input
-            type="text"
+            type="number"
             value={dias}
-            onChange={(e) => setDias(e.target.checked)}
+            onChange={(e) => setDias(e.target.value)}
             disabled={loading}
           />
         </label>
@@ -136,4 +137,4 @@ const newPropiedadPage = () => {
   );
 };
 
-export default newPropiedadPage;
+export default NewPropiedadPage;

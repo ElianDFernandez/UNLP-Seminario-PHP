@@ -19,8 +19,8 @@ import NewReservaPage from "../pages/reserva/NewReservaPage";
 import EditReservaPage from "../pages/reserva/EditReservaPage";
 
 import PropiedadPage from "../pages/propiedad/PropiedadPage";
-import NewInquilinoPage from "../pages/inquilino/NewInquilinoPage";
-import EditInquilinoPage from "../pages/inquilino/EditInquilinoPage";
+import NewPropiedadPage from "../pages/propiedad/NewPropiedadPage";
+import EditPropiedadPage from "../pages/propiedad/EditPropiedadPage";
 
 function App() {
   return (
