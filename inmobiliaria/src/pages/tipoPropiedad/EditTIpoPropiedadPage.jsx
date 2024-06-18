@@ -46,7 +46,7 @@ const EditTipoPropiedadPage = () => {
               disabled={loading}
             />
           </label>
-          <button type="submit" disabled={loading}>
+          <button type="submit" disabled={loading || !nombre}>
             {loading ? "Cargando..." : "Guardar"}
           </button>
           <button type="button" onClick={handleGoBack} disabled={loading}>
