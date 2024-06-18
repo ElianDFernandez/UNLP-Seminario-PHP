@@ -43,7 +43,7 @@ const NewLocalidadPage = () => {
             required
           />
         </label>
-        <button type="submit" disabled={loading}>
+        <button type="submit" disabled={loading || !nombre}>
           {loading ? "Cargando..." : "Crear"}
         </button>
         <button type="button" onClick={handleGoBack} disabled={loading}>
