@@ -13,6 +13,9 @@ const NewPropiedadPage = () => {
   const [valorNoche, setValor] = useState("");
   const [tipo, setTipo] = useState("");
   const [imagen, setImagen] = useState("");
+  const [cantidadHabitaciones, setHabitaciones] = useState("");
+  const [cantidadBanios, setBanios] = useState("");
+  const [cochera, setCochera] = useState(false);
   const [loading, setLoading] = useState(false);
   const { mensaje, enviarForm } = useEnviarForm();
   const navigate = useNavigate();
@@ -28,7 +31,10 @@ const NewPropiedadPage = () => {
       disponible: disponible,
       valor_noche: valorNoche,
       tipo_propiedad_id: tipo,
-      imagen: imagen
+      imagen: imagen,
+      cantidad_habitaciones: cantidadHabitaciones,  
+      cantidad_banios: cantidadBanios,
+      cochera: cochera
     };
     setLoading(true);
     await enviarForm(data, urlPropiedad);
@@ -126,6 +132,35 @@ const NewPropiedadPage = () => {
             disabled={loading}
           />
         </label>
+        <label>
+          cantidadHabitaciones:
+          <input
+            type="number"
+            value={cantidadHabitaciones}
+            onChange={(e) => setHabitaciones(e.target.value)}
+            disabled={loading}
+          />
+        </label>
+        
+        <label>
+          cantidadBanios:
+          <input
+            type="number"
+            value={cantidadBanios}
+            onChange={(e) => setBanios(e.target.value)}
+            disabled={loading}
+          />
+        </label>
+        <label>
+          cochera:
+          <input
+            type="checkbox"
+            checked={cochera}
+            onChange={(e) => setCochera(e.target.checked)}
+            disabled={loading}
+          />
+        </label>
+        
         <button type="submit" disabled={loading}>
           {loading ? "Cargando..." : "Crear"}
         </button>

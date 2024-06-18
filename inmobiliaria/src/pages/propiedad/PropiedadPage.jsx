@@ -40,6 +40,9 @@ const PropiedadPage = () => {
                 {propiedad.valor_noche}
                 {propiedad.tipo_propiedad_id} {/* deberia ser inner join*/}
                 {propiedad.imagen}
+                {propiedad.cantidad_habitaciones}
+                {propiedad.cantidad_banios}
+                {propiedad.cochera}
                 <button onClick={() => handleEdit(propiedad.id)}>Editar</button>
                 <button onClick={() => handleDelete(propiedad.id)}>
                   Eliminar

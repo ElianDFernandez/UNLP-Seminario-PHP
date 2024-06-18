@@ -15,6 +15,9 @@ const EditPropiedadPage = () => {
   const [valorNoche, setValor] = useState("");
   const [tipo, setTipo] = useState("");
   const [imagen, setImagen] = useState("");
+  const [cantidadHabitaciones, setHabitaciones] = useState("");
+  const [cantidadBanios, setBanios] = useState("");
+  const [cochera, setCochera] = useState(false);
   const { data, fetchData } = useFindById(`${urlPropiedad}/${id}`);
   const { mensaje, enviarForm } = useEnviarForm();
   const [loading, setLoading] = useState(false);
@@ -31,6 +34,9 @@ const EditPropiedadPage = () => {
       valor_noche: valorNoche,
       tipo_propiedad_id: tipo,
       imagen: imagen,
+      cantidad_habitaciones: cantidadHabitaciones,
+      cantidad_banios: cantidadBanios,
+      cochera: cochera,
     };
     const updateUrl = `${urlPropiedad}/${id}`;
     setLoading(true);
@@ -140,7 +146,34 @@ const EditPropiedadPage = () => {
               disabled={loading}
             />
           </label>
+          <label>
+            cantidadHabitaciones:
+            <input
+              type="number"
+              value={cantidadHabitaciones}
+              onChange={(e) => setHabitaciones(e.target.value)}
+              disabled={loading}
+            />
+          </label>
 
+          <label>
+            cantidadBanios:
+            <input
+              type="number"
+              value={cantidadBanios}
+              onChange={(e) => setBanios(e.target.value)}
+              disabled={loading}
+            />
+          </label>
+          <label>
+            cochera:
+            <input
+              type="checkbox"
+              checked={cochera}
+              onChange={(e) => setCochera(e.target.checked)}
+              disabled={loading}
+            />
+          </label>
           <button type="submit" disabled={loading}>
             {loading ? "Cargando..." : "Guardar"}
           </button>
