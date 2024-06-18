@@ -30,6 +30,11 @@ body {
   gap: 30px;
   background-color: rgb(229, 229, 229);
 }
+.nav-list {
+  display: flex;
+  gap: 30px;
+
+}
 
 .home {
   justify-content: center; /* No necesitas esta regla si ya tienes .NavBarclass con justify-content: center */

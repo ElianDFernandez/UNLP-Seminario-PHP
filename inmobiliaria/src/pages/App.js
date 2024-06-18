@@ -1,6 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import NavBar from "../components/NavBarComponent";
+import Header from "../components/HeaderComponent";
+import Footer from "../components/FooterComponent";
+
+import "../assets/styles/styles.css";
 
 import TipoPropiedadPage from "../pages/tipoPropiedad/TipoPropiedadPage";
 import NewTipoPropiedadPage from "../pages/tipoPropiedad/NewTipoPropiedadPage";
@@ -25,6 +29,7 @@ import EditPropiedadPage from "../pages/propiedad/EditPropiedadPage";
 function App() {
   return (
     <BrowserRouter>
+      <Header />
       <NavBar />
       <Routes>
         {/* Rutas de la aplicación */}
@@ -54,6 +59,7 @@ function App() {
         <Route path="/propiedades/new" element={<NewPropiedadPage />} />
         <Route path="/propiedades/edit/:id" element={<EditPropiedadPage />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
