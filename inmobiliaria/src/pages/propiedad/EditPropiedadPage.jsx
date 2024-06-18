@@ -34,6 +34,7 @@ const EditPropiedadPage = () => {
       valor_noche: valorNoche,
       tipo_propiedad_id: tipo,
       imagen: imagen,
+      tipo_imagen: "url",
       cantidad_habitaciones: cantidadHabitaciones,
       cantidad_banios: cantidadBanios,
       cochera: cochera,
