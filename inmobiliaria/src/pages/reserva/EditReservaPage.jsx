@@ -82,6 +82,7 @@ const EditReservaPage = () => {
               disabled={loading}
             />
           </label>
+          <label>Valor Total:</label>
           <button type="submit" disabled={loading}>
             {loading ? "Cargando..." : "Guardar"}
           </button>
