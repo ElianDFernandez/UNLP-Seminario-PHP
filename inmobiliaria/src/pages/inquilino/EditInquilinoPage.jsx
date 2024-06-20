@@ -20,21 +20,33 @@ const EditInquilinoPage = () => {
         const errores = {};
         let isError = false;
         if (!form.nombre.trim()) {
-          errores['nombre'] = "El campo nombre es obligatorio";
-          isError = true;
+            errores['nombre'] = "El campo nombre es obligatorio";
+            isError = true;
+        } else if (form.nombre.length > 25) {
+        errores['nombre'] = "El nombre no puede tener más de 25 caracteres";
+        isError = true;
         }
         if (!form.apellido.trim()) {
-          errores['apellido'] = "El campo apellido es obligatorio";
-          isError = true;
+        errores['apellido'] = "El campo apellido es obligatorio";
+        isError = true;
+        } else if (form.apellido.length > 15) {
+        errores['apellido'] = "El apellido no puede tener más de 15 caracteres";
+        isError = true;
         }
         if (!form.documento.trim()) {
-          errores['documento'] = "El campo documento es obligatorio";
-          isError = true;
+        errores['documento'] = "El campo documento es obligatorio";
+        isError = true;
+        } else if (form.documento.length > 25) {
+        errores['documento'] = "El documento no puede tener más de 25 caracteres";
+        isError = true;
         }
         if (!form.email.trim()) {
-          errores['email'] = "El campo email es obligatorio";
-          isError = true;
-        }
+            errores['email'] = "El campo email es obligatorio";
+            isError = true;
+          } else if (form.email.length > 20) {
+            errores['email'] = "El email no puede tener más de 20 caracteres";
+            isError = true;
+          }
 
         return isError ? errores : null;
       };

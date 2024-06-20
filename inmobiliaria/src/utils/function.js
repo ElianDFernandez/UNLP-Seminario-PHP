@@ -33,7 +33,7 @@ export const useEnviarForm = () => {
             let json = await res.json();
             console.log(json);
             setMensaje(json.message);
-            setTimeout(() => { setMensaje(''); }, 6000);
+            setTimeout(() => { setMensaje(''); }, 8000);
             if (callback) callback();
         } catch (error) {
             console.error('Error:', error);
@@ -85,21 +85,24 @@ export const useForm = (dataInicial, validacion, url, method = 'POST') => {
     const { mensaje, enviarForm } = useEnviarForm();
   
     const handleChange = (event) => {
-        const { name, value, type, checked } = event.target;
-        const newValue = type === 'checkbox' ? checked ? true : false : value;
-        setForm({ ...form, [name]: newValue });
+      const { name, value, type, checked } = event.target;
+      const newValue = type === 'checkbox' ? checked : value;
+      setForm({ ...form, [name]: newValue });
     };
   
     const handleSubmit = async (event) => {
       event.preventDefault();
       const erroresValidacion = validacion(form);
-      if (erroresValidacion == null) {
+      if (!erroresValidacion) {
         setLoading(true);
         await enviarForm(form, url, method, () => {
           setLoading(false);
         });
       } else {
         setErrores(erroresValidacion);
+        setTimeout(() => {
+          setErrores({});
+        }, 5000); // Limpiar errores después de 30 segundos
       }
     };
   
