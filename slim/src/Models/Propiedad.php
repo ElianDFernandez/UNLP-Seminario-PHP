@@ -66,7 +66,8 @@ class propiedad extends DataBase
         return $this->save($this);
     }
 
-    public static function reservas($id) {
+    public static function reservas($id)
+    {
         return Reserva::select("WHERE propiedad_id = " . $id);
     }
 
@@ -76,7 +77,7 @@ class propiedad extends DataBase
         $fecha_desde = strtotime($fecha_desde);
         $fechaFin = strtotime('+' . $cantidad_noches . ' days', $fecha_desde);
         $fechaDesdeDisponibilidad = strtotime($propiedad['fecha_inicio_disponibilidad']);
-        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fechaDesdeDisponibilidad)-1;
+        $fechaFinDisponibilidad = strtotime('+' . $propiedad['cantidad_dias'] . ' days', $fechaDesdeDisponibilidad) - 1;
         if ($fecha_desde >= $fechaDesdeDisponibilidad && $fechaFin <= $fechaFinDisponibilidad) {
             return true;
         } else {

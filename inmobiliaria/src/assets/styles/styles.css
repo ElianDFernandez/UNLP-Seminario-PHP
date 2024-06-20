@@ -1,0 +1,41 @@
+body {
+  font-family: sans-serif;
+}
+
+.App-logo {
+  max-width: 80px;
+}
+
+.cabeza {
+  display: flex;
+  justify-content: center;
+  background-color: rgb(229, 229, 229);
+}
+
+.footclass {
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 98%;
+  padding: 10px;
+  background-color: rgb(229, 229, 229);
+}
+
+.NavBarclass {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  background-color: rgb(229, 229, 229);
+}
+.nav-list {
+  display: flex;
+  gap: 30px;
+
+}
+
+.home {
+  justify-content: center; /* No necesitas esta regla si ya tienes .NavBarclass con justify-content: center */
+}
