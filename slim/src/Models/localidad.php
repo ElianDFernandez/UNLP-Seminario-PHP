@@ -26,6 +26,9 @@ class Localidad extends DataBase
         if (!$localidad) {
             $localidad = new Localidad($data['nombre']);
         } else {
+            if (is_array($localidad) && count($localidad) > 0) {
+                $localidad = $localidad[0];
+            }
             $localidad = new Localidad($localidad['nombre'], $localidad["id"]);
         }
         return $localidad;

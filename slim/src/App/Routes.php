@@ -38,6 +38,7 @@ $app->post('/reservas', ReservaController::class . ':crear');
 $app->put('/reservas/{id}', ReservaController::class . ':editar');
 $app->delete('/reservas/{id}', ReservaController::class . ':eliminar');
 $app->get('/reservas', ReservaController::class . ':listar');
+$app->get('/reservas/{id}', ReservaController::class . ':buscar');
 
 //TipoPropiedad
 $app->post('/tipos_propiedad', TipoPropiedadController::class . ':crear');
