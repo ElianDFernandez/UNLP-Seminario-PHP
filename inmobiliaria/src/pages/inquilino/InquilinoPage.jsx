@@ -22,29 +22,29 @@ const InquilinoPage = () => {
     };
 
     return (
-        <div className='App'>
-            <h1>Inquilinos</h1>
-            <button onClick={handleCreateClick}>Crear Nuevo Inquilino</button>
-            <div className='Tabla'>
-                <ul>
-                    {mensaje && <p>{mensaje}</p>}
-                    {data ? (
-                        data.map((inquilino) => (
-                            <li key={inquilino.id}> 
-                                {inquilino.nombre}
-                                {inquilino.apellido}
-                                {inquilino.documento}
-                                {inquilino.email}
-                                <button onClick={() => handleEdit(inquilino.id)}>Editar</button>
-                                <button onClick={() => handleDelete(inquilino.id)}>Eliminar</button>
-                            </li>
-                        ))
-                    ) : (
-                        <li>Cargando...</li>
-                    )}
-                </ul>
-            </div>
+    <div className='App'>
+        <h1>Inquilinos</h1>
+        <button onClick={handleCreateClick}>Crear Nuevo Inquilino</button>
+        <div className='Tabla'>
+            <ul>
+                {mensaje && <p>{mensaje}</p>}
+                {data ? (
+                    data.map((inquilino) => (
+                        <li key={inquilino.id}> 
+                            {inquilino.nombre}
+                            {inquilino.apellido}
+                            {inquilino.documento}
+                            {inquilino.email}
+                            <button onClick={() => handleEdit(inquilino.id)}>Editar</button>
+                            <button onClick={() => handleDelete(inquilino.id)}>Eliminar</button>
+                        </li>
+                    ))
+                ) : (
+                    <li>Cargando...</li>
+                )}
+            </ul>
         </div>
+    </div>
     );
 };
 

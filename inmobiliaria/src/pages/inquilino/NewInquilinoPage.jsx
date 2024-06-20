@@ -1,32 +1,42 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useEnviarForm } from '../../utils/function.js';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "../../utils/function";
 import { urlInquilino } from '../../config/general-config.js';
 
 const NewInquilinoPage = () => {
-    const [nombre, setNombre] = useState('');
-    const [apellido, setApellido] = useState('');
-    const [documento, setDocumento] = useState('');
-    const [email, setEmail] = useState('');
-    const [activo, setActivo] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const { mensaje, enviarForm } = useEnviarForm();
-    const navigate = useNavigate();
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const data = {
-            nombre: nombre,
-            apellido: apellido,
-            documento: documento,
-            email: email,
-            activo: activo
-        };
-        setLoading(true);
-        await enviarForm(data, urlInquilino);
-        setLoading(false);
-        setNombre('');
+    const dataInicial = {
+        nombre: '',
+        apellido: '',
+        documento: '',
+        email: '',
+        activo: false
     };
+
+    const validacion = (form) => {
+        const errores = {};
+        let isError = false;
+        if (!form.nombre.trim()) {
+          errores['nombre'] = "El campo nombre es obligatorio";
+          isError = true;
+        }
+        if (!form.apellido.trim()) {
+          errores['apellido'] = "El campo apellido es obligatorio";
+          isError = true;
+        }
+        if (!form.documento.trim()) {
+          errores['documento'] = "El campo documento es obligatorio";
+          isError = true;
+        }
+        if (!form.email.trim()) {
+          errores['email'] = "El campo email es obligatorio";
+          isError = true;
+        }
+        return isError ? errores : null;
+      };
+
+    const { form, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, urlInquilino, 'POST');
+
+    const navigate = useNavigate();
 
     const handleGoBack = () => {
         navigate(-1);
@@ -37,30 +47,28 @@ const NewInquilinoPage = () => {
             <h1>Crear Inquilino</h1>
             {mensaje && <p>{mensaje}</p>}
             <form onSubmit={handleSubmit}>
-                <label>
-                    Nombre:
-                    <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} disabled={loading} required/>
+                <label>Nombre:
+                    <input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
+                    {errores.nombre && <div className="alerta"><p>{errores.nombre}</p></div>}
                 </label>
-                <label>
-                    Apellido:
-                    <input type="text" value={apellido} onChange={(e) => setApellido(e.target.value)} disabled={loading} required/>
+                <label>Apellido:
+                    <input type="text" className="form-control" name="apellido" value={form.apellido} onChange={handleChange} />
+                    {errores.apellido && <div className="alerta"><p>{errores.apellido}</p></div>}
                 </label>
-                <label>
-                    Documento:
-                    <input type="text" value={documento} onChange={(e) => setDocumento(e.target.value)} disabled={loading} required/>
+                <label>Documento:
+                    <input type="text" className="form-control" name="documento" value={form.documento} onChange={handleChange} />
+                    {errores.documento && <div className="alerta"><p>{errores.documento}</p></div>}
                 </label>
-                <label>
-                    Email:
-                    <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} disabled={loading} required/>
+                <label>Email:
+                    <input type="text" className="form-control" name="email" value={form.email} onChange={handleChange} />
+                    {errores.email && <div className="alerta"><p>{errores.email}</p></div>}
                 </label>
-                <label>
-                    Activo:
-                    <input type="checkbox" checked={activo} onChange={(e) => setActivo(e.target.checked)} disabled={loading} required/>
+                <label>Activo:
+                    <input type="checkbox" className="form-control" name="activo" checked={form.activo} onChange={handleChange} />
+                    {errores.activo && <div className="alerta"><p>{errores.activo}</p></div>}
                 </label>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Cargando...' : 'Crear'}
-                </button>
-                <button type="button" onClick={handleGoBack} disabled={loading}>Volver</button>
+                <button type="submit">Crear</button>
+                <button type="button" onClick={handleGoBack}>Volver</button>
             </form>
         </div>
     );

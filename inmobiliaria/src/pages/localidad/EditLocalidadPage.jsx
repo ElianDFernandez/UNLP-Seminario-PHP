@@ -1,54 +1,44 @@
-import React, { useState } from "react";
-import { useFindById, useEnviarForm } from "../../utils/function.js";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useFindById, useForm } from "../../utils/function.js";
 import { urlLocalidad } from "../../config/general-config.js";
 
 const EditLocalidadPage = () => {
   const navigate = useNavigate();
   const id = window.location.pathname.split("/").pop();
   const { data, fetchData } = useFindById(`${urlLocalidad}/${id}`);
-  const [nombre, setNombre] = useState(data && data.nombre);
-  const { mensaje, enviarForm } = useEnviarForm();
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = {
-      nombre: nombre,
-    };
-    const updateUrl = `${urlLocalidad}/${id}`;
-    setLoading(true);
-    await enviarForm(form, updateUrl, "PUT", fetchData);
-    setLoading(false);
-    setNombre("");
+  const dataInicial = {
+    nombre: data ? data.nombre : "",
   };
+
+  const validacion = (form) => {
+    const errores = {};
+    if (!form.nombre.trim()) {
+      errores.nombre = "El campo nombre es obligatorio";
+      return errores;
+    }
+    return null;
+  };
+
+  const { form, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, `${urlLocalidad}/${id}`, 'PUT');
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
   return (
-    <div className="App">
+    <div className='App'>
       <h1>Editar Localidad</h1>
       {mensaje && <p>{mensaje}</p>}
-      {!data ? (
-        <p>Cargando datos...</p>
-      ) : (
+      {!data ? (<p>Cargando datos...</p>) : (
         <form onSubmit={handleSubmit}>
           <label>
             Nombre:
-            <input
-              type="text"
-              defaultValue={data.nombre}
-              placeholder={data.nombre}
-              value={nombre}
-              onChange={(event) => setNombre(event.target.value)}
-              disabled={loading}
-              required
-            />
+            <input type="text" name="nombre" placeholder = {data.nombre} value={form.nombre} onChange={handleChange} disabled={loading}/>
+            {errores.nombre && <div className="alerta">{errores.nombre}</div>}
           </label>
-          <button type="submit" disabled={loading || !nombre}>
-            {loading ? "Cargando..." : "Guardar"}
+          <button type="submit" disabled={loading}>
+            {loading ? 'Cargando...' : 'Guardar'}
           </button>
           <button type="button" onClick={handleGoBack} disabled={loading}>
             Volver
@@ -58,5 +48,6 @@ const EditLocalidadPage = () => {
     </div>
   );
 };
+
 
 export default EditLocalidadPage;

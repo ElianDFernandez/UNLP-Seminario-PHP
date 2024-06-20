@@ -1,49 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useEnviarForm } from "../../utils/function.js";
-import { urlTipoPropiedad } from "../../config/general-config.js";
+import { useForm } from "../../utils/function";
+import { urlTipoPropiedad } from "../../config/general-config";
 
 const NewTipoPropiedadPage = () => {
-  const [nombre, setNombre] = useState("");
-  const [loading, setLoading] = useState(false);
-  const { mensaje, enviarForm } = useEnviarForm();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (!nombre) {
-      alert("Por favor, ingrese un nombre para el tipo de propiedad.");
-      return;
-    }
-    const data = {
-      nombre: nombre,
-    };
-    setLoading(true);
-    await enviarForm(data, urlTipoPropiedad);
-    setLoading(false);
-    setNombre("");
+  const dataInicial = {
+    nombre: '',
   };
+
+  const validacion = (form) => {
+    const errores = {};
+    let isError = false;
+    if (!form.nombre.trim()) {
+      errores['nombre'] = "El campo nombre es obligatorio";
+      isError = true;
+    }
+    return isError ? errores : null;
+  };
+
+  const { form, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, urlTipoPropiedad, 'POST');
+
+  const navigate = useNavigate();
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
-    return (
-        <div className='App'>
-            <h1>Crear Tipo de Propiedad</h1>
-            {mensaje && <p>{mensaje}</p>}
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Nombre:
-                    <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} disabled={loading} required/>
-                </label>
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Cargando...' : 'Crear'}
-                </button>
-                <button type="button" onClick={handleGoBack} disabled={loading}>Volver</button>
-            </form>
-        </div>
-    );
+  return (
+    <div className='App'>
+      <h1>Crear Tipo de Propiedad</h1>
+      {mensaje && <div className="mensaje"><p>{mensaje}</p></div>}
+      <form onSubmit={handleSubmit}>
+        <label>Nombre:
+        <input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
+        {errores.nombre && <div className="alerta"><p>{errores.nombre}</p></div>}
+        </label>
+        <button type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Crear'}</button>
+        <button type="button" onClick={handleGoBack} disabled={loading}>Volver</button>
+      </form>  
+    </div>
+  );
 };
 
 export default NewTipoPropiedadPage;

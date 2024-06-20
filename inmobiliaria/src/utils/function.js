@@ -33,7 +33,7 @@ export const useEnviarForm = () => {
             let json = await res.json();
             console.log(json);
             setMensaje(json.message);
-            setTimeout(() => { setMensaje(''); }, 3000);
+            setTimeout(() => { setMensaje(''); }, 6000);
             if (callback) callback();
         } catch (error) {
             console.error('Error:', error);
@@ -53,7 +53,7 @@ export const useEnviarDelete = () => {
             setMensaje(json.message);
             console.log(json);
             callback();  // Ejecuta la callback para actualizar los datos
-            setTimeout(() => { setMensaje(''); }, 3000);
+            setTimeout(() => { setMensaje(''); }, 6000);
         } catch (error) {
             console.error('Error al eliminar:', error);
         }
@@ -77,3 +77,31 @@ export const useFindById = (url) => {
     }, [url,updateFlag]);
     return { data, fetchData: () => setUpdateFlag(!updateFlag) };
 }
+
+export const useForm = (dataInicial, validacion, url, method = 'POST') => {
+    const [form, setForm] = useState(dataInicial);
+    const [loading, setLoading] = useState(false);
+    const [errores, setErrores] = useState({});
+    const { mensaje, enviarForm } = useEnviarForm();
+  
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        const newValue = type === 'checkbox' ? checked ? true : false : value;
+        setForm({ ...form, [name]: newValue });
+    };
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      const erroresValidacion = validacion(form);
+      if (erroresValidacion == null) {
+        setLoading(true);
+        await enviarForm(form, url, method, () => {
+          setLoading(false);
+        });
+      } else {
+        setErrores(erroresValidacion);
+      }
+    };
+  
+    return { form, errores, loading, handleChange, handleSubmit, mensaje };
+  };
