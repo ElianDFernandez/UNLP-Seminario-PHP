@@ -29,8 +29,7 @@ const NewTipoPropiedadPage = () => {
       <h1>Crear Tipo de Propiedad</h1>
       {mensaje && <div className="mensaje"><p>{mensaje}</p></div>}
       <form onSubmit={handleSubmit}>
-        <label>Nombre:
-          <input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
+        <label>Nombre:<input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
           {errores.nombre && <div className="alerta"><p>{errores.nombre}</p></div>}
         </label>
         <button type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Crear'}</button>

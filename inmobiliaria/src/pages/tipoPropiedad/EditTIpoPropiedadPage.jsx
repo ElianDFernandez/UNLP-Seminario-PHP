@@ -20,7 +20,7 @@ const EditTipoPropiedadPage = () => {
     }
     return errores;
   };
-  
+
   const { form, setForm, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, `${urlTipoPropiedad}/${id}`, 'PUT');
 
   useEffect(() => {
@@ -39,9 +39,7 @@ const EditTipoPropiedadPage = () => {
       {mensaje && <p>{mensaje}</p>}
       {!data ? (<p>Cargando datos...</p>) : (
         <form onSubmit={handleSubmit}>
-          <label>
-            Nombre:
-            <input type="text" name="nombre" value={form.nombre} onChange={handleChange} disabled={loading}/>
+          <label>Nombre:<input type="text" name="nombre" value={form.nombre} onChange={handleChange} disabled={loading}/>
             {errores.nombre && <div className="alerta">{errores.nombre}</div>}
           </label>
           <button type="submit" disabled={loading}>

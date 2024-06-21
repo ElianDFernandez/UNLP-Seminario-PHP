@@ -1,3 +1,4 @@
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../../utils/function";
 import { urlLocalidad } from "../../config/general-config";
@@ -9,15 +10,13 @@ const NewLocalidadPage = () => {
 
   const validacion = (form) => {
     const errores = {};
-    let isError = false;
     if (!form.nombre.trim()) {
       errores['nombre'] = "El campo nombre es obligatorio";
-      isError = true;
     }
-    return isError ? errores : null;
+    return errores;
   };
 
-  const { form, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, urlLocalidad, 'POST');
+  const { form, setForm, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, urlLocalidad, 'POST');
 
   const navigate = useNavigate();
 
@@ -30,9 +29,7 @@ const NewLocalidadPage = () => {
       <h1>Crear Localidad</h1>
       {mensaje && <p>{mensaje}</p>}
       <form onSubmit={handleSubmit}>
-        <label>
-          Nombre:
-          <input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
+        <label>Nombre:<input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
           {errores?.nombre && <p className="text-danger">{errores?.nombre}</p>}
         </label>
         <button type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Crear'}</button>
