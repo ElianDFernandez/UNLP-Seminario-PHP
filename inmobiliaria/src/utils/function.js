@@ -78,11 +78,16 @@ export const useFindById = (url) => {
     return { data, fetchData: () => setUpdateFlag(!updateFlag) };
 }
 
-export const useForm = (dataInicial, validacion, url, method = 'POST') => {
+export const useForm = (dataInicial = {}, validacion, url, method = 'POST') => {
     const [form, setForm] = useState(dataInicial);
     const [loading, setLoading] = useState(false);
     const [errores, setErrores] = useState({});
     const { mensaje, enviarForm } = useEnviarForm();
+  
+    // Precargar datos iniciales solo una vez al principio
+    useEffect(() => {
+      setForm(dataInicial);
+    }, []);
   
     const handleChange = (event) => {
       const { name, value, type, checked } = event.target;
@@ -93,7 +98,7 @@ export const useForm = (dataInicial, validacion, url, method = 'POST') => {
     const handleSubmit = async (event) => {
       event.preventDefault();
       const erroresValidacion = validacion(form);
-      if (!erroresValidacion) {
+      if (Object.keys(erroresValidacion).length === 0) { // No hay errores de validación
         setLoading(true);
         await enviarForm(form, url, method, () => {
           setLoading(false);
@@ -102,9 +107,9 @@ export const useForm = (dataInicial, validacion, url, method = 'POST') => {
         setErrores(erroresValidacion);
         setTimeout(() => {
           setErrores({});
-        }, 5000); // Limpiar errores después de 30 segundos
+        }, 5000);
       }
     };
   
-    return { form, errores, loading, handleChange, handleSubmit, mensaje };
+    return { form, setForm, errores, loading, handleChange, handleSubmit, mensaje };
   };

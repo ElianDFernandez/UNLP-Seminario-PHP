@@ -1,26 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFindById, useForm } from "../../utils/function.js";
-import { urlTipoPropiedad } from "../../config/general-config.js";
+import { useForm } from "../../utils/function";
+import { useFindById } from "../../utils/function"; // Asegúrate de importar useFindById si es necesario
+import { urlTipoPropiedad } from "../../config/general-config";
 
 const EditTipoPropiedadPage = () => {
   const navigate = useNavigate();
   const id = window.location.pathname.split("/").pop();
   const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`);
-  const dataInicial = {
-    nombre: data ? data.nombre : "",
-  };
 
   const validacion = (form) => {
     const errores = {};
-    if (!form.nombre.trim()) {
+    if (!form.nombre) {
       errores.nombre = "El campo nombre es obligatorio";
-      return errores;
     }
-    return null;
+    return errores;
   };
 
-  const { form, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, `${urlTipoPropiedad}/${id}`, 'PUT');
+  const { form, setForm, errores, loading, handleChange, handleSubmit, mensaje } = useForm({}, validacion, `${urlTipoPropiedad}/${id}`, 'PUT');
+
+  useEffect(() => {
+    if (data) {
+      setForm({ nombre: data.nombre });
+    }
+  }, [data, setForm]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -34,7 +37,7 @@ const EditTipoPropiedadPage = () => {
         <form onSubmit={handleSubmit}>
           <label>
             Nombre:
-            <input type="text" name="nombre" placeholder = {data.nombre} value={form.nombre} onChange={handleChange} disabled={loading}/>
+            <input type="text" name="nombre" value={form.nombre} onChange={handleChange} disabled={loading}/>
             {errores.nombre && <div className="alerta">{errores.nombre}</div>}
           </label>
           <button type="submit" disabled={loading}>

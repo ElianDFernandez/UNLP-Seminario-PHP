@@ -30,11 +30,6 @@ const NavBar = () => {
             Reservas
           </Link>
         </li>
-        <li className="nav-item">
-          <Link to="/propiedades" className="nav-link">
-            Propiedades
-          </Link>
-        </li>
       </ul>
     </nav>
   );

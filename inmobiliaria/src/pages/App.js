@@ -55,7 +55,7 @@ function App() {
         <Route path="/reservas/new" element={<NewReservaPage />} />
         <Route path="/reservas/edit/:id" element={<EditReservaPage />} />
 
-        <Route path="/propiedades" element={<PropiedadPage />} />
+        <Route path="/" element={<PropiedadPage />} />
         <Route path="/propiedades/new" element={<NewPropiedadPage />} />
         <Route path="/propiedades/edit/:id" element={<EditPropiedadPage />} />
       </Routes>
