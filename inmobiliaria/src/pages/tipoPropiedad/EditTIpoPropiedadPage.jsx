@@ -9,6 +9,10 @@ const EditTipoPropiedadPage = () => {
   const id = window.location.pathname.split("/").pop();
   const { data, fetchData } = useFindById(`${urlTipoPropiedad}/${id}`);
 
+  const dataInicial = {
+    nombre: data ? data.nombre : ''
+  };
+
   const validacion = (form) => {
     const errores = {};
     if (!form.nombre) {
@@ -16,8 +20,8 @@ const EditTipoPropiedadPage = () => {
     }
     return errores;
   };
-
-  const { form, setForm, errores, loading, handleChange, handleSubmit, mensaje } = useForm({}, validacion, `${urlTipoPropiedad}/${id}`, 'PUT');
+  
+  const { form, setForm, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, `${urlTipoPropiedad}/${id}`, 'PUT');
 
   useEffect(() => {
     if (data) {
