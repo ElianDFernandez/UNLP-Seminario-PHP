@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif; /* Cambia 'Arial' por la fuente que desees utilizar */
+    font-size: 16px; /* Tamaño base de la fuente */
+    line-height: 1.5; /* Altura de línea */
+    height: 100vh; /* Abarcar toda la altura de la pantalla */
+    margin: 0; /* Eliminar márgenes */
+    padding: 0; /* Eliminar relleno */
+  }
+
+/* Estilos para el Header */
+.Header {
+    background-color: #77bd60;
+    color: #fff;
+    padding: 10px 20px; /* Ajusta el padding según sea necesario */
+    display: flex;
+    align-items: center; /* Centra verticalmente los elementos */
+  }
+  
+  /* Estilos para la imagen del Header */
+  .Header img {
+    width: 100px; /* Ancho deseado para la imagen */
+    height: auto; /* Altura automática para mantener la proporción */
+    margin-right: 10px; /* Espacio entre la imagen y el título */
+  }
+  
+  /* Estilos para el título del Header */
+  .Header h1 {
+    margin: 0;
+  }
+
+/* Estilos para el NavBar */
+.NavBar {
+    background-color: #333;
+    color: #fff;
+    padding: 15px 0;
+    text-align: center;
+  }
+  
+  /* Estilos para la lista de navegación */
+  .nav-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Estilos para los elementos de la lista */
+  .nav-item {
+    display: inline-block;
+    margin-right: 20px;
+  }
+  
+  /* Estilos para los enlaces de navegación */
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Estilos para los enlaces de navegación al pasar el ratón por encima */
+  .nav-link:hover {
+    background-color: #555;
+  }
+
+.Footer {
+    background-color: #437a31;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    position: fixed; /* Posición fija */
+    bottom: 0; /* Anclado al fondo */
+    width: 100%; /* Ancho completo */
+  }

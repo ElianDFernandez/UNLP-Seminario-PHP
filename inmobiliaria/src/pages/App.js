@@ -4,7 +4,7 @@ import NavBar from "../components/NavBarComponent";
 import Header from "../components/HeaderComponent";
 import Footer from "../components/FooterComponent";
 
-import "../assets/styles/styles.css";
+import "../assets/styles/estilosGenerales.css";
 
 import TipoPropiedadPage from "../pages/tipoPropiedad/TipoPropiedadPage";
 import NewTipoPropiedadPage from "../pages/tipoPropiedad/NewTipoPropiedadPage";

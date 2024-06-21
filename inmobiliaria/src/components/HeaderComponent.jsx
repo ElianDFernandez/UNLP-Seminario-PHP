@@ -3,7 +3,7 @@ import Pipo from "../assets/images/pipo.png";
 
 const HeaderComponent = () => {
   return (
-    <header className="cabeza">
+    <header className="Header">
       <img src={Pipo} className="App-logo" alt="logo" />
       <h1>Pipo Propiedades</h1>
     </header>
