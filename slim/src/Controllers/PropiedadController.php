@@ -120,7 +120,7 @@ class PropiedadController
             try {
                 $id = $args['id'];
                 if (Propiedad::find($id)) { // Buscar por id para asegurar que existe, y verificar que no tenga mismos datos que otra localidad con findornew
-                    $propiedadDb = Propiedad::findOrNew($data); // Si encontro una en DB vuelve con id, si no vuelve con id null, es decir es nuevo
+                    $propiedadDb = Propiedad::new($data); // Si encontro una en DB vuelve con id, si no vuelve con id null, es decir es nuevo
                     if (!$propiedadDb->esNuevo()) {
                         $data = [
                             'code' => 409,
@@ -239,9 +239,7 @@ class PropiedadController
         try {
             $propiedadDb = Propiedad::find($id);
             if ($propiedadDb) {
-                $data = [
-                    'Propiedad' => $propiedadDb,
-                ];
+                $data = $propiedadDb;
                 $statusCode = 200;
             } else {
                 $data = [

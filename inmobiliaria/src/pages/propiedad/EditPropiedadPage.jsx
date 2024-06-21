@@ -1,188 +1,132 @@
-import React, { useState } from "react";
-import { useFindById, useEnviarForm } from "../../utils/function.js";
+import React, { useEffect } from "react";
+import { useFindById, useForm, useFetch } from "../../utils/function.js";
 import { useNavigate } from "react-router-dom";
-import { urlPropiedad } from "../../config/general-config.js";
+import { urlPropiedad, urlLocalidad, urlTipoPropiedad } from "../../config/general-config.js";
 
 const EditPropiedadPage = () => {
   const navigate = useNavigate();
   const id = window.location.pathname.split("/").pop();
-  const [domicilio, setDomicilio] = useState("");
-  const [localidad, setLocalidad] = useState("");
-  const [huespedes, setHuespedes] = useState("");
-  const [inicioDisponibilidad, setInicioDisponibilidad] = useState("");
-  const [dias, setDias] = useState("");
-  const [disponible, setDisp] = useState(false);
-  const [valorNoche, setValor] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [imagen, setImagen] = useState("");
-  const [cantidadHabitaciones, setHabitaciones] = useState("");
-  const [cantidadBanios, setBanios] = useState("");
-  const [cochera, setCochera] = useState(false);
-  const { data, fetchData } = useFindById(`${urlPropiedad}/${id}`);
-  const { mensaje, enviarForm } = useEnviarForm();
-  const [loading, setLoading] = useState(false);
+  const { data: propiedad, fetchData: fetchPropiedad } = useFindById(`${urlPropiedad}/${id}`);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = {
-      domicilio: domicilio,
-      localidad_id: localidad,
-      cantidad_huespedes: huespedes,
-      fecha_inicio_disponibilidad: inicioDisponibilidad,
-      cantidad_dias: dias,
-      disponible: disponible,
-      valor_noche: valorNoche,
-      tipo_propiedad_id: tipo,
-      imagen: imagen,
-      tipo_imagen: "url",
-      cantidad_habitaciones: cantidadHabitaciones,
-      cantidad_banios: cantidadBanios,
-      cochera: cochera,
-    };
-    const updateUrl = `${urlPropiedad}/${id}`;
-    setLoading(true);
-    await enviarForm(form, updateUrl, "PUT", fetchData);
-    setLoading(false);
-    setDomicilio("");
+  const dataInicial = {
+    domicilio: "",
+    localidad_id: "",
+    fecha_inicio_disponibilidad: "",
+    cantidad_dias: 0,
+    disponible: true,
+    valor_noche: 0,
+    tipo_propiedad_id: "",
+    imagen: "",
+    tipo_imagen: "",
+  }
+
+  const validacion = (form) => {
+    const errores = {};
+    if (!form.domicilio) {
+      errores.domicilio = "El campo 'domicilio' es obligatorio";
+    }
+    if (!form.localidad_id) {
+      errores.localidad = "El campo 'localidad' es obligatorio";
+    }
+    if (!form.cantidad_habitaciones) {
+      errores.cantidad_habitaciones = "El campo 'cantidad de habitaciones' es obligatorio";
+    } 
+    if (!form.cantidad_huespedes) {
+      errores.cantidad_huespedes = "El campo 'cantidad de huespedes' es obligatorio";
+    } else if (form.cantidad_huespedes < 1) {
+      errores.cantidad_huespedes = "El campo 'cantidad de huespedes' debe ser mayor o igual a 1";
+    }
+    if (!form.fecha_inicio_disponibilidad) {
+      errores.fecha_inicio_disponibilidad = "El campo 'fecha de inicio de disponibilidad' es obligatorio";
+    }
+    if (!form.cantidad_dias) {
+      errores.cantidad_dias = "El campo 'cantidad de dias' es obligatorio";
+    } else if (form.cantidad_dias < 1) {
+      errores.cantidad_dias = "El campo 'cantidad de dias' debe ser mayor o igual a 1";
+    }
+    if (!form.valor_noche) {
+      errores.valor_noche = "El campo 'valor de la noche' es obligatorio";
+    } else if (form.valor_noche < 1) {
+      errores.valor_noche = "El campo 'valor de la noche' debe ser mayor o igual a 1";
+    }
+    if (!form.tipo_propiedad_id) {
+      errores.tipo_propiedad_id = "El campo 'tipo de propiedad' es obligatorio";
+    }
+    return errores;
   };
+
+  const { form, setForm, errores, loading, handleChange, handleSubmit, mensaje } = useForm(dataInicial, validacion, `${urlPropiedad}/${id}`, 'PUT');
 
   const handleGoBack = () => {
     navigate(-1);
   };
 
+  const { data: localidades, fetchData: fetchLocalidades } = useFetch(urlLocalidad);
+  const { data: tiposPropiedades, fetchData: fetchTiposPropiedades } = useFetch(urlTipoPropiedad);
+
+  useEffect(() => {
+    fetchLocalidades();
+    fetchTiposPropiedades();
+  }, []);
+
+  useEffect(() => {
+    if (propiedad) {
+      setForm({
+        domicilio: propiedad.domicilio,
+        localidad_id: propiedad.localidad_id,
+        fecha_inicio_disponibilidad: propiedad.fecha_inicio_disponibilidad,
+        cantidad_dias: propiedad.cantidad_dias,
+        cantidad_habitaciones: propiedad.cantidad_habitaciones,
+        cantidad_huespedes: propiedad.cantidad_huespedes,
+        disponible: propiedad.disponible,
+        valor_noche: propiedad.valor_noche,
+        tipo_propiedad_id: propiedad.tipo_propiedad_id,
+        imagen: propiedad.imagen,
+        tipo_imagen: propiedad.tipo_imagen
+      });
+    }
+  }, [propiedad, setForm]);
+
   return (
     <div className="App">
-      <h1>Editar Propiedad</h1>
+      <h1>Editar propiedad</h1>
       {mensaje && <p>{mensaje}</p>}
-      {!data ? (
-        <p>Cargando datos...</p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <label>
-            domicilio:
-            <input
-              type="text"
-              placeholder={data.domicilio}
-              value={domicilio}
-              onChange={(event) => setDomicilio(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            localidad:
-            <input
-              type="text"
-              placeholder={data.localidad}
-              value={localidad}
-              onChange={(event) => setLocalidad(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            huespedes:
-            <input
-              type="text"
-              placeholder={data.huespedes}
-              value={huespedes}
-              onChange={(event) => setHuespedes(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            inicioDisponibilidad:
-            <input
-              type="text"
-              placeholder={data.inicioDisponibilidad}
-              value={inicioDisponibilidad}
-              onChange={(event) => setInicioDisponibilidad(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            disponible:
-            <input
-              type="checkbox"
-              checked={disponible}
-              onChange={(event) => setDisp(event.target.checked)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            valorNoche:
-            <input
-              type="text"
-              placeholder={data.valorNoche}
-              value={valorNoche}
-              onChange={(event) => setValor(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            tipo:
-            <input
-              type="text"
-              placeholder={data.tipo}
-              value={tipo}
-              onChange={(event) => setTipo(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            imagen:
-            <input
-              type="text"
-              placeholder={data.imagen}
-              value={imagen}
-              onChange={(event) => setImagen(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            dias:
-            <input
-              type="text"
-              placeholder={data.dias}
-              value={dias}
-              onChange={(event) => setDias(event.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            cantidadHabitaciones:
-            <input
-              type="number"
-              value={cantidadHabitaciones}
-              onChange={(e) => setHabitaciones(e.target.value)}
-              disabled={loading}
-            />
-          </label>
-
-          <label>
-            cantidadBanios:
-            <input
-              type="number"
-              value={cantidadBanios}
-              onChange={(e) => setBanios(e.target.value)}
-              disabled={loading}
-            />
-          </label>
-          <label>
-            cochera:
-            <input
-              type="checkbox"
-              checked={cochera}
-              onChange={(e) => setCochera(e.target.checked)}
-              disabled={loading}
-            />
-          </label>
-          <button type="submit" disabled={loading}>
-            {loading ? "Cargando..." : "Guardar"}
-          </button>
-          <button type="button" onClick={handleGoBack} disabled={loading}>
-            Volver
-          </button>
-        </form>
-      )}
+      <form onSubmit={handleSubmit}>
+        <label>Domicilio:<input type="text" className="form-control" name="domicilio" value={form.domicilio} onChange={handleChange} /></label>
+          {errores.domicilio && <p className="text-danger">{errores.domicilio}</p>}
+        <label>Localidad:<select className="form-control" name="localidad_id" value={form.localidad_id} onChange={handleChange}>
+          <option value="">-- Seleccione --</option>
+          {localidades && localidades.map(localidad => (
+            <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
+          ))}
+        </select></label>
+          {errores.localidad && <p className="text-danger">{errores.localidad}</p>}
+        <label>Cant. habitaciones:<input type="number" className="form-control" name="cantidad_habitaciones" value={form.cantidad_habitaciones} onChange={handleChange} /></label>
+          {errores.cantidad_habitaciones && <p className="text-danger">{errores.cantidad_habitaciones}</p>}
+        <label>Cantidad de huespedes:<input type="number" className="form-control" name="cantidad_huespedes" value={form.cantidad_huespedes} onChange={handleChange} /></label>
+          {errores.cantidad_huespedes && <p className="text-danger">{errores.cantidad_huespedes}</p>}
+        <label>Fecha inicio de disponibilidad:<input type="date" className="form-control" name="fecha_inicio_disponibilidad" value={form.fecha_inicio_disponibilidad} onChange={handleChange} /></label>
+          {errores.fecha_inicio_disponibilidad && <p className="text-danger">{errores.fecha_inicio_disponibilidad}</p>}
+        <label>Cantidad de dias:<input type="number" className="form-control" name="cantidad_dias" value={form.cantidad_dias} onChange={handleChange} /></label>
+          {errores.cantidad_dias && <p className="text-danger">{errores.cantidad_dias}</p>}
+        <label>Valor de la noche:<input type="number" className="form-control" name="valor_noche" value={form.valor_noche} onChange={handleChange} /></label>
+          {errores.valor_noche && <p className="text-danger">{errores.valor_noche}</p>}
+        <label>Tipo de propiedad:<select className="form-control" name="tipo_propiedad_id" value={form.tipo_propiedad_id} onChange={handleChange}>
+          <option value="">-- Seleccione --</option>
+          {tiposPropiedades && tiposPropiedades.map(tipoPropiedad => (
+            <option key={tipoPropiedad.id} value={tipoPropiedad.id}>{tipoPropiedad.nombre}</option>
+          ))} 
+        </select></label> 
+          {errores.tipo_propiedad_id && <p className="text-danger">{errores.tipo_propiedad_id}</p>}
+        <label>Imagen:<input type="text" className="form-control" name="imagen" value={form.imagen} onChange={handleChange} /></label>
+        <label>Tipo de imagen: <input type="text" className="form-control" name="tipo_imagen" value={form.tipo_imagen} onChange={handleChange} /></label>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Cargando...' : 'Guardar'}
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={handleGoBack} disabled={loading}>
+        Volver
+        </button>
+      </form>
     </div>
   );
 };

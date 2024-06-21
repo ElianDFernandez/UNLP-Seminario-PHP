@@ -37,6 +37,9 @@ class Reserva extends DataBase
         if (!$reserva) {
             $reserva = new Reserva($data['inquilino_id'], $data['fecha_desde'], $data['cantidad_noches'], $data['monto_total']);
         } else {
+            if (is_array($reserva) && count($reserva) > 0) {
+                $reserva = $reserva[0];
+            }
             $reserva = new Reserva($reserva['inquilino_id'], $reserva['fecha_desde'], $reserva['cantidad_noches'], $reserva['monto_total']);
         }
         return $reserva;
