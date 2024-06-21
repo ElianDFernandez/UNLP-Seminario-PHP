@@ -102,21 +102,13 @@ class InquilinoController
             try {
                 $id = $args['id'];
                 if (Inquilino::find($id)) {
-                    $inquilinoDb = Inquilino::findOrNew($data);
-                    if (!$inquilinoDb->esNuevo()) {
-                        $data = [
-                            'code' => 409,
-                            'message' => 'Error. DNI del Inquilino ya existente.',
-                        ];
-                        $statusCode = 409;
-                    } else {
-                        $inquilinoDb->update($id, $data);
-                        $data = [
-                            'message' => 'Success. Inquilino Actualizada.',
-                            'code' => 200,
-                        ];
-                        $statusCode = 200;
-                    }
+                    $inquilinoDb = Inquilino::new($data);
+                    $inquilinoDb->update($id, $data);
+                    $data = [
+                        'message' => 'Success. Inquilino Actualizada.',
+                        'code' => 200,
+                    ];
+                    $statusCode = 200;
                 } else {
                     $data = [
                         'code' => 404,

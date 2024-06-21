@@ -38,6 +38,11 @@ class Inquilino extends DataBase
         }
     }
 
+    public static function new($data)
+    {
+        return new Inquilino($data['nombre'], $data['apellido'], $data['documento'], $data['email'], null);
+    }
+
     public function esNuevo()
     {
         return $this->id == null;
