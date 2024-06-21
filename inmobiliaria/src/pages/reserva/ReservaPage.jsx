@@ -37,7 +37,7 @@ const ReservaPage = () => {
 
   const getPropiedadDomicilio = (id) => {
     const propiedad = propiedades?.find(propiedad => propiedad.id === id);
-    const domicilioLocalidad = propiedad ? `${propiedad.domicilio}, ${getLocalidadNombre(propiedad.localidad_id)}` : "Desconocido";
+    const domicilioLocalidad = propiedad ? `${getLocalidadNombre(propiedad.localidad_id)}, ${propiedad.domicilio}` : "Desconocido";
     return domicilioLocalidad;
     };
 

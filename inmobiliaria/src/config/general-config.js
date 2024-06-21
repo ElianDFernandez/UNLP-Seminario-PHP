@@ -4,3 +4,4 @@ export const urlInquilino = `http://localhost:${apiport}/inquilinos`;
 export const urlPropiedad = `http://localhost:${apiport}/propiedades`;
 export const urlLocalidad = `http://localhost:${apiport}/localidades`;
 export const urlReserva = `http://localhost:${apiport}/reservas`;
+export const urlPropiedadAll = `http://localhost:${apiport}/propiedades/null/null/null/null`;
