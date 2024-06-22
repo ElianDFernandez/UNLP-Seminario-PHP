@@ -8,7 +8,7 @@ body {
 }
 
 .Header {
-  background-color: #77bd60;
+  background: linear-gradient(to right, #437a31, #77bd60);
   color: #fff;
   padding: 10px 20px;
   display: flex;
