@@ -2,9 +2,10 @@ import React from "react";
 import { useFetch, useEnviarDelete } from "../../utils/function.js";
 import { useNavigate } from "react-router-dom";
 import { urlLocalidad } from "../../config/general-config.js";
+import ItemComponent from "../../components/ItemComponent.jsx";
 
 const LocalidadPage = () => {
-  const { data, fetchData } = useFetch(urlLocalidad);
+  const { data, loading, error, fetchData } = useFetch(urlLocalidad);
   const navigate = useNavigate();
   const { mensaje, enviarDelete } = useEnviarDelete();
 
@@ -21,22 +22,26 @@ const LocalidadPage = () => {
     navigate(`/localidades/edit/${id}`);
   };
 
+  const fields = [{ label: "Nombre", field: "nombre" }];
+
   return (
     <div className="App">
       <h1>Localidades</h1>
       <button onClick={handleCreateClick}>Crear Localidad</button>
       <div className="Tabla">
+        {loading && <p>Cargando...</p>}
+        {error && <p>Error: {error}</p>}
+        {mensaje && <p>{mensaje}</p>}
         <ul>
-          {mensaje && <p>{mensaje}</p>}
           {data ? (
-            data.map((Localidad) => (
-              <li key={Localidad.id}>
-                {Localidad.nombre}
-                <button onClick={() => handleEdit(Localidad.id)}>Editar</button>
-                <button onClick={() => handleDelete(Localidad.id)}>
-                  Eliminar
-                </button>
-              </li>
+            data.map((localidad) => (
+              <ItemComponent
+                key={localidad.id}
+                item={localidad}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                fields={fields}
+              />
             ))
           ) : (
             <li>Cargando...</li>

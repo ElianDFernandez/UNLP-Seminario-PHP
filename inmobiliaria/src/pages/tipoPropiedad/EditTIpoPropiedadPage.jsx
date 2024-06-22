@@ -34,22 +34,48 @@ const EditTipoPropiedadPage = () => {
   };
 
   return (
-    <div className='App'>
-      <h1>Editar Tipo de Propiedad</h1>
-      {mensaje && <p>{mensaje}</p>}
-      {!data ? (<p>Cargando datos...</p>) : (
-        <form onSubmit={handleSubmit}>
-          <label>Nombre:<input type="text" name="nombre" value={form.nombre} onChange={handleChange} disabled={loading}/>
-            {errores.nombre && <div className="alerta">{errores.nombre}</div>}
-          </label>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Cargando...' : 'Guardar'}
-          </button>
-          <button type="button" onClick={handleGoBack} disabled={loading}>
-            Volver
-          </button>
-        </form>
-      )}
+    <div className="App">
+      <div className="form-container">
+        <h1>Editar Tipo de Propiedad</h1>
+        {mensaje && <p>{mensaje}</p>}
+        {!data ? (
+          <p>Cargando datos...</p>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Nombre:</label>
+              <input
+                type="text"
+                name="nombre"
+                value={form.nombre}
+                onChange={handleChange}
+                disabled={loading}
+                className="form-control"
+              />
+              {errores.nombre && (
+                <div className="alerta">{errores.nombre}</div>
+              )}
+            </div>
+            <div className="form-group">
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn btn-primary"
+              >
+                {loading ? 'Cargando...' : 'Guardar'}
+              </button>
+              <button
+                type="button"
+                onClick={handleGoBack}
+                disabled={loading}
+                className="btn btn-secondary"
+              >
+                Volver
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

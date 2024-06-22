@@ -62,45 +62,101 @@ const NewReservaPage = () => {
   }, [form.cantidad_noches, form.propiedad_id]);
 
   return (
-    <div>
-      <h1>Nueva Reserva</h1>
-      {mensaje && <p>{mensaje}</p>}
-      <form onSubmit={handleSubmit}>
-          <label htmlFor="inquilino_id">Inquilino:</label>
-          <select id="inquilino_id" name="inquilino_id" className="form-control" value={form.inquilino_id} onChange={handleChange}>
-          <option value="">Seleccione un inquilino</option>
-          {inquilinos?.filter(inquilino => inquilino.activo).map((inquilino) => (
-            <option key={inquilino.id} value={inquilino.id}>
-              {inquilino.nombre}
-            </option>
-          ))}
-        </select>
-          {errores.inquilino_id && <div className="alert alert-danger">{errores.inquilino_id}</div>}
-          <label htmlFor="propiedad_id">Propiedad:</label>
-          <select id="propiedad_id" name="propiedad_id" className="form-control" value={form.propiedad_id} onChange={handleChange}>
-            <option value="">Seleccione una propiedad</option>
-            {propiedades?.map((propiedad) => (
-              <option key={propiedad.id} value={propiedad.id}>
-                {getLocalidadNombre(propiedad.localidad_id)} - {propiedad.domicilio}
-              </option>
-            ))}
-          </select>
-          {errores.propiedad_id && <div className="alert alert-danger">{errores.propiedad_id}</div>}
-        <label htmlFor="fecha_desde">Fecha de Inicio:</label>
-          <input type="date" id="fecha_desde" name="fecha_desde" className="form-control" value={form.fecha_desde} onChange={handleChange} />
-          {errores.fecha_desde && <div className="alert alert-danger">{errores.fecha_desde}</div>}
-        <label htmlFor="cantidad_noches">Cantidad de Noches:</label>
-          <input type="number" id="cantidad_noches" name="cantidad_noches" className="form-control" value={form.cantidad_noches} onChange={handleChange} />
-          {errores.cantidad_noches && <div className="alert alert-danger">{errores.cantidad_noches}</div>}
-  
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? 'Cargando...' : 'Guardar'}
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={handleGoBack} disabled={loading}>
-          Volver
-        </button>
-        <p>Valor Total: {valor_total}</p>
-      </form>
+    <div className="App">
+      <div className="form-container">
+        <h1>Editar reserva</h1>
+        {mensaje && <p>{mensaje}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="inquilino_id">Inquilino:</label>
+            <select
+              id="inquilino_id"
+              name="inquilino_id"
+              className="form-control"
+              value={form.inquilino_id}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione un inquilino</option>
+              {inquilinos?.filter(inquilino => inquilino.activo).map(inquilino => (
+                <option key={inquilino.id} value={inquilino.id}>
+                  {inquilino.nombre}
+                </option>
+              ))}
+            </select>
+            {errores.inquilino_id && (
+              <div className="alerta">{errores.inquilino_id}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="propiedad_id">Propiedad:</label>
+            <select
+              id="propiedad_id"
+              name="propiedad_id"
+              className="form-control"
+              value={form.propiedad_id}
+              onChange={handleChange}
+            >
+              <option value="">Seleccione una propiedad</option>
+              {propiedades
+                ?.filter(propiedad => propiedad.disponible)
+                .map(propiedad => (
+                  <option key={propiedad.id} value={propiedad.id}>
+                    {getLocalidadNombre(propiedad.localidad_id)} - {propiedad.domicilio}
+                  </option>
+                ))}
+            </select>
+            {errores.propiedad_id && (
+              <div className="alerta">{errores.propiedad_id}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="fecha_desde">Fecha de Inicio:</label>
+            <input
+              type="date"
+              id="fecha_desde"
+              name="fecha_desde"
+              className="form-control"
+              value={form.fecha_desde}
+              onChange={handleChange}
+            />
+            {errores.fecha_desde && (
+              <div className="alerta">{errores.fecha_desde}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="cantidad_noches">Cantidad de Noches:</label>
+            <input
+              type="number"
+              id="cantidad_noches"
+              name="cantidad_noches"
+              className="form-control"
+              value={form.cantidad_noches}
+              onChange={handleChange}
+            />
+            {errores.cantidad_noches && (
+              <div className="alerta">{errores.cantidad_noches}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? 'Cargando...' : 'Guardar'}
+            </button>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleGoBack}
+              disabled={loading}
+            >
+              Volver
+            </button>
+          </div>
+          <p>Valor Total: ${valor_total}</p>
+        </form>
+      </div>
     </div>
   );
 };

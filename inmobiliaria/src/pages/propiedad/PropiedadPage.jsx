@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFetch, useEnviarDelete } from "../../utils/function.js";
 import { useNavigate } from "react-router-dom";
 import { urlPropiedad, urlLocalidad, urlTipoPropiedad } from "../../config/general-config.js";
+import ItemComponent from '../../components/ItemComponent.jsx';
 
 const PropiedadPage = () => {
   const [filtroLocalidad, setFiltroLocalidad] = useState(null);
@@ -9,7 +10,7 @@ const PropiedadPage = () => {
   const [filtroInicioDisponibilidad, setFiltroInicioDisponibilidad] = useState(null);
   const [filtroCantHuespedes, setFiltroCantHuespedes] = useState(null);
 
-  const urlPropiedadIndex = `${urlPropiedad}/${filtroLocalidad}/${filtroDisponible}/${filtroCantHuespedes}/${filtroInicioDisponibilidad}`;
+  const urlPropiedadIndex = `${urlPropiedad}/${filtroLocalidad}/${filtroDisponible}/${filtroInicioDisponibilidad}/${filtroCantHuespedes}`;
   
   const { data: propiedades, fetchData: fetchPropiedades } = useFetch(urlPropiedadIndex);
   const { data: localidades, fetchData: fetchLocalidades } = useFetch(urlLocalidad);
@@ -21,6 +22,7 @@ const PropiedadPage = () => {
   useEffect(() => {
     fetchLocalidades();
     fetchTiposPropiedades();
+    fetchPropiedades();
   }, []);
 
   const handleCreateClick = () => {
@@ -46,31 +48,75 @@ const PropiedadPage = () => {
     return tipoPropiedad ? tipoPropiedad.nombre : "Desconocido";
   };
 
+  const fields = [
+    { label: 'Domicilio', field: 'domicilio' },
+    { label: 'Localidad', field: 'localidad_id', formatter: (item) => getLocalidadNombre(item.localidad_id) },
+    { label: 'Cantidad de huéspedes', field: 'cantidad_huespedes' },
+    { label: 'Fecha de inicio de disponibilidad', field: 'fecha_inicio_disponibilidad' },
+    { label: 'Cantidad de días', field: 'cantidad_dias' },
+    { label: 'Disponible', field: 'disponible' },
+    { label: 'Valor por noche', field: 'valor_noche' },
+    { label: 'Tipo de propiedad', field: 'tipo_propiedad_id', formatter: (item) => getTipoPropiedadNombre(item.tipo_propiedad_id) },
+    { label: 'Imagen', field: 'imagen' },
+  ];
+
   return (
     <div className="App">
-      <h1>Propiedades</h1>
+      <div className="filtros-container">
+        <div className="filtro-container">
+          <label>Localidad:</label>
+          <select value={filtroLocalidad} onChange={(e) => setFiltroLocalidad(e.target.value)}>
+            <option value="null">Todas</option>
+            {localidades &&
+              localidades.map(localidad => (
+                <option key={localidad.id} value={localidad.id}>
+                  {localidad.nombre}
+                </option>
+              ))}
+          </select>
+        </div>
+        <div className="filtro-container">
+          <label>Disponible:</label>
+          <select value={filtroDisponible} onChange={(e) => setFiltroDisponible(e.target.value)}>
+            <option value="null">Todos</option>
+            <option value="true">Sí</option>
+            <option value="false">No</option>
+          </select>
+        </div>
+        <div className="filtro-container">
+          <label>Fecha de inicio de disponibilidad:</label>
+          <input 
+            type="date" 
+            value={filtroInicioDisponibilidad || ''}
+            onChange={(e) => {
+              const selectedDate = e.target.value;
+              const formattedDate = selectedDate.replaceAll('-', '');
+              setFiltroInicioDisponibilidad(formattedDate || null);
+            }}
+          />
+        </div>
+        <div className="filtro-container">
+          <label>Cantidad de huéspedes:</label>
+          <input 
+            type="number" 
+            value={filtroCantHuespedes || ''} 
+            onChange={(e) => setFiltroCantHuespedes(e.target.value || null)}
+          />
+        </div>
+      </div>
       <button onClick={handleCreateClick}>Crear Nueva Propiedad</button>
       <div className="Tabla">
+        {mensaje && <p>{mensaje}</p>}
         <ul>
-          {mensaje && <p>{mensaje}</p>}
           {propiedades ? (
             propiedades.map((propiedad) => (
-              <li key={propiedad.id}>
-                {propiedad.domicilio}
-                {getLocalidadNombre(propiedad.localidad_id)}
-                {propiedad.cantidad_huespedes}
-                {propiedad.fecha_inicio_disponibilidad}
-                {propiedad.cantidad_dias}
-                {propiedad.disponible}
-                {propiedad.valor_noche}
-                {getTipoPropiedadNombre(propiedad.tipo_propiedad_id)}
-                {propiedad.imagen}
-                {propiedad.cantidad_habitaciones}
-                {propiedad.cantidad_banios}
-                {propiedad.cochera}
-                <button onClick={() => handleEdit(propiedad.id)}>Editar</button>
-                <button onClick={() => handleDelete(propiedad.id)}>Eliminar</button>
-              </li>
+              <ItemComponent
+                key={propiedad.id}
+                item={propiedad}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                fields={fields}
+              />
             ))
           ) : (
             <li>Cargando...</li>

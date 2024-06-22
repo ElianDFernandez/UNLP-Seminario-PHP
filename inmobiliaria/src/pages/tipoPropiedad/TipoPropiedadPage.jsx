@@ -2,9 +2,10 @@ import React from 'react';
 import { useFetch, useEnviarDelete } from '../../utils/function.js';
 import { useNavigate } from 'react-router-dom';
 import { urlTipoPropiedad } from '../../config/general-config.js';
+import ItemComponent from '../../components/ItemComponent.jsx';
 
 const TipoPropiedadPage = () => {
-    const { data, fetchData } = useFetch(urlTipoPropiedad);
+    const { data, loading, error, fetchData } = useFetch(urlTipoPropiedad);
     const navigate = useNavigate();
     const { mensaje, enviarDelete } = useEnviarDelete();
 
@@ -21,19 +22,28 @@ const TipoPropiedadPage = () => {
         navigate(`/tipo-propiedades/edit/${id}`);
     };
 
+    const fields = [
+        { label: 'Nombre', field: 'nombre' }
+    ];
+
     return (
         <div className='App'>
             <h1>Tipos de Propiedades</h1>
             <button onClick={handleCreateClick}>Crear Tipo de Propiedad</button>
             <div className='Tabla'>
+                {loading && <p>Cargando...</p>}
+                {error && <p>Error: {error}</p>}
+                {mensaje && <p>{mensaje}</p>}
                 <ul>
-                    {mensaje && <p>{mensaje}</p>}
                     {data ? (
                         data.map((tipoPropiedad) => (
-                            <li key={tipoPropiedad.id}>{tipoPropiedad.nombre}
-                                <button onClick={() => handleEdit(tipoPropiedad.id)}>Editar</button>
-                                <button onClick={() => handleDelete(tipoPropiedad.id)}>Eliminar</button>
-                            </li>
+                            <ItemComponent
+                                key={tipoPropiedad.id}
+                                item={tipoPropiedad}
+                                handleEdit={handleEdit}
+                                handleDelete={handleDelete}
+                                fields={fields}
+                            />
                         ))
                     ) : (
                         <li>Cargando...</li>

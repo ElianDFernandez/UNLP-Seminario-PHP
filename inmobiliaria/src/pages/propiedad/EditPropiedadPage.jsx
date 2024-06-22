@@ -52,6 +52,10 @@ const EditPropiedadPage = () => {
     if (!form.tipo_propiedad_id) {
       errores.tipo_propiedad_id = "El campo 'tipo de propiedad' es obligatorio";
     }
+    if (!form.disponible) {
+      form.disponible = 0;
+    }
+    console.log(form);
     return errores;
   };
 
@@ -89,44 +93,146 @@ const EditPropiedadPage = () => {
 
   return (
     <div className="App">
-      <h1>Editar propiedad</h1>
-      {mensaje && <p>{mensaje}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>Domicilio:<input type="text" className="form-control" name="domicilio" value={form.domicilio} onChange={handleChange} /></label>
-          {errores.domicilio && <p className="text-danger">{errores.domicilio}</p>}
-        <label>Localidad:<select className="form-control" name="localidad_id" value={form.localidad_id} onChange={handleChange}>
-          <option value="">-- Seleccione --</option>
-          {localidades && localidades.map(localidad => (
-            <option key={localidad.id} value={localidad.id}>{localidad.nombre}</option>
-          ))}
-        </select></label>
-          {errores.localidad && <p className="text-danger">{errores.localidad}</p>}
-        <label>Cant. habitaciones:<input type="number" className="form-control" name="cantidad_habitaciones" value={form.cantidad_habitaciones} onChange={handleChange} /></label>
-          {errores.cantidad_habitaciones && <p className="text-danger">{errores.cantidad_habitaciones}</p>}
-        <label>Cantidad de huespedes:<input type="number" className="form-control" name="cantidad_huespedes" value={form.cantidad_huespedes} onChange={handleChange} /></label>
-          {errores.cantidad_huespedes && <p className="text-danger">{errores.cantidad_huespedes}</p>}
-        <label>Fecha inicio de disponibilidad:<input type="date" className="form-control" name="fecha_inicio_disponibilidad" value={form.fecha_inicio_disponibilidad} onChange={handleChange} /></label>
-          {errores.fecha_inicio_disponibilidad && <p className="text-danger">{errores.fecha_inicio_disponibilidad}</p>}
-        <label>Cantidad de dias:<input type="number" className="form-control" name="cantidad_dias" value={form.cantidad_dias} onChange={handleChange} /></label>
-          {errores.cantidad_dias && <p className="text-danger">{errores.cantidad_dias}</p>}
-        <label>Valor de la noche:<input type="number" className="form-control" name="valor_noche" value={form.valor_noche} onChange={handleChange} /></label>
-          {errores.valor_noche && <p className="text-danger">{errores.valor_noche}</p>}
-        <label>Tipo de propiedad:<select className="form-control" name="tipo_propiedad_id" value={form.tipo_propiedad_id} onChange={handleChange}>
-          <option value="">-- Seleccione --</option>
-          {tiposPropiedades && tiposPropiedades.map(tipoPropiedad => (
-            <option key={tipoPropiedad.id} value={tipoPropiedad.id}>{tipoPropiedad.nombre}</option>
-          ))} 
-        </select></label> 
-          {errores.tipo_propiedad_id && <p className="text-danger">{errores.tipo_propiedad_id}</p>}
-        <label>Imagen:<input type="text" className="form-control" name="imagen" value={form.imagen} onChange={handleChange} /></label>
-        <label>Tipo de imagen: <input type="text" className="form-control" name="tipo_imagen" value={form.tipo_imagen} onChange={handleChange} /></label>
-        <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? 'Cargando...' : 'Guardar'}
-        </button>
-        <button type="button" className="btn btn-secondary" onClick={handleGoBack} disabled={loading}>
-        Volver
-        </button>
-      </form>
+      <div className="form-container">
+        <h1>Editar propiedad</h1>
+        {mensaje && <p>{mensaje}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Domicilio:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="domicilio"
+              value={form.domicilio}
+              onChange={handleChange}
+            />
+            {errores.domicilio && <p className="text-danger">{errores.domicilio}</p>}
+          </div>
+          <div className="form-group">
+            <label>Localidad:</label>
+            <select
+              className="form-control"
+              name="localidad_id"
+              value={form.localidad_id}
+              onChange={handleChange}
+            >
+              <option value="">-- Seleccione --</option>
+              {localidades &&
+                localidades.map((localidad) => (
+                  <option key={localidad.id} value={localidad.id}>
+                    {localidad.nombre}
+                  </option>
+                ))}
+            </select>
+            {errores.localidad && <p className="text-danger">{errores.localidad}</p>}
+          </div>
+          <div className="form-group">
+            <label>Cantidad de huespedes:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="cantidad_huespedes"
+              value={form.cantidad_huespedes}
+              onChange={handleChange}
+            />
+            {errores.cantidad_huespedes && (
+              <p className="text-danger">{errores.cantidad_huespedes}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label>Fecha inicio de disponibilidad:</label>
+            <input
+              type="date"
+              className="form-control"
+              name="fecha_inicio_disponibilidad"
+              value={form.fecha_inicio_disponibilidad}
+              onChange={handleChange}
+            />
+            {errores.fecha_inicio_disponibilidad && (
+              <p className="text-danger">{errores.fecha_inicio_disponibilidad}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label>Cantidad de dias:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="cantidad_dias"
+              value={form.cantidad_dias}
+              onChange={handleChange}
+            />
+            {errores.cantidad_dias && <p className="text-danger">{errores.cantidad_dias}</p>}
+          </div>
+          <div className="form-group">
+            <label>Valor de la noche:</label>
+            <input
+              type="number"
+              className="form-control"
+              name="valor_noche"
+              value={form.valor_noche}
+              onChange={handleChange}
+            />
+            {errores.valor_noche && <p className="text-danger">{errores.valor_noche}</p>}
+          </div>
+          <div className="form-group">
+            <label>Tipo de propiedad:</label>
+            <select
+              className="form-control"
+              name="tipo_propiedad_id"
+              value={form.tipo_propiedad_id}
+              onChange={handleChange}
+            >
+              <option value="">-- Seleccione --</option>
+              {tiposPropiedades &&
+                tiposPropiedades.map((tipoPropiedad) => (
+                  <option key={tipoPropiedad.id} value={tipoPropiedad.id}>
+                    {tipoPropiedad.nombre}
+                  </option>
+                ))}
+            </select>
+            {errores.tipo_propiedad_id && (
+              <p className="text-danger">{errores.tipo_propiedad_id}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <label>Imagen:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="imagen"
+              value={form.imagen}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Tipo de imagen:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="tipo_imagen"
+              value={form.tipo_imagen}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Disponible:</label>
+            <input
+              type="checkbox"
+              name="disponible"
+              checked={form.disponible}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? "Cargando..." : "Guardar"}
+            </button>
+            <button type="button" className="btn btn-secondary" onClick={handleGoBack} disabled={loading}>
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -25,18 +25,51 @@ const NewTipoPropiedadPage = () => {
   };
 
   return (
-    <div className='App'>
-      <h1>Crear Tipo de Propiedad</h1>
-      {mensaje && <div className="mensaje"><p>{mensaje}</p></div>}
-      <form onSubmit={handleSubmit}>
-        <label>Nombre:<input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
-          {errores.nombre && <div className="alerta"><p>{errores.nombre}</p></div>}
-        </label>
-        <button type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Crear'}</button>
-        <button type="button" onClick={handleGoBack} disabled={loading}>Volver</button>
-      </form>  
+    <div className="App">
+      <div className="form-container">
+        <h1>Crear Tipo de Propiedad</h1>
+        {mensaje && (
+          <div className="mensaje">
+            <p>{mensaje}</p>
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Nombre:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="nombre"
+              value={form.nombre}
+              onChange={handleChange}
+            />
+            {errores.nombre && (
+              <div className="alerta">
+                <p>{errores.nombre}</p>
+              </div>
+            )}
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary"
+            >
+              {loading ? 'Cargando...' : 'Crear'}
+            </button>
+            <button
+              type="button"
+              onClick={handleGoBack}
+              disabled={loading}
+              className="btn btn-secondary"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  );
+  );  
 };
 
 export default NewTipoPropiedadPage;

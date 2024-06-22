@@ -1,74 +1,162 @@
 body {
-    font-family: Arial, sans-serif; /* Cambia 'Arial' por la fuente que desees utilizar */
-    font-size: 16px; /* Tamaño base de la fuente */
-    line-height: 1.5; /* Altura de línea */
-    height: 100vh; /* Abarcar toda la altura de la pantalla */
-    margin: 0; /* Eliminar márgenes */
-    padding: 0; /* Eliminar relleno */
-  }
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
 
-/* Estilos para el Header */
 .Header {
-    background-color: #77bd60;
-    color: #fff;
-    padding: 10px 20px; /* Ajusta el padding según sea necesario */
-    display: flex;
-    align-items: center; /* Centra verticalmente los elementos */
-  }
-  
-  /* Estilos para la imagen del Header */
-  .Header img {
-    width: 100px; /* Ancho deseado para la imagen */
-    height: auto; /* Altura automática para mantener la proporción */
-    margin-right: 10px; /* Espacio entre la imagen y el título */
-  }
-  
-  /* Estilos para el título del Header */
-  .Header h1 {
-    margin: 0;
-  }
+  background-color: #77bd60;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+}
 
-/* Estilos para el NavBar */
+.Header img {
+  width: 100px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.Header h1 {
+  margin: 0;
+}
+
 .NavBar {
-    background-color: #333;
-    color: #fff;
-    padding: 15px 0;
-    text-align: center;
-  }
-  
-  /* Estilos para la lista de navegación */
-  .nav-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  /* Estilos para los elementos de la lista */
-  .nav-item {
-    display: inline-block;
-    margin-right: 20px;
-  }
-  
-  /* Estilos para los enlaces de navegación */
-  .nav-link {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-  }
-  
-  /* Estilos para los enlaces de navegación al pasar el ratón por encima */
-  .nav-link:hover {
-    background-color: #555;
-  }
+  background-color: #333;
+  color: #fff;
+  padding: 15px 0;
+  text-align: center;
+}
+
+.nav-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: #555;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1300px;
+  margin: auto;
+  margin-bottom: 50px; /* Ajusta este valor según la altura del footer */
+}
+
+.App button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.App button:hover {
+  background-color: #0069d9;
+}
+
+.filtros-container {
+  margin: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filtro-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px; 
+}
+
+.filtro-container label {
+  margin-right: 5px;
+}
+
+.filtro-container input,
+.filtro-container select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-container {
+  margin: 20px auto 0; /* Margen superior de 20px, centrado horizontalmente */
+  margin-bottom: 20px;
+  padding: 40px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 500px; /* Ajusta el tamaño máximo del formulario */
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-container input,
+.form-container select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.form-container button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 10px 10px 10px 0; /* Margen derecho para separar los botones */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.form-container button:last-child {
+  margin-right: 0; /* Elimina el margen derecho del último botón */
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}
 
 .Footer {
-    background-color: #437a31;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
-    position: fixed; /* Posición fija */
-    bottom: 0; /* Anclado al fondo */
-    width: 100%; /* Ancho completo */
-  }
+  background-color: #437a31;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%; 
+}

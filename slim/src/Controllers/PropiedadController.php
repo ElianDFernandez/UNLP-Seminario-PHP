@@ -41,7 +41,7 @@ class PropiedadController
             $error = 'Error. Cantidad dias es obligatorio.';
             $respuesta[] = $error;
         }
-        if (!isset($data['disponible']) || empty($data['disponible'])) {
+        if (!isset($data['disponible']) || $data['disponible'] === '') {
             $error = 'Error. El campo disponible es obligatorio.';
             $respuesta[] = $error;
         }

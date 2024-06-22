@@ -62,31 +62,84 @@ const EditInquilinoPage = () => {
     };
     
     return (
-        <div className='App'>
-            <h1>Editar Inquilino</h1>
-            {mensaje && <p>{mensaje}</p>}
-            {!data ? (<p>Cargando datos...</p>) : (
+        <div className="App">
+        <div className="form-container">
+          <h1>Editar Inquilino</h1>
+          {mensaje && <p>{mensaje}</p>}
+          {!data ? (
+            <p>Cargando datos...</p>
+          ) : (
             <form onSubmit={handleSubmit}>
-                <label>Nombre:<input type="text" className="form-control" name="nombre" placeholder = {data.nombre} value={form.nombre} onChange={handleChange} />
-                    {errores && <p>{errores['nombre']}</p>}
-                </label>
-                <label>Apellido:<input type="text" className="form-control" name="apellido" placeholder = {data.apellido} value={form.apellido} onChange={handleChange} />
-                    {errores && <p>{errores['apellido']}</p>}
-                </label>
-                <label>Documento:<input type="text" className="form-control" name="documento" placeholder = {data.documento} value={form.documento} onChange={handleChange} />
-                    {errores && <p>{errores['documento']}</p>}
-                </label>
-                <label>Email:<input type="text" className="form-control" name="email" placeholder = {data.email} value={form.email} onChange={handleChange} />
-                    {errores && <p>{errores['email']}</p>}
-                </label>
-                <label>Activo:<input type="checkbox" name="activo"  checked={form.activo} onChange={handleChange} />
-                    {errores && <p>{errores['activo']}</p>}
-                </label>
-                <button type="submit">Guardar</button>
-                <button type="button" onClick={handleGoBack}>Volver</button>
+              <div className="form-group">
+                <label>Nombre:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  placeholder={data.nombre}
+                  value={form.nombre}
+                  onChange={handleChange}
+                />
+                {errores && <p>{errores["nombre"]}</p>}
+              </div>
+              <div className="form-group">
+                <label>Apellido:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="apellido"
+                  placeholder={data.apellido}
+                  value={form.apellido}
+                  onChange={handleChange}
+                />
+                {errores && <p>{errores["apellido"]}</p>}
+              </div>
+              <div className="form-group">
+                <label>Documento:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="documento"
+                  placeholder={data.documento}
+                  value={form.documento}
+                  onChange={handleChange}
+                />
+                {errores && <p>{errores["documento"]}</p>}
+              </div>
+              <div className="form-group">
+                <label>Email:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="email"
+                  placeholder={data.email}
+                  value={form.email}
+                  onChange={handleChange}
+                />
+                {errores && <p>{errores["email"]}</p>}
+              </div>
+              <div className="form-group">
+                <label>Activo:</label>
+                <input
+                  type="checkbox"
+                  name="activo"
+                  checked={form.activo}
+                  onChange={handleChange}
+                />
+                {errores && <p>{errores["activo"]}</p>}
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Guardar
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={handleGoBack}>
+                  Volver
+                </button>
+              </div>
             </form>
-            )}
+          )}
         </div>
+      </div>
     );
 };
 

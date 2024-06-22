@@ -46,27 +46,83 @@ const NewInquilinoPage = () => {
     };
 
     return (
-        <div className='App'>
+        <div className="App">
+          <div className="form-container">
             <h1>Crear Inquilino</h1>
             {mensaje && <p>{mensaje}</p>}
             <form onSubmit={handleSubmit}>
-                <label>Nombre:<input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
-                    {errores.nombre && <div className="alerta"><p>{errores.nombre}</p></div>}
-                </label>
-                <label>Apellido:<input type="text" className="form-control" name="apellido" value={form.apellido} onChange={handleChange} />
-                    {errores.apellido && <div className="alerta"><p>{errores.apellido}</p></div>}
-                </label>
-                <label>Documento:<input type="text" className="form-control" name="documento" value={form.documento} onChange={handleChange} />
-                    {errores.documento && <div className="alerta"><p>{errores.documento}</p></div>}
-                </label>
-                <label>Email:<input type="text" className="form-control" name="email" value={form.email} onChange={handleChange} />
-                    {errores.email && <div className="alerta"><p>{errores.email}</p></div>}
-                </label>
-                <button type="submit">Crear</button>
-                <button type="button" onClick={handleGoBack}>Volver</button>
+              <div className="form-group">
+                <label>Nombre:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="nombre"
+                  value={form.nombre}
+                  onChange={handleChange}
+                />
+                {errores.nombre && (
+                  <div className="alerta">
+                    <p>{errores.nombre}</p>
+                  </div>
+                )}
+              </div>
+              <div className="form-group">
+                <label>Apellido:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="apellido"
+                  value={form.apellido}
+                  onChange={handleChange}
+                />
+                {errores.apellido && (
+                  <div className="alerta">
+                    <p>{errores.apellido}</p>
+                  </div>
+                )}
+              </div>
+              <div className="form-group">
+                <label>Documento:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="documento"
+                  value={form.documento}
+                  onChange={handleChange}
+                />
+                {errores.documento && (
+                  <div className="alerta">
+                    <p>{errores.documento}</p>
+                  </div>
+                )}
+              </div>
+              <div className="form-group">
+                <label>Email:</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                />
+                {errores.email && (
+                  <div className="alerta">
+                    <p>{errores.email}</p>
+                  </div>
+                )}
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary">
+                  Crear
+                </button>
+                <button type="button" className="btn btn-secondary" onClick={handleGoBack}>
+                  Volver
+                </button>
+              </div>
             </form>
+          </div>
         </div>
-    );
+      );
 };
 
 export default NewInquilinoPage;

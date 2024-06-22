@@ -26,15 +26,42 @@ const NewLocalidadPage = () => {
 
   return (
     <div className="App">
-      <h1>Crear Localidad</h1>
-      {mensaje && <p>{mensaje}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>Nombre:<input type="text" className="form-control" name="nombre" value={form.nombre} onChange={handleChange} />
-          {errores?.nombre && <p className="text-danger">{errores?.nombre}</p>}
-        </label>
-        <button type="submit" disabled={loading}>{loading ? 'Cargando...' : 'Crear'}</button>
-        <button type="button" onClick={handleGoBack} disabled={loading}>Volver</button>
-      </form>
+      <div className="form-container">
+        <h1>Crear Localidad</h1>
+        {mensaje && <p>{mensaje}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Nombre:</label>
+            <input
+              type="text"
+              className="form-control"
+              name="nombre"
+              value={form.nombre}
+              onChange={handleChange}
+            />
+            {errores.nombre && (
+              <div className="alerta">{errores.nombre}</div>
+            )}
+          </div>
+          <div className="form-group">
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn btn-primary"
+            >
+              {loading ? 'Cargando...' : 'Crear'}
+            </button>
+            <button
+              type="button"
+              onClick={handleGoBack}
+              disabled={loading}
+              className="btn btn-secondary"
+            >
+              Volver
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
