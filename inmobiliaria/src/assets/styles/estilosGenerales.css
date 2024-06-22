@@ -62,7 +62,9 @@ body {
   width: 100%;
   max-width: 1300px;
   margin: auto;
-  margin-bottom: 50px; /* Ajusta este valor según la altura del footer */
+  min-height: 100vh;
+  padding-bottom: 50px; 
+  box-sizing: border-box; 
 }
 
 .App button {
@@ -106,13 +108,14 @@ body {
 }
 
 .form-container {
-  margin: 20px auto 0; /* Margen superior de 20px, centrado horizontalmente */
+  margin: 20px auto 0;
   margin-bottom: 20px;
   padding: 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #f9f9f9;
-  max-width: 500px; /* Ajusta el tamaño máximo del formulario */
+  width: 80%;
+  max-width: 900px; 
 }
 
 .form-container label {
@@ -156,7 +159,6 @@ body {
   color: #fff;
   padding: 10px 0;
   text-align: center;
-  position: relative;
-  bottom: 0;
-  width: 100%; 
+  width: 100%;
+  margin-top: auto; /* Alinea el footer al final del contenedor */
 }

@@ -12,8 +12,8 @@ ul {
   margin: 16px 0;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  display: flex;
-  align-items: center;
+  width: 100%; /* Ajusta el ancho al 100% del contenedor */
+  min-width: 800px; /* Ancho máximo deseado */
 }
 
 .card-content {

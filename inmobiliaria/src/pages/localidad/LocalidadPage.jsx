@@ -44,7 +44,7 @@ const LocalidadPage = () => {
               />
             ))
           ) : (
-            <li>Cargando...</li>
+            <li>No hay localidades registradas.</li>
           )}
         </ul>
       </div>

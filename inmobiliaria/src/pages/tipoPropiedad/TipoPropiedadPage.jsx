@@ -46,7 +46,7 @@ const TipoPropiedadPage = () => {
                             />
                         ))
                     ) : (
-                        <li>Cargando...</li>
+                        <li>No hay tipos de propiedades.</li>
                     )}
                 </ul>
             </div>

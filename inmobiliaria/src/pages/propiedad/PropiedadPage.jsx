@@ -119,7 +119,7 @@ const PropiedadPage = () => {
               />
             ))
           ) : (
-            <li>Cargando...</li>
+            <li>No se encontraron propiedades.</li>
           )}
         </ul>
       </div>

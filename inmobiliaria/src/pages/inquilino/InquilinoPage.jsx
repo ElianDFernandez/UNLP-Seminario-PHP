@@ -49,7 +49,7 @@ const InquilinoPage = () => {
                             />
                         ))
                     ) : (
-                        <li>Cargando...</li>
+                        <li>No hay inquilinos registrados.</li>
                     )}
                 </ul>
             </div>

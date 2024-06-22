@@ -78,7 +78,7 @@ const ReservaPage = () => {
               />
             ))
           ) : (
-            <li>Cargando...</li>
+            <li>No hay reservas registradas.</li>
           )}
         </ul>
       </div>
