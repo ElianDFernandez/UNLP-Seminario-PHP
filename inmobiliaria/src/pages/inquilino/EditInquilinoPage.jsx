@@ -65,7 +65,6 @@ const EditInquilinoPage = () => {
         <div className="App">
         <div className="form-container">
           <h1>Editar Inquilino</h1>
-          {mensaje && <p>{mensaje}</p>}
           {!data ? (
             <p>Cargando datos...</p>
           ) : (
@@ -135,6 +134,7 @@ const EditInquilinoPage = () => {
                 <button type="button" className="btn btn-secondary" onClick={handleGoBack}>
                   Volver
                 </button>
+                {mensaje && <p>{mensaje}</p>}
               </div>
             </form>
           )}

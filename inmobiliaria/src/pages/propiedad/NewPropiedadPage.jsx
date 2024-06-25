@@ -89,7 +89,6 @@ const NewPropiedadPage = () => {
   return (
     <div className="form-container">
       <h1>Crear propiedad</h1>
-      {mensaje && <p>{mensaje}</p>}
       <form onSubmit={handleSubmit}>
         <label>
           Domicilio:
@@ -244,6 +243,7 @@ const NewPropiedadPage = () => {
         </label>
         <button type="submit">Crear</button>
         <button type="button" onClick={handleGoBack}>Volver</button>
+        {mensaje && <p>{mensaje}</p>}
       </form>
     </div>
   );

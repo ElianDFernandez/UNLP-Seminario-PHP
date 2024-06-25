@@ -36,7 +36,6 @@ const EditLocalidadPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Editar Localidad</h1>
-        {mensaje && <p>{mensaje}</p>}
         {!data ? (
           <p>Cargando datos...</p>
         ) : (
@@ -61,6 +60,7 @@ const EditLocalidadPage = () => {
               <button type="button" onClick={handleGoBack} disabled={loading} className="btn btn-secondary">
                 Volver
               </button>
+              {mensaje && <p>{mensaje}</p>}
             </div>
           </form>
         )}

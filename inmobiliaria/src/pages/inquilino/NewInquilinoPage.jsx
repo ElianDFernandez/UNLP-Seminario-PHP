@@ -49,7 +49,6 @@ const NewInquilinoPage = () => {
         <div className="App">
           <div className="form-container">
             <h1>Crear Inquilino</h1>
-            {mensaje && <p>{mensaje}</p>}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Nombre:</label>
@@ -118,6 +117,7 @@ const NewInquilinoPage = () => {
                 <button type="button" className="btn btn-secondary" onClick={handleGoBack}>
                   Volver
                 </button>
+                {mensaje && <p>{mensaje}</p>}
               </div>
             </form>
           </div>

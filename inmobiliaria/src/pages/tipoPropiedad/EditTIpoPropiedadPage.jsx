@@ -37,7 +37,6 @@ const EditTipoPropiedadPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Editar Tipo de Propiedad</h1>
-        {mensaje && <p>{mensaje}</p>}
         {!data ? (
           <p>Cargando datos...</p>
         ) : (
@@ -73,6 +72,7 @@ const EditTipoPropiedadPage = () => {
                 Volver
               </button>
             </div>
+            {mensaje && <p>{mensaje}</p>}
           </form>
         )}
       </div>

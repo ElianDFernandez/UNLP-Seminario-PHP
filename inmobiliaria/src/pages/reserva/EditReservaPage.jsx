@@ -81,7 +81,6 @@ const EditReservaPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Editar reserva</h1>
-        {mensaje && <p>{mensaje}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="inquilino_id">Inquilino:</label>
@@ -171,6 +170,7 @@ const EditReservaPage = () => {
             </button>
           </div>
           <p>Valor Total: ${valor_total}</p>
+          {mensaje && <p>{mensaje}</p>}
         </form>
       </div>
     </div>

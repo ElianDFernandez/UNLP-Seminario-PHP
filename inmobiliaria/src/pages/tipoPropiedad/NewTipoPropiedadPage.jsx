@@ -28,11 +28,6 @@ const NewTipoPropiedadPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Crear Tipo de Propiedad</h1>
-        {mensaje && (
-          <div className="mensaje">
-            <p>{mensaje}</p>
-          </div>
-        )}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre:</label>
@@ -65,6 +60,7 @@ const NewTipoPropiedadPage = () => {
             >
               Volver
             </button>
+            {mensaje && <p>{mensaje}</p>}
           </div>
         </form>
       </div>

@@ -126,7 +126,6 @@ const EditPropiedadPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Editar propiedad</h1>
-        {mensaje && <p>{mensaje}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Domicilio:</label>
@@ -288,6 +287,7 @@ const EditPropiedadPage = () => {
             <button type="button" className="btn btn-secondary" onClick={handleGoBack} disabled={loading}>
               Volver
             </button>
+            {mensaje && <p>{mensaje}</p>}
           </div>
         </form>
       </div>

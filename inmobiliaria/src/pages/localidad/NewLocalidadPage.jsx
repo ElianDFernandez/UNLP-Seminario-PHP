@@ -28,7 +28,6 @@ const NewLocalidadPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Crear Localidad</h1>
-        {mensaje && <p>{mensaje}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre:</label>
@@ -59,6 +58,7 @@ const NewLocalidadPage = () => {
             >
               Volver
             </button>
+            {mensaje && <p>{mensaje}</p>}
           </div>
         </form>
       </div>
