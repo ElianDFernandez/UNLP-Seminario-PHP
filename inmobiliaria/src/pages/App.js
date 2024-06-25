@@ -25,6 +25,7 @@ import EditReservaPage from "../pages/reserva/EditReservaPage";
 import PropiedadPage from "../pages/propiedad/PropiedadPage";
 import NewPropiedadPage from "../pages/propiedad/NewPropiedadPage";
 import EditPropiedadPage from "../pages/propiedad/EditPropiedadPage";
+import DetailPropiedadPage from "../pages/propiedad/DetailPropiedadPage";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
         <Route path="/" element={<PropiedadPage />} />
         <Route path="/propiedades/new" element={<NewPropiedadPage />} />
         <Route path="/propiedades/edit/:id" element={<EditPropiedadPage />} />
+        <Route path="/propiedades/:id" element={<DetailPropiedadPage />} />
       </Routes>
       <Footer />
     </BrowserRouter>

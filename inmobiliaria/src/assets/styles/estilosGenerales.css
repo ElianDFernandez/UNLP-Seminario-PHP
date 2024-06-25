@@ -153,6 +153,22 @@ body {
   background-color: #0056b3;
 }
 
+.detalle-container {
+  margin: 20px auto 0;
+  margin-bottom: 20px;
+  padding: 40px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  width: 80%;
+  max-width: 900px; 
+}
+
+.detalle-item {
+  display: block;
+  margin-bottom: 5px;
+}
+
 .Footer {
   background-color: #437a31;
   color: #fff;

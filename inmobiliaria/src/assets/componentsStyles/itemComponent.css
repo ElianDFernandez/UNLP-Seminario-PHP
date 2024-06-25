@@ -61,3 +61,20 @@ ul {
 .card-buttons button:hover {
   background-color: #0056b3;
 }
+
+.detail-button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.detail-button:hover {
+  background-color: #0056b3;
+}

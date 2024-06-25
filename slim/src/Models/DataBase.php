@@ -50,6 +50,9 @@ class DataBase
     {
         try {
             foreach ($objeto as $key => $value) {
+                if ($value === false) {
+                    $value = 0;
+                }
                 $nombresAtributos[] = $key;
                 $valoresAtributos[] = "'" . $value . "'";
             }
@@ -84,6 +87,9 @@ class DataBase
             $updates = [];
             foreach ($objeto as $key => $value) {
                 if ($value !== null) {
+                    if ($value === false) {
+                        $value = 0;
+                    }
                     $updates[] = $key . " = '" . $value . "'";
                 }
             }

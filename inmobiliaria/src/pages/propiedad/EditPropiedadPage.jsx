@@ -39,6 +39,9 @@ const EditPropiedadPage = () => {
     if (!form.fecha_inicio_disponibilidad) {
       errores.fecha_inicio_disponibilidad = "El campo 'fecha de inicio de disponibilidad' es obligatorio";
     }
+    if (!form.cantidad_banios) {
+      errores.cantidad_banios = "El campo 'cantidad de baños' es obligatorio";
+    }
     if (!form.cantidad_dias) {
       errores.cantidad_dias = "El campo 'cantidad de dias' es obligatorio";
     } else if (form.cantidad_dias < 1) {
@@ -56,6 +59,7 @@ const EditPropiedadPage = () => {
       form.disponible = 0;
     }
     console.log(form);
+
     return errores;
   };
 
@@ -82,6 +86,8 @@ const EditPropiedadPage = () => {
         cantidad_dias: propiedad.cantidad_dias,
         cantidad_habitaciones: propiedad.cantidad_habitaciones,
         cantidad_huespedes: propiedad.cantidad_huespedes,
+        cantidad_banios: propiedad.cantidad_banios,
+        cochera: propiedad.cochera,
         disponible: propiedad.disponible,
         valor_noche: propiedad.valor_noche,
         tipo_propiedad_id: propiedad.tipo_propiedad_id,
@@ -138,6 +144,31 @@ const EditPropiedadPage = () => {
             {errores.cantidad_huespedes && (
               <p className="text-danger">{errores.cantidad_huespedes}</p>
             )}
+          </div>
+          <div className="form-group">
+            <label>
+              Cantidad de baños:
+              <input
+                type="number"
+                className="form-control"
+                name="cantidad_banios"
+                value={form.cantidad_banios}
+                onChange={handleChange}
+              />
+            </label>
+            {errores.cantidad_banios && <p className="text-danger">{errores.cantidad_banios}</p>}
+          </div>
+          <div className="form-group">
+            <label>
+                Cochera:
+                <input
+                  type="checkbox"
+                  className="form-control"
+                  name="cochera"
+                  checked={form.cochera} 
+                  onChange={(e) => setForm({...form, cochera: e.target.checked})}
+                />
+              </label>
           </div>
           <div className="form-group">
             <label>Fecha inicio de disponibilidad:</label>

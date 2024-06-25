@@ -46,19 +46,19 @@ class propiedad extends DataBase
     {
         $propiedad = propiedad::select("WHERE domicilio = '" . $data['domicilio'] . "' AND localidad_id = " . $data['localidad_id']);
         if (!$propiedad) {
-            $propiedad = new propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'] ?? 0, $data['cantidad_banios'] ?? 0, $data['cochera'] ?? 'true', $data['cantidad_huespedes'] ?? 0, $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'] ?? '', $data['tipo_imagen'] ?? '');
+            $propiedad = new propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'] ?? 0, $data['cantidad_banios'] ?? 0, $data['cochera'] ?? false, $data['cantidad_huespedes'] ?? 0, $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'] ?? '', $data['tipo_imagen'] ?? '');
         } else {
             if (is_array($propiedad) && count($propiedad) > 0) {
                 $propiedad = $propiedad[0];
             }
-            $propiedad = new propiedad($propiedad['domicilio'], $propiedad['localidad_id'], $propiedad['cantidad_habitaciones'] ?? 0, $propiedad['cantidad_banios'] ?? 0, $propiedad['cochera'] ?? 'true', $propiedad['cantidad_huespedes']?? 0, $propiedad['fecha_inicio_disponibilidad'], $propiedad['cantidad_dias'], $propiedad['disponible'], $propiedad['valor_noche'], $propiedad['tipo_propiedad_id'], $propiedad['imagen'] ?? '', $propiedad['tipo_imagen'] ?? '', $propiedad['id']);
+            $propiedad = new propiedad($propiedad['domicilio'], $propiedad['localidad_id'], $propiedad['cantidad_habitaciones'] ?? 0, $propiedad['cantidad_banios'] ?? 0, $propiedad['cochera'] ?? false, $propiedad['cantidad_huespedes']?? 0, $propiedad['fecha_inicio_disponibilidad'], $propiedad['cantidad_dias'], $propiedad['disponible'], $propiedad['valor_noche'], $propiedad['tipo_propiedad_id'], $propiedad['imagen'] ?? '', $propiedad['tipo_imagen'] ?? '', $propiedad['id']);
         }
         return $propiedad;
     }
 
     public static function new($data)
     {
-        $propiedad = new propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'] ?? 0, $data['cantidad_banios'] ?? 0, $data['cochera'] ?? 'true', $data['cantidad_huespedes'] ?? 0, $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'] ?? '', $data['tipo_imagen'] ?? '');
+        $propiedad = new propiedad($data['domicilio'], $data['localidad_id'], $data['cantidad_habitaciones'] ?? 0, $data['cantidad_banios'] ?? 0, $data['cochera']  ?? false, $data['cantidad_huespedes'] ?? 0, $data['fecha_inicio_disponibilidad'], $data['cantidad_dias'], $data['disponible'], $data['valor_noche'], $data['tipo_propiedad_id'], $data['imagen'] ?? '', $data['tipo_imagen'] ?? '');
         return $propiedad;
     }
 

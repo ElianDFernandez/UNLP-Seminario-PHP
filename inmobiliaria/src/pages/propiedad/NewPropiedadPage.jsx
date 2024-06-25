@@ -31,6 +31,9 @@ const NewPropiedadPage = () => {
     if (!form.fecha_inicio_disponibilidad) {
       errores.fecha_inicio_disponibilidad = "El campo 'fecha de inicio de disponibilidad' es obligatorio";
     }
+    if (!form.cantidad_banios) {
+      errores.cantidad_banios = "El campo 'cantidad de baños' es obligatorio";
+    }
     if (!form.cantidad_dias) {
       errores.cantidad_dias = "El campo 'cantidad de dias' es obligatorio";
     }
@@ -119,6 +122,27 @@ const NewPropiedadPage = () => {
         {errores.cantidad_huespedes && (
           <p className="text-danger">{errores.cantidad_huespedes}</p>
         )}
+        <label>
+          Cantidad de baños:
+          <input
+            type="number"
+            className="form-control"
+            name="cantidad_banios"
+            value={form.cantidad_banios}
+            onChange={handleChange}
+          />
+        </label>
+        {errores.cantidad_banios && <p className="text-danger">{errores.cantidad_banios}</p>}
+        <label>
+            Cochera:
+            <input
+              type="checkbox"
+              className="form-control"
+              name="cochera"
+              value={form.cochera}
+              onChange={handleChange}
+            />
+        </label>
         <label>
           Fecha inicio de disponibilidad:
           <input
