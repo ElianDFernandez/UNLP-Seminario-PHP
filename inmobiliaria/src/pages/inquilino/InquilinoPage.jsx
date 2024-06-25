@@ -28,7 +28,8 @@ const InquilinoPage = () => {
         { label: 'Nombre', field: 'nombre' },
         { label: 'Apellido', field: 'apellido' },
         { label: 'Documento', field: 'documento' },
-        { label: 'Email', field: 'email' }
+        { label: 'Email', field: 'email' },
+        { label: 'Activo', field: 'activo' }
     ];
 
     return (
