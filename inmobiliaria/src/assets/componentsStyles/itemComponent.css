@@ -23,11 +23,12 @@ ul {
 }
 
 .card img {
-  width: 300px;
-  height: 200px;
+  width: 350px;
+  height: auto;
   border-radius: 8px;
   margin-right: 16px;
 }
+
 .card-details {
   flex: 1;
 }
