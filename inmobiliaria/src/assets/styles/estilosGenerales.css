@@ -61,9 +61,8 @@ body {
   align-items: center;
   width: 100%;
   max-width: 1300px;
+  min-height: 75vh;
   margin: auto;
-  min-height: 100vh;
-  padding-bottom: 50px; 
   box-sizing: border-box; 
 }
 
@@ -161,4 +160,5 @@ body {
   text-align: center;
   width: 100%;
   margin-top: auto; /* Alinea el footer al final del contenedor */
+  position: absolute;
 }

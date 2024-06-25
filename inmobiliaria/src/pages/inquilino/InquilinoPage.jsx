@@ -14,8 +14,10 @@ const InquilinoPage = () => {
     };
 
     const handleDelete = (id) => {
-        const deleteUrl = `${urlInquilino}/${id}`;
-        enviarDelete(deleteUrl, fetchData);
+        if (window.confirm('¿Desea eliminar este inquilino?')) {
+            const deleteUrl = `${urlInquilino}/${id}`;
+            enviarDelete(deleteUrl, fetchData);
+        }
     };
 
     const handleEdit = (id) => {

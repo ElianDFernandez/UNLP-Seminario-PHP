@@ -30,8 +30,10 @@ const PropiedadPage = () => {
   };
 
   const handleDelete = (id) => {
-    const deleteUrl = `${urlPropiedad}/${id}`;
-    enviarDelete(deleteUrl, fetchPropiedades);
+    if (window.confirm("¿Deseas eliminar esta propiedad?")) {
+      const deleteUrl = `${urlPropiedad}/${id}`;
+      enviarDelete(deleteUrl, fetchPropiedades);
+    }
   };
 
   const handleEdit = (id) => {

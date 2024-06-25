@@ -14,8 +14,10 @@ const TipoPropiedadPage = () => {
     };
 
     const handleDelete = (id) => {
-        const deleteUrl = `${urlTipoPropiedad}/${id}`;
-        enviarDelete(deleteUrl, fetchData);
+        if (window.confirm('¿Desea eliminar este tipo de propiedad?')) {
+            const deleteUrl = `${urlTipoPropiedad}/${id}`;
+            enviarDelete(deleteUrl, fetchData);
+        }
     };
 
     const handleEdit = (id) => {

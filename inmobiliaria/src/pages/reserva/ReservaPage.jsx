@@ -24,8 +24,10 @@ const ReservaPage = () => {
   };
 
   const handleDelete = (id) => {
-    const deleteUrl = `${urlReserva}/${id}`;
-    enviarDelete(deleteUrl, fetchReservas);
+    if (window.confirm("¿Desea eliminar esta reserva?")) {
+      const deleteUrl = `${urlReserva}/${id}`;
+      enviarDelete(deleteUrl, fetchReservas);
+    }
   };
 
   const handleEdit = (id) => {

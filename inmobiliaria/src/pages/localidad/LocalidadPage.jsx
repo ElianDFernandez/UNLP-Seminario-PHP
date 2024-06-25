@@ -14,8 +14,10 @@ const LocalidadPage = () => {
   };
 
   const handleDelete = (id) => {
-    const deleteUrl = `${urlLocalidad}/${id}`;
-    enviarDelete(deleteUrl, fetchData);
+    if (window.confirm("¿Desea eliminar esta localidad?")) {
+      const deleteUrl = `${urlLocalidad}/${id}`;
+      enviarDelete(deleteUrl, fetchData);
+    }
   };
 
   const handleEdit = (id) => {
