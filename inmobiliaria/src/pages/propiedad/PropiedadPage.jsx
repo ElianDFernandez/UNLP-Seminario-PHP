@@ -10,7 +10,7 @@ const PropiedadPage = () => {
   const [filtroInicioDisponibilidad, setFiltroInicioDisponibilidad] = useState(null);
   const [filtroCantHuespedes, setFiltroCantHuespedes] = useState(null);
 
-  const urlPropiedadIndex = `${urlPropiedad}/${filtroLocalidad}/${filtroDisponible}/${filtroInicioDisponibilidad}/${filtroCantHuespedes}`;
+  const urlPropiedadIndex = `${urlPropiedad}/${filtroLocalidad}/${filtroDisponible}/${filtroInicioDisponibilidad && filtroInicioDisponibilidad.replaceAll('-', '')}/${filtroCantHuespedes}`;
   
   const { data: propiedades, fetchData: fetchPropiedades } = useFetch(urlPropiedadIndex);
   const { data: localidades, fetchData: fetchLocalidades } = useFetch(urlLocalidad);
@@ -92,8 +92,7 @@ const PropiedadPage = () => {
             value={filtroInicioDisponibilidad || ''}
             onChange={(e) => {
               const selectedDate = e.target.value;
-              const formattedDate = selectedDate.replaceAll('-', '');
-              setFiltroInicioDisponibilidad(formattedDate || null);
+              setFiltroInicioDisponibilidad(selectedDate || null);
             }}
           />
         </div>
