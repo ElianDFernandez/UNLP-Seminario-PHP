@@ -58,6 +58,14 @@ const EditPropiedadPage = () => {
     if (!form.disponible) {
       form.disponible = 0;
     }
+    if (form.imagen) {
+      const maxSizeInBytes = 50 * 1024; // 50 KB
+      const fileSizeInBytes = form.imagen.length; // Usar length ya que estamos tratando con un Data URL
+    
+      if (fileSizeInBytes > maxSizeInBytes) {
+        errores.imagen = "El tamaño de la imagen no puede ser mayor a 50 KB";
+      }
+    }
     console.log(form);
 
     return errores;
@@ -91,11 +99,28 @@ const EditPropiedadPage = () => {
         disponible: propiedad.disponible,
         valor_noche: propiedad.valor_noche,
         tipo_propiedad_id: propiedad.tipo_propiedad_id,
-        imagen: propiedad.imagen,
+        imagen: null,
         tipo_imagen: propiedad.tipo_imagen
       });
     }
   }, [propiedad, setForm]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setForm({
+        ...form,
+        imagen: reader.result,
+        tipo_imagen: file.type 
+      });
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="App">
@@ -226,15 +251,17 @@ const EditPropiedadPage = () => {
             )}
           </div>
           <div className="form-group">
-            <label>Imagen:</label>
-            <input
-              type="text"
-              className="form-control"
-              name="imagen"
-              value={form.imagen}
-              onChange={handleChange}
-            />
+            <label>
+              Imagen:
+              <input
+                type="file"
+                className="form-control"
+                name="imagen"
+                onChange={handleImageChange} // Maneja el cambio en la imagen
+              />
+            </label>
           </div>
+          {errores.imagen && <p className="text-danger">{errores.imagen}</p>}
           <div className="form-group">
             <label>Tipo de imagen:</label>
             <input

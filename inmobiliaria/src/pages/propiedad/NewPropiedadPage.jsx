@@ -43,6 +43,14 @@ const NewPropiedadPage = () => {
     if (!form.tipo_propiedad_id) {
       errores.tipo_propiedad_id = "El campo 'tipo de propiedad' es obligatorio";
     }
+    if (form.imagen) {
+      const maxSizeInBytes = 50 * 1024; // 100 KB
+      const fileSizeInBytes = form.imagen.length; // Usar length ya que estamos tratando con un Data URL
+    
+      if (fileSizeInBytes > maxSizeInBytes) {
+        errores.imagen = "El tamaño de la imagen no puede ser mayor a 50 KB";
+      }
+    }
     return errores;
   };
 
@@ -61,6 +69,22 @@ const NewPropiedadPage = () => {
     fetchLocalidades();
     fetchTiposPropiedades();
   }, []);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setForm({
+        ...form,
+        imagen: reader.result,
+        tipo_imagen: file.type 
+      });
+    };
+    
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="form-container">
@@ -201,13 +225,13 @@ const NewPropiedadPage = () => {
         <label>
           Imagen:
           <input
-            type="text"
+            type="file"
             className="form-control"
             name="imagen"
-            value={form.imagen}
-            onChange={handleChange}
+            onChange={handleImageChange} // Maneja el cambio en la imagen
           />
         </label>
+        {errores.imagen && <p className="text-danger">{errores.imagen}</p>}
         <label>
           Tipo de imagen:
           <input

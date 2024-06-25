@@ -1,70 +1,21 @@
-# Getting Started with Create React App
+# SEGUNDA ENTREGA
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React
 
-## Available Scripts
+## Modificaciones del back
+- En los endpoints de tipo "$app->get('/reservas/{id}', ReservaController::class . ':buscar')" se modifico la respuesta.
+    Antes devolvia algo como: 
+        $respuesta = $reserevas = array[reserva], message;
+    Ahora devuleve: 
+        $respuesta = reserva,message;
+- En el modelo dataBase se modifico para que al tomar un boolean antes de almancenarlo lo convierte en 0, en update y el save: 
+      if ($value === false) {
+        $value = 0;
+    }
+- En las funciones update, antes se llamaba a findOrNew, busca en db si existe por ejemplo en el caso de inquilino uno con el mismo DNI, antes de hacer el update. Esto 
+    con el fin de evitar la duplicidad. Pero si se quiere editar un inquilino y cambiar solamente el nombre, esta funcion devuelve un inquilino(El mismo que se esta editando) y devuelve el error. Se soluciono simplemente haciendo una funcion new, que devuelve un nuevo inquilino con los datos del anterior, este es el que hace el update sobre el id.
+    Tambien se podria solucionar ignorandose asi mismo cuando se hace e lllamda a findOrNew.
+- Se modifico los filtros de propiedad. Antes los recibiamos en el body, ahora en la url.
+- Correcciones varios, como en vez de devolver 'status' generalizamos a 'message'.
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    
