@@ -126,7 +126,6 @@ const EditPropiedadPage = () => {
     <div className="App">
       <div className="form-container">
         <h1>Editar propiedad</h1>
-        {mensaje && <p>{mensaje}</p>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Domicilio:</label>
@@ -137,7 +136,9 @@ const EditPropiedadPage = () => {
               value={form.domicilio}
               onChange={handleChange}
             />
-            {errores.domicilio && <p className="text-danger">{errores.domicilio}</p>}
+            {errores.domicilio && (
+              <p className="text-danger">{errores.domicilio}</p>
+            )}
           </div>
           <div className="form-group">
             <label>Localidad:</label>
@@ -155,7 +156,9 @@ const EditPropiedadPage = () => {
                   </option>
                 ))}
             </select>
-            {errores.localidad && <p className="text-danger">{errores.localidad}</p>}
+            {errores.localidad && (
+              <p className="text-danger">{errores.localidad}</p>
+            )}
           </div>
           <div className="form-group">
             <label>Cantidad de huespedes:</label>
@@ -181,19 +184,23 @@ const EditPropiedadPage = () => {
                 onChange={handleChange}
               />
             </label>
-            {errores.cantidad_banios && <p className="text-danger">{errores.cantidad_banios}</p>}
+            {errores.cantidad_banios && (
+              <p className="text-danger">{errores.cantidad_banios}</p>
+            )}
           </div>
           <div className="form-group">
             <label>
-                Cochera:
-                <input
-                  type="checkbox"
-                  className="form-control"
-                  name="cochera"
-                  checked={form.cochera} 
-                  onChange={(e) => setForm({...form, cochera: e.target.checked})}
-                />
-              </label>
+              Cochera:
+              <input
+                type="checkbox"
+                className="form-control"
+                name="cochera"
+                checked={form.cochera}
+                onChange={(e) =>
+                  setForm({ ...form, cochera: e.target.checked })
+                }
+              />
+            </label>
           </div>
           <div className="form-group">
             <label>Fecha inicio de disponibilidad:</label>
@@ -205,7 +212,9 @@ const EditPropiedadPage = () => {
               onChange={handleChange}
             />
             {errores.fecha_inicio_disponibilidad && (
-              <p className="text-danger">{errores.fecha_inicio_disponibilidad}</p>
+              <p className="text-danger">
+                {errores.fecha_inicio_disponibilidad}
+              </p>
             )}
           </div>
           <div className="form-group">
@@ -217,7 +226,9 @@ const EditPropiedadPage = () => {
               value={form.cantidad_dias}
               onChange={handleChange}
             />
-            {errores.cantidad_dias && <p className="text-danger">{errores.cantidad_dias}</p>}
+            {errores.cantidad_dias && (
+              <p className="text-danger">{errores.cantidad_dias}</p>
+            )}
           </div>
           <div className="form-group">
             <label>Valor de la noche:</label>
@@ -228,7 +239,9 @@ const EditPropiedadPage = () => {
               value={form.valor_noche}
               onChange={handleChange}
             />
-            {errores.valor_noche && <p className="text-danger">{errores.valor_noche}</p>}
+            {errores.valor_noche && (
+              <p className="text-danger">{errores.valor_noche}</p>
+            )}
           </div>
           <div className="form-group">
             <label>Tipo de propiedad:</label>
@@ -282,14 +295,24 @@ const EditPropiedadPage = () => {
             />
           </div>
           <div className="form-group">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
               {loading ? "Cargando..." : "Guardar"}
             </button>
-            <button type="button" className="btn btn-secondary" onClick={handleGoBack} disabled={loading}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleGoBack}
+              disabled={loading}
+            >
               Volver
             </button>
           </div>
         </form>
+        <div className="alerta">{mensaje && <p>{mensaje}</p>}</div>
       </div>
     </div>
   );
